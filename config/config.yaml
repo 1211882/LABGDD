@@ -1,0 +1,20 @@
+alpaca:
+  market_data_base_url: "https://data.alpaca.markets/v2"
+  paper_trading_base_url: "https://paper-api.alpaca.markets/v2"
+  feed: "iex"
+
+ingestion:
+  symbols:
+    - AAPL
+    - MSFT
+    - NVDA
+    - TSLA
+    - AMZN
+  start_date: "2026-09-01"
+  end_date: "2026-09-20"
+  timeframe: "1Min"
+  limit: 10000
+
+storage:
+  raw_data_dir: "data/raw"
+  processed_data_dir: "data/processed"
