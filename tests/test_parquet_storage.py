@@ -8,7 +8,7 @@ pytest.importorskip("pyarrow")
 from src.storage.parquet_storage import ParquetStorage
 
 
-def test_save_raw_bars_persists_parquet_file(tmp_path) -> None:
+def test_save_raw_bars_persists_parquet_and_csv_files(tmp_path) -> None:
     dataframe = pd.DataFrame(
         [
             {
@@ -23,7 +23,7 @@ def test_save_raw_bars_persists_parquet_file(tmp_path) -> None:
         ]
     )
 
-    output_path = ParquetStorage(tmp_path).save_raw_bars(
+    output_files = ParquetStorage(tmp_path).save_raw_bars(
         dataframe=dataframe,
         symbol="AAPL",
         start_date="2026-09-01",
@@ -31,8 +31,14 @@ def test_save_raw_bars_persists_parquet_file(tmp_path) -> None:
         timeframe="1Min",
     )
 
-    assert output_path.exists()
-    assert output_path.name == "2026-09-01_2026-09-20_1Min.parquet"
-    loaded = pd.read_parquet(output_path)
-    assert len(loaded) == 1
-    assert loaded.loc[0, "symbol"] == "AAPL"
+    assert output_files.parquet_file.exists()
+    assert output_files.csv_file.exists()
+    assert output_files.parquet_file.name == "2026-09-01_2026-09-20_1Min.parquet"
+    assert output_files.csv_file.name == "2026-09-01_2026-09-20_1Min.csv"
+
+    parquet_data = pd.read_parquet(output_files.parquet_file)
+    csv_data = pd.read_csv(output_files.csv_file)
+    assert len(parquet_data) == 1
+    assert len(csv_data) == 1
+    assert parquet_data.loc[0, "symbol"] == "AAPL"
+    assert csv_data.loc[0, "symbol"] == "AAPL"

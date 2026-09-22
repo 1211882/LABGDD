@@ -17,7 +17,8 @@ LOGGER = logging.getLogger(__name__)
 class IngestionResult:
     symbol: str
     row_count: int
-    output_file: Path
+    parquet_file: Path
+    csv_file: Path
     elapsed_seconds: float
 
 
@@ -58,7 +59,7 @@ class MarketDataIngestionService:
             )
             dataframe = normalize_bars(symbol, bars)
             validate_market_bars(dataframe)
-            output_file = self.storage.save_raw_bars(
+            output_files = self.storage.save_raw_bars(
                 dataframe=dataframe,
                 symbol=symbol,
                 start_date=ingestion.start_date,
@@ -68,20 +69,22 @@ class MarketDataIngestionService:
             elapsed_seconds = time.perf_counter() - start_time
 
             LOGGER.info(
-                "Ingestion complete: symbol=%s rows=%s date_range=%s..%s output=%s "
-                "elapsed_seconds=%.2f",
+                "Ingestion complete: symbol=%s rows=%s date_range=%s..%s "
+                "parquet=%s csv=%s elapsed_seconds=%.2f",
                 symbol,
                 len(dataframe),
                 ingestion.start_date,
                 ingestion.end_date,
-                output_file,
+                output_files.parquet_file,
+                output_files.csv_file,
                 elapsed_seconds,
             )
             results.append(
                 IngestionResult(
                     symbol=symbol,
                     row_count=len(dataframe),
-                    output_file=output_file,
+                    parquet_file=output_files.parquet_file,
+                    csv_file=output_files.csv_file,
                     elapsed_seconds=elapsed_seconds,
                 )
             )

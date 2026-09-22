@@ -11,7 +11,7 @@ The initial goal is to build a clean first vertical slice:
 - Retrieve historical OHLCV stock bars from Alpaca Market Data API v2.
 - Normalize records into a consistent schema.
 - Validate basic data quality.
-- Store raw normalized datasets as Parquet.
+- Store raw normalized datasets as Parquet and CSV.
 
 ML models, Kafka, Spark processing, paper trading, and strategy evaluation are planned future work and are intentionally not implemented yet.
 
@@ -22,7 +22,7 @@ flowchart TD
     A[Alpaca Market Data API] --> B[Python Ingestion]
     B --> C[Normalization]
     C --> D[Data Quality Validation]
-    D --> E[Raw Parquet Storage]
+    D --> E[Raw Parquet and CSV Storage]
 
     B -. future .-> F[Kafka Producer]
     F -. future .-> G[Apache Kafka]
@@ -120,10 +120,11 @@ Default symbols:
 python -m src.main
 ```
 
-The command saves one Parquet file per symbol, for example:
+The command saves one Parquet file and one CSV file per symbol, for example:
 
 ```text
 data/raw/AAPL/2026-09-01_2026-09-20_1Min.parquet
+data/raw/AAPL/2026-09-01_2026-09-20_1Min.csv
 ```
 
 ## Run Tests
@@ -141,7 +142,7 @@ Implemented:
 - Alpaca historical bars client with pagination.
 - Normalization to `timestamp, symbol, open, high, low, close, volume`.
 - Basic data-quality validation.
-- Parquet persistence.
+- Parquet and CSV persistence.
 - Unit tests with mocked HTTP responses.
 
 Not implemented yet:
