@@ -3,4 +3,6 @@ pandas>=2.2.0
 pyarrow>=16.0.0
 PyYAML>=6.0.0
 python-dotenv>=1.0.0
+confluent-kafka>=2.6.0,<3.0.0
 pytest>=8.0.0
+pyspark==4.0.1

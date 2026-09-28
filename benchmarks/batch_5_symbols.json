@@ -1,0 +1,34 @@
+{
+  "benchmark": "A - original five-symbol baseline",
+  "environment": {
+    "os": "Microsoft Windows 11 Education 64-bit",
+    "python": "3.11.9",
+    "java": "Eclipse Temurin 21.0.12.1",
+    "spark": "4.0.1",
+    "pyspark": "4.0.1"
+  },
+  "number_of_symbols": 5,
+  "number_of_sectors": 3,
+  "processed_symbols": ["AAPL", "AMZN", "MSFT", "NVDA", "TSLA"],
+  "rows_per_symbol": {
+    "AAPL": 5194,
+    "AMZN": 5031,
+    "MSFT": 5093,
+    "NVDA": 5107,
+    "TSLA": 5145
+  },
+  "rows_per_sector": {
+    "Automotive": 5145,
+    "Consumer": 5031,
+    "Technology": 15394
+  },
+  "input_row_count": 25570,
+  "valid_row_count": 25570,
+  "invalid_row_count": 0,
+  "duplicate_count": 0,
+  "output_row_count": 25570,
+  "input_size_bytes": 662852,
+  "output_size_bytes": 2292802,
+  "processing_duration_seconds": 25.60717,
+  "rows_per_second": 998.548
+}

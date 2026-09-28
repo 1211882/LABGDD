@@ -3,13 +3,69 @@ alpaca:
   paper_trading_base_url: "https://paper-api.alpaca.markets/v2"
   feed: "iex"
 
+symbols:
+  AAPL:
+    sector: "Technology"
+  MSFT:
+    sector: "Technology"
+  NVDA:
+    sector: "Technology"
+  GOOGL:
+    sector: "Technology"
+  AMD:
+    sector: "Technology"
+  JNJ:
+    sector: "Healthcare"
+  PFE:
+    sector: "Healthcare"
+  LLY:
+    sector: "Healthcare"
+  MRK:
+    sector: "Healthcare"
+  ABBV:
+    sector: "Healthcare"
+  LMT:
+    sector: "Defense"
+  NOC:
+    sector: "Defense"
+  GD:
+    sector: "Defense"
+  RTX:
+    sector: "Defense"
+  HII:
+    sector: "Defense"
+  BA:
+    sector: "Aerospace"
+  TDG:
+    sector: "Aerospace"
+  HEI:
+    sector: "Aerospace"
+  TXT:
+    sector: "Aerospace"
+  GE:
+    sector: "Aerospace"
+  XOM:
+    sector: "Energy"
+  CVX:
+    sector: "Energy"
+  COP:
+    sector: "Energy"
+  SLB:
+    sector: "Energy"
+  OXY:
+    sector: "Energy"
+  JPM:
+    sector: "Financial"
+  BAC:
+    sector: "Financial"
+  GS:
+    sector: "Financial"
+  MS:
+    sector: "Financial"
+  V:
+    sector: "Financial"
+
 ingestion:
-  symbols:
-    - AAPL
-    - MSFT
-    - NVDA
-    - TSLA
-    - AMZN
   start_date: "2026-09-01"
   end_date: "2026-09-20"
   timeframe: "1Min"
@@ -18,3 +74,21 @@ ingestion:
 storage:
   raw_data_dir: "data/raw"
   processed_data_dir: "data/processed"
+
+spark:
+  app_name: "financial-market-batch"
+  master: "local[*]"
+  input_path: "data/raw"
+  output_path: "data/processed/batch"
+  invalid_output_path: "data/processed/invalid"
+  metrics_path: "data/processed/batch_metrics.json"
+
+kafka:
+  bootstrap_servers: "localhost:9092"
+  raw_topic: "market-bars-raw"
+  dead_letter_topic: "market-bars-dlq"
+  consumer_group: "market-bars-demo"
+  client_id: "financial-market-pipeline"
+  partitions: 6
+  replication_factor: 1
+  consumer_timeout_seconds: 15

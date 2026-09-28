@@ -26,7 +26,15 @@ def main() -> int:
         )
         storage = ParquetStorage(settings.storage.raw_data_dir)
         service = MarketDataIngestionService(settings, client, storage)
-        service.run()
+        report = service.run()
+        if report.failed:
+            logger.error(
+                "Ingestion completed with failures: %s",
+                ", ".join(
+                    f"{failure.symbol} ({failure.error})" for failure in report.failed
+                ),
+            )
+            return 1
     except (ConfigurationError, AlpacaApiError, DataQualityError) as exc:
         logger.error("Ingestion failed: %s", exc)
         return 1
