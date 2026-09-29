@@ -5,6 +5,8 @@ from pyspark.sql import functions as F
 
 
 BASE_COLUMNS = ["timestamp", "symbol", "open", "high", "low", "close", "volume"]
+LOGICAL_EVENT_IDENTITY = ["symbol", "timestamp"]
+PRICE_COLUMNS = ["open", "high", "low", "close"]
 ROLLING_VOLATILITY_PERIODS = 30
 
 
@@ -18,6 +20,14 @@ def add_validation_columns(dataframe: DataFrame) -> DataFrame:
         (F.col("low").isNull(), "low_is_null"),
         (F.col("close").isNull(), "close_is_null"),
         (F.col("volume").isNull(), "volume_is_null"),
+        *[
+            (
+                F.isnan(column)
+                | F.col(column).isin(float("inf"), float("-inf")),
+                f"{column}_is_not_finite",
+            )
+            for column in PRICE_COLUMNS
+        ],
         (F.col("high") < F.col("low"), "high_below_low"),
         (F.col("high") < F.col("open"), "high_below_open"),
         (F.col("high") < F.col("close"), "high_below_close"),

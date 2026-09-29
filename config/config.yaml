@@ -1,5 +1,7 @@
 alpaca:
   market_data_base_url: "https://data.alpaca.markets/v2"
+  market_data_stream_url: "wss://stream.data.alpaca.markets/v2"
+  test_stream_url: "wss://stream.data.alpaca.markets/v2/test"
   paper_trading_base_url: "https://paper-api.alpaca.markets/v2"
   feed: "iex"
 
@@ -92,3 +94,32 @@ kafka:
   partitions: 6
   replication_factor: 1
   consumer_timeout_seconds: 15
+
+streaming:
+  channel: "bars"
+  test_symbol: "FAKEPACA"
+  max_queue: 64
+  open_timeout_seconds: 10
+  ping_interval_seconds: 20
+  ping_timeout_seconds: 20
+  reconnect_initial_seconds: 1
+  reconnect_max_seconds: 30
+  reconnect_multiplier: 2
+  reconnect_jitter_ratio: 0.25
+  max_reconnect_attempts: 0
+  kafka_flush_timeout_seconds: 10
+  metrics_path: "data/processed/realtime_ingestion_metrics.json"
+
+spark_streaming:
+  app_name: "financial-market-structured-streaming"
+  master: "local[*]"
+  kafka_connector_package: "org.apache.spark:spark-sql-kafka-0-10_2.13:4.0.1"
+  output_path: "data/processed/streaming"
+  invalid_output_path: "data/processed/streaming_invalid"
+  checkpoint_path: "data/checkpoints/streaming"
+  metrics_path: "data/processed/structured_streaming_metrics.json"
+  watermark_delay: "10 minutes"
+  starting_offsets: "latest"
+  fail_on_data_loss: true
+  max_offsets_per_trigger: 10000
+  trigger_interval: "5 seconds"

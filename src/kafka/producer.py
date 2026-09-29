@@ -42,22 +42,30 @@ class MarketBarProducer:
             on_delivery=self._on_delivery,
         )
         self._producer.poll(0)
+        self._raise_delivery_errors()
 
     def publish_many(self, bars: Iterable[MarketBar], timeout: float = 10.0) -> int:
         count = 0
         for bar in bars:
             self.publish(bar)
             count += 1
+        self.flush(timeout)
+        return count
+
+    def flush(self, timeout: float = 10.0) -> None:
+        """Wait for outstanding deliveries and surface asynchronous failures."""
         outstanding = self._producer.flush(timeout)
         if outstanding:
             raise KafkaDeliveryError(
                 f"Kafka flush timed out with {outstanding} undelivered record(s)."
             )
+        self._raise_delivery_errors()
+
+    def _raise_delivery_errors(self) -> None:
         if self._delivery_errors:
             details = "; ".join(self._delivery_errors)
             self._delivery_errors.clear()
             raise KafkaDeliveryError(f"Kafka delivery failed: {details}")
-        return count
 
     def _on_delivery(self, error: Any, message: Any) -> None:
         if error is not None:

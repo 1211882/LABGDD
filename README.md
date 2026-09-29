@@ -9,8 +9,9 @@ sector metadata, compatible OHLCV schemas, and equivalent mathematical definitio
 wherever a metric exists in both modes.
 
 The batch path is implemented through historical feature generation. The streaming
-transport foundation is implemented through Kafka; live Alpaca ingestion, Spark
-Structured Streaming, and streaming analytics remain planned phases.
+path is implemented through validated, deduplicated, sector-enriched event persistence:
+Alpaca WebSocket, Kafka, and Spark Structured Streaming are runtime verified. Windowed
+streaming analytics remain a planned phase.
 
 ## Academic Context
 
@@ -32,14 +33,16 @@ Solid nodes describe implemented components. Dashed nodes describe planned work.
 flowchart TD
     A[Alpaca Market Data]
     A --> HR[Historical REST API]
-    A -.-> WS[Real-Time WebSocket]
+    A --> WS[Real-Time WebSocket]
     HR --> PI[Python Historical Ingestion]
     PI --> RAW[Raw Parquet and CSV]
     RAW --> SB[Spark Batch]
     SB --> BA[Batch Analytics and Historical Features]
-    WS -.-> KP[Live Kafka Producer]
-    KP -.-> K[Kafka market-bars-raw]
-    K -.-> SS[Spark Structured Streaming]
+    WS --> KP[Live Kafka Producer]
+    KP --> K[Kafka market-bars-raw]
+    K --> SS[Spark Structured Streaming]
+    SS --> SV[Validation, Deduplication, Sector Enrichment]
+    SV --> SP[Processed Streaming Parquet]
     SS -.-> SA[Streaming Analytics]
     BA -.-> CA[Comparative Analysis]
     SA -.-> CA
@@ -67,11 +70,16 @@ flowchart LR
 flowchart LR
     DEMO[Demo Producer] --> K[Kafka market-bars-raw]
     K --> CONS[Demo Consumer]
-    WS[Planned Alpaca WebSocket] -.-> LIVE[Planned Live Producer]
-    LIVE -.-> K
-    K -.-> SS[Planned Spark Structured Streaming]
+    WS[Alpaca WebSocket] --> LIVE[Live MarketBar Producer]
+    LIVE --> K
+    K --> SS[Spark Structured Streaming]
+    SS --> CHECK[Validation]
+    CHECK --> QUAR[Invalid Streaming Quarantine]
+    CHECK --> DEDUP[Watermark-Aware Deduplication]
+    DEDUP --> ENRICH[Sector Enrichment]
+    ENRICH --> STREAMOUT[Processed Streaming Parquet]
     SS -.-> WINDOWS[Planned 1m, 5m, 15m Analytics]
-    WINDOWS -.-> STREAMOUT[Planned Streaming Outputs]
+    WINDOWS -.-> ANALYTICS[Planned Analytics Outputs]
 ```
 
 ### Future Batch vs Streaming Comparison
@@ -96,12 +104,13 @@ flowchart TD
 - Eclipse Temurin Java 21 LTS
 - Apache Kafka 4.3.1 in KRaft mode
 - Confluent Python client for Apache Kafka
-- Docker Compose for local Kafka infrastructure
+- websockets 17.1 asynchronous client
+- Docker Compose for local Kafka and Windows Spark runtime infrastructure
 - YAML configuration and environment variables
 - pytest
 
-Spark Structured Streaming, live Alpaca WebSocket ingestion, machine learning, and
-paper trading are future phases and are not implemented yet.
+Streaming analytics, machine learning, and paper trading are future phases and are not
+implemented yet.
 
 ## Project Structure
 
@@ -109,10 +118,12 @@ paper trading are future phases and are not implemented yet.
 .
 |-- config/
 |   `-- config.yaml
+|-- Dockerfile.spark
 |-- docker-compose.yml
 |-- data/
 |   |-- raw/
-|   `-- processed/
+|   |-- processed/
+|   `-- checkpoints/
 |-- notebooks/
 |   `-- 01_data_exploration.ipynb
 |-- src/
@@ -125,13 +136,20 @@ paper trading are future phases and are not implemented yet.
 |   |   |-- event_codec.py
 |   |   `-- producer.py
 |   |-- metrics/
-|   |   `-- pipeline_metrics.py
+|   |   |-- pipeline_metrics.py
+|   |   `-- streaming_query_metrics.py
 |   |-- models/
 |   |-- processing/
 |   |-- spark/
 |   |   |-- batch_processor.py
+|   |   |-- streaming_transformations.py
+|   |   |-- structured_streaming_processor.py
 |   |   `-- transformations.py
 |   |-- storage/
+|   |-- streaming/
+|   |   |-- alpaca_websocket.py
+|   |   |-- metrics.py
+|   |   `-- realtime_ingestion.py
 |   `-- main.py
 |-- tests/
 |   |-- test_alpaca_client.py
@@ -139,8 +157,12 @@ paper trading are future phases and are not implemented yet.
 |   |-- test_kafka_producer.py
 |   |-- test_normalization.py
 |   |-- test_parquet_storage.py
+|   |-- test_realtime_ingestion.py
 |   |-- test_settings.py
-|   `-- test_spark_batch.py
+|   |-- test_spark_batch.py
+|   `-- test_spark_streaming.py
+|-- scripts/
+|   `-- validate_streaming_output.py
 |-- README.md
 `-- requirements.txt
 ```
@@ -166,9 +188,9 @@ The Spark batch command does not load or require Alpaca credentials.
 
 ## Streaming Pipeline: Kafka Infrastructure
 
-**Objective:** Phase 2 establishes and verifies the transport boundary that the live
-Alpaca source and Spark Structured Streaming will use. It currently proves
-`Demo Producer -> Kafka -> Demo Consumer`; it does not yet perform streaming analytics.
+**Objective:** Phase 2 establishes and verifies the transport boundary used by the
+live Alpaca source and Spark Structured Streaming. Its demo producer and consumer
+remain useful independent transport diagnostics.
 
 **Architecture and technologies:** A local single-node Apache Kafka 4.3.1 broker runs
 in KRaft mode through Docker Compose, with no ZooKeeper dependency. Python clients use
@@ -271,11 +293,311 @@ factor one, so it provides no broker-level fault tolerance. Authentication, TLS,
 letter publication, retention tuning, production monitoring, and load benchmarks are
 not yet implemented. `market-bars-dlq` is provisioned but no producer writes to it yet.
 
-Phase 3 will map authenticated Alpaca WebSocket bar messages into the existing
-`MarketBar` model and call the existing producer. Phase 4 will parse the same JSON from
-`market-bars-raw`, use `timestamp` for event-time processing, and enrich sector from
-central configuration before later 1, 5, and 15-minute analytics. Neither integration
-requires redesigning the Kafka topics or payload.
+Phase 3 maps authenticated Alpaca WebSocket bar messages into the existing `MarketBar`
+model and producer. Phase 4 parses that unchanged JSON, uses `timestamp` for event-time
+processing, and enriches sector from central configuration. Neither integration
+required a Kafka topic, key, payload, or schema-version change.
+
+## Streaming Pipeline: Alpaca Real-Time Ingestion
+
+**Objective:** Phase 3 adds only the live source to the existing streaming transport:
+
+```text
+Alpaca WebSocket -> MarketBar -> MarketBarProducer -> market-bars-raw
+```
+
+### Endpoint, Authentication, and Subscription
+
+The production endpoint is `wss://stream.data.alpaca.markets/v2/iex`; the deterministic
+off-hours endpoint is `wss://stream.data.alpaca.markets/v2/test`. After Alpaca sends
+`connected`, the client sends the existing key and secret, requires an `authenticated`
+response, subscribes to the `bars` channel, and requires a subscription confirmation.
+Credentials remain loaded from the environment or `.env` and are never written to
+logs or metrics.
+
+Production runs use configured symbols from the centralized 30-symbol universe, or a
+validated subset supplied with `--symbols`. Test runs always use Alpaca's `FAKEPACA`
+symbol. The implementation consumes minute-bar messages (`T=b`) and ignores unrelated
+data messages after handling protocol control and error messages.
+
+### Mapping and Kafka Publishing
+
+Alpaca fields map directly to the existing model and event contract:
+
+| Alpaca field | `MarketBar` field | Kafka JSON field |
+|---|---|---|
+| `t` | `timestamp` | `timestamp` |
+| `S` | `symbol` | `symbol` |
+| `o` | `open` | `open` |
+| `h` | `high` | `high` |
+| `l` | `low` | `low` |
+| `c` | `close` | `close` |
+| `v` | `volume` | `volume` |
+
+The existing codec remains the final validation boundary and normalizes timestamp and
+symbol values before publication. The existing producer preserves `symbol` as the
+Kafka key and uses `event_type=market_bar` and `schema_version=1` headers. Sector is
+still enriched downstream from central configuration.
+
+### Resilience and Error Handling
+
+- The WebSocket receive buffer is bounded by configurable `max_queue` flow control.
+- Network closures, timeouts, server errors, and slow-client errors reconnect with
+  configurable exponential backoff and jitter.
+- Authentication, invalid credentials, symbol-limit, connection-limit, entitlement,
+  and invalid-subscription errors stop immediately instead of retrying forever.
+- Malformed frames and invalid bars are counted, logged without credentials, and
+  skipped without changing the Kafka contract.
+- Cancellation closes the WebSocket; shutdown flushes Kafka before final metrics are
+  persisted.
+- `max_reconnect_attempts: 0` means unlimited retries; positive values establish a
+  limit for consecutive connection attempts.
+
+### Configuration and Commands
+
+The `streaming` configuration section controls the channel, test symbol, bounded queue,
+connection and ping timeouts, reconnect policy, Kafka flush timeout, and metrics path.
+The `alpaca` section controls the stream base URL and feed.
+
+Run against the always-available Alpaca test stream:
+
+```powershell
+python -m src.streaming.realtime_ingestion --test-stream --max-events 1 --duration-seconds 90
+```
+
+Run selected live IEX symbols:
+
+```powershell
+python -m src.streaming.realtime_ingestion --symbols AAPL MSFT --duration-seconds 300
+```
+
+Omit `--symbols` to subscribe to all 30 configured symbols. Omit both stopping options
+for a continuous process, stopped with `Ctrl+C`. `--metrics-path` overrides the default
+`data/processed/realtime_ingestion_metrics.json` output.
+
+### Output and Metrics Schema
+
+Successful bars are written to `market-bars-raw`; this phase creates no analytical
+streaming output. Each run writes JSON metrics containing environment and workload,
+endpoint/feed/channel, symbols, timestamps, duration, received and published events,
+events per second, malformed and ignored messages, connections, reconnects, delivery
+failures, status, and error details.
+
+### Testing and Runtime Verification
+
+Tests cover frame decoding, field mapping, connect/authenticate/subscribe sequencing,
+unrelated messages, fatal authentication failures, reconnect/backoff, bounded queue
+configuration, Kafka publication lifecycle, flush behavior, and persisted metrics.
+
+Runtime verification on September 29, 2026 produced:
+
+| Workload | Events | Duration | Events/sec | Reconnects | Malformed | Delivery failures |
+|---|---:|---:|---:|---:|---:|---:|
+| Alpaca test stream, FAKEPACA | 1 | 41.071 s | 0.024 | 0 | 0 | 0 |
+| Live IEX, AAPL and MSFT | 2 | 45.353 s | 0.044 | 0 | 0 | 0 |
+
+The existing consumer independently decoded and key-validated all three new records.
+FAKEPACA was published to partition 5; AAPL and MSFT remained in their established
+partitions 0 and 1. Results are preserved in
+`benchmarks/alpaca_stream_test.json` and
+`benchmarks/alpaca_stream_iex_2_symbols.json`.
+
+These small event-time-limited runs verify protocol and transport correctness. Their
+event rates reflect one-minute bar arrival timing and must not be interpreted as Kafka
+capacity or compared directly with historical batch throughput.
+
+### Phase 3 Limitations and Future Integration
+
+IEX covers one exchange rather than the consolidated SIP market. Bar availability and
+volume therefore depend on IEX activity, subscription entitlements, market hours, and
+the selected symbols. The current client does not publish corrections or updated bars,
+does not write malformed records to the provisioned DLQ, and has not been load-tested
+across the full 30-symbol universe. Spark Structured Streaming remains a separate,
+independently operated first-class path.
+
+## Streaming Pipeline: Spark Structured Streaming
+
+**Status: FULLY IMPLEMENTED AND RUNTIME VERIFIED.**
+
+**Objective:** Phase 4 consumes `market-bars-raw` with Spark, preserves source
+metadata, validates the versioned event contract, deduplicates by event identity, adds
+sector metadata, and persists valid and rejected records. It deliberately stops before
+windowed financial analytics, which belong to Phase 5.
+
+```text
+Alpaca WebSocket -> Kafka producer -> market-bars-raw
+  -> Spark Structured Streaming
+  -> parse/validate -> watermark deduplication -> sector enrichment
+  -> processed streaming Parquet + invalid quarantine + checkpoints + metrics
+```
+
+### Processing Contract
+
+Spark uses an explicit JSON schema, never schema inference. The JSON payload contains
+`timestamp`, `symbol`, `open`, `high`, `low`, `close`, and `volume`. The Kafka source
+also provides key, headers, topic, partition, offset, and Kafka record timestamp.
+
+The producer uses uppercase `symbol` as the record key and sends
+`event_type=market_bar` and `schema_version=1` headers. Phase 4 extracts and validates
+`schema_version`, and validates that the Kafka key equals the payload symbol. Missing
+or unsupported schema versions and malformed JSON are rejected. The `event_type`
+header remains part of the input contract but is not currently validated or persisted
+by the Spark output. Sector is joined from the central YAML mapping rather than added
+to the Kafka payload.
+
+Phase 4 rejects:
+
+- malformed JSON, missing required payload fields, and missing or unsupported schema
+  versions;
+- a missing Kafka key or disagreement between the key and payload symbol;
+- an unknown symbol without a configured sector;
+- null OHLCV values, non-finite OHLC values, negative prices, or negative volume; and
+- inconsistent bounds: high below low/open/close or low above open/close.
+
+### Time, Watermark, and Deduplication
+
+Valid rows use payload `timestamp` as event time. A configurable 10-minute watermark
+and Spark's stateful `dropDuplicatesWithinWatermark` remove repeated
+`(symbol, timestamp)` identities. Kafka `timestamp` is retained separately as
+`kafka_timestamp`; it is not substituted for market event time. Records with unknown
+symbols are quarantined because a reliable sector cannot be assigned.
+
+These are three distinct timestamps:
+
+- **Event time:** the payload market-bar `timestamp`; all financial event-time behavior
+  uses this value.
+- **Kafka time:** the broker record timestamp, retained as `kafka_timestamp`.
+- **Processing time:** when Spark processes the row, retained as `processing_time`.
+
+The watermark bounds the deduplication state. Logical event identity is
+`symbol + timestamp`; sufficiently late events can be dropped once their event time is
+behind the watermark.
+
+Kafka is the continuous transport and retains records independently of Spark. Spark
+Structured Streaming uses its default micro-batch execution model: each trigger reads
+a bounded offset range and commits its progress to the checkpoint. Market event time
+comes from the payload and is independent of Kafka arrival time, processing time, and
+the wall-clock time of the micro-batch that happens to process it.
+
+Two independently checkpointed queries write:
+
+- `data/processed/streaming/`: valid Parquet, partitioned by `symbol` inside immutable
+  micro-batch directories.
+- `data/processed/streaming_invalid/`: rejected Parquet with `validation_errors`.
+- `data/checkpoints/streaming/valid/` and `invalid/`: offsets, commits, and state.
+- `data/processed/structured_streaming_metrics.json`: the latest run metrics.
+
+These locations are separate from `data/processed/batch/` and
+`data/processed/invalid/`; Batch and Streaming never share output directories.
+
+The micro-batch writer commits through a temporary directory and then an atomic rename.
+Existing batch IDs are not overwritten, making callback retries idempotent. Checkpoint
+state remains the authority for Kafka offsets and watermark deduplication.
+The valid checkpoint restores Kafka offsets and deduplication state-store data; the
+invalid checkpoint restores its Kafka offsets. `startingOffsets` applies only when a
+checkpoint identity is new. A same-checkpoint restart resumes recorded offsets and
+state instead of applying the configured starting position again.
+
+### Configuration and Commands
+
+The `spark_streaming` YAML section controls the Spark application, official Kafka
+connector coordinate, output and checkpoint paths, starting offsets, data-loss policy,
+offset cap, watermark, trigger interval, and metrics path. Normal continuous operation:
+
+```powershell
+docker compose up -d --build
+docker compose exec spark python3 -m src.spark.structured_streaming_processor `
+  --bootstrap-servers kafka:29092
+```
+
+Process all currently available records and stop, which is useful for reproducible
+validation and recovery checks:
+
+```powershell
+docker compose exec spark python3 -m src.spark.structured_streaming_processor `
+  --bootstrap-servers kafka:29092 --available-now
+python scripts/validate_streaming_output.py
+```
+
+`--run-seconds`, `--starting-offsets`, and all output/checkpoint/metrics paths have CLI
+overrides. Starting offsets affect only a new checkpoint; a restarted query resumes its
+recorded Kafka offsets. Delete checkpoints only when intentionally starting a new
+stream identity.
+
+On Linux or a Windows installation with a complete native Hadoop runtime, the Python
+module can run directly. The verified host is Windows 11 with Java 21. Its Spark
+runtime uses the official Spark 4.0.1 Java 21 Python Docker image because local Windows
+Structured Streaming checkpoint/filesystem operations require Hadoop-native behavior
+that Java alone does not provide. The project does not recommend unverified native
+Hadoop binaries.
+The broker retains `localhost:9092` for host producers and exposes `kafka:29092` only
+inside Compose. No event or producer contract changes are required.
+
+### Output Schema and Metrics
+
+Valid output contains market fields (`timestamp`, `symbol`, `sector`, OHLCV), protocol
+metadata (`schema_version`, Kafka key/topic/partition/offset/timestamp),
+`processing_time`, `validation_errors`, and `is_valid`. Invalid output additionally
+keeps `raw_value` and `corrupt_record` for diagnosis.
+
+Metrics record Spark/Python/OS versions, connector and topic, paths and watermark,
+duration, input/valid/invalid/duplicate counts, rates, active symbols, observed Kafka
+partitions, per-query micro-batch output, Spark source offsets, event-time watermark,
+and state-store statistics. Phase 4 evidence files are:
+
+- `benchmarks/spark_streaming_deterministic.json`: deterministic Kafka-to-Spark
+  processing evidence, not a controlled performance benchmark;
+- `benchmarks/spark_streaming_recovery.json`: same-checkpoint offset and state recovery;
+- `benchmarks/spark_streaming_late_data.json`: verified watermark-drop behavior;
+- `benchmarks/spark_streaming_live.json`: Spark side of the off-hours live attempt; and
+- `benchmarks/alpaca_stream_phase4_live.json`: Alpaca side of that live attempt.
+
+### Testing and Runtime Verification
+
+The complete test suite reports 37 passed, 0 failed, and 0 skipped. Spark streaming
+tests cover explicit schema parsing, malformed events, missing or unsupported schema
+versions, key/payload mismatch, OHLC validation, unknown-sector quarantine, event-time
+conversion, sector enrichment, and construction of a watermark-aware deduplication
+plan. Header extraction uses null-safe Spark 4 parsing so a missing schema header is
+quarantined rather than terminating the query.
+
+Runtime verification on September 29, 2026 used retained Phase 2/3 traffic plus a
+controlled six-sector workload. The first run read 25 Kafka records and produced 18
+valid rows, 6 invalid rows, and 1 dropped duplicate in 20.099 seconds. It processed all
+available offsets with no rows behind latest. Actual Phase 3 IEX bars for AAPL and MSFT
+were present in the valid output.
+
+A restart with the same checkpoint read only 2 new records, restored six state-store
+partitions, emitted 1 new MSFT row, and dropped 1 repeated AAPL identity in 16.527
+seconds. Final disk validation found 19 valid rows, 6 invalid rows, zero duplicate
+`(symbol, timestamp)` keys, zero sector mismatches, and zero invalid flags in valid
+output. Technology, Healthcare, Defense, Aerospace, Energy, and Financial sectors were
+all represented.
+
+A third restart submitted one otherwise-valid JNJ record with event time 16 minutes
+behind the current maximum. Spark read the record, reported
+`numRowsDroppedByWatermark=1`, emitted no valid or invalid row, and left the validated
+19-row output unchanged. This confirms that the configured 10-minute late-data bound
+is enforced by the stateful query.
+
+An additional 70-second live AAPL/MSFT attempt authenticated and subscribed successfully
+while Spark ran for 100 seconds on the recovered checkpoint. It occurred after regular
+US market hours and Alpaca emitted no new minute bars, so both sides correctly recorded
+zero new events and clean shutdowns. The earlier Phase 3 real IEX AAPL/MSFT bars at
+19:52 UTC were consumed from retained Kafka offsets and verified in Phase 4 Parquet.
+The off-hours evidence is retained in `benchmarks/alpaca_stream_phase4_live.json` and
+`benchmarks/spark_streaming_live.json`.
+
+### Phase 4 Limitations
+
+The environment has one local Kafka broker and one local Spark container/worker, not
+production cluster fault tolerance. Rejected records are persisted to
+`data/processed/streaming_invalid/`; although `market-bars-dlq` exists, Phase 4 does not
+publish to it. Events later than the 10-minute watermark may be dropped. Runtime
+workloads are small verification runs, not controlled performance benchmarks, and the
+off-hours live attempt received no new bars. IEX is not consolidated SIP market data.
+Financial streaming windows, aggregates, alerts, and other analytics are not
+implemented in Phase 4.
 
 ## Java Runtime on Windows
 
@@ -411,7 +733,7 @@ exists. A previous close of zero also produces null percentage and log returns.
 
 ## Shared Analytical Definitions
 
-Batch currently implements the definitions below. Future streaming implementations
+Batch currently implements the definitions below. Future streaming analytics
 must preserve the same mathematics even when event-time windows require different
 Spark APIs:
 
@@ -497,19 +819,26 @@ python scripts/validate_raw_data.py
 ```
 
 Spark tests use small in-memory deterministic datasets and never call Alpaca. The
-Kafka unit tests do not require a broker; the documented runtime smoke test does. The
-complete suite currently contains 25 passing tests with no failures or skips and is
-verified on Java 21. The 17 emitted warnings are upstream PySpark/Pandas deprecation
-warnings.
+Kafka and WebSocket unit tests do not require external services; documented runtime
+smoke tests do. The complete suite currently reports 37 passed, 0 failed, and 0 skipped
+and is verified on Java 21. The 17 emitted warnings are upstream PySpark/Pandas
+deprecation warnings.
 
 ## Known Limitations
 
-- Historical and planned live coverage use [Alpaca's IEX feed](https://docs.alpaca.markets/us/docs/market-data-faq),
+- Historical and live coverage use [Alpaca's IEX feed](https://docs.alpaca.markets/us/docs/market-data-faq),
   which represents one exchange rather than the consolidated US market and therefore
   reports lower volume than SIP data.
 - The local Kafka topology has one broker and replication factor one.
 - The ten-event Kafka run is a transport smoke test, not a performance benchmark.
-- Alpaca live ingestion and Spark Structured Streaming are not implemented yet.
+- Event-time windows and streaming financial analytics are not implemented yet.
+- Phase 4 records later than the configured watermark may be dropped.
+- Phase 4 invalid records use local Parquet quarantine rather than `market-bars-dlq`.
+- The local Spark runtime is a single Docker worker, not a production cluster.
+- The Phase 4 workloads are small verification runs; the off-hours live attempt
+  received no new bars.
+- Live ingestion currently handles Alpaca minute bars only; updated bars, corrections,
+  trades, and quotes are outside Phase 3.
 - Current batch features are row-count windows, not elapsed-time windows; missing
   market intervals can therefore affect comparisons with future event-time windows.
 - Current benchmarks were captured on one Windows development machine and cannot be
@@ -541,13 +870,27 @@ Implemented and runtime verified:
 - Single-node Apache Kafka KRaft Docker Compose definition
 - Healthy Kafka 4.3.1 runtime with six partitions per topic
 - Verified ten-event AAPL/MSFT producer-to-consumer transport
+- Authenticated Alpaca WebSocket client and `bars` subscription
+- Config-driven 30-symbol or selected-symbol real-time ingestion
+- Existing `MarketBar` and Kafka contract reuse with no schema change
+- Bounded receive buffering and configurable reconnect backoff with jitter
+- Clean Kafka flush and JSON streaming-ingestion metrics on shutdown
+- Verified FAKEPACA test-stream bar through Kafka
+- Verified live AAPL/MSFT IEX bars through Kafka
+- Preserved Phase 3 test and live runtime measurement artifacts
+- Explicit Spark Kafka JSON schema with protocol and market-data validation
+- Event-time watermarking and stateful `(symbol, timestamp)` deduplication
+- Streaming sector enrichment and separate invalid-record quarantine
+- Idempotent micro-batch Parquet output with durable valid/invalid checkpoints
+- Structured Streaming progress, offset, state-store, and throughput metrics
+- Official Spark 4.0.1 Java 21 Docker runtime for local Windows development
+- Verified six-sector Kafka-to-Spark run and checkpoint restart recovery
+- Verified a late event is dropped after the 10-minute watermark
+- Preserved deterministic and restart streaming benchmark artifacts
 
 Planned, not implemented:
 
-- Alpaca real-time WebSocket ingestion
-- Spark Structured Streaming
 - Event-time windows and streaming analytics
-- Streaming sector enrichment and analytics
 - Batch analytics extensions for equivalent window and sector studies
 - Batch vs streaming correctness and performance experiments
 - Advanced indicators and machine-learning models
@@ -571,6 +914,7 @@ contracts, data, or measurements required by the following phase.
 
 ### Phase 3 - Alpaca Real-Time Streaming
 
+- **Status:** Implemented and runtime verified with both Alpaca test and live IEX streams.
 - **Objective:** Publish normalized live Alpaca bars to Kafka.
 - **Architecture change:** Add `Alpaca WebSocket -> MarketBar -> existing Kafka producer -> market-bars-raw` beside the independent historical path.
 - **Endpoint:** Use the documented [Alpaca stock WebSocket](https://docs.alpaca.markets/us/docs/real-time-stock-pricing-data) at `wss://stream.data.alpaca.markets/v2/iex` for the configured IEX feed and the Alpaca test endpoint for deterministic off-hours verification.
@@ -580,19 +924,21 @@ contracts, data, or measurements required by the following phase.
 - **Files/components:** Async WebSocket client, live-bar mapper, orchestration entry point, streaming settings, producer lifecycle handling, and producer metrics.
 - **Technologies:** Alpaca stock WebSocket API, `asyncio`, a maintained WebSocket client, existing `confluent-kafka` producer, and structured logs.
 - **Tests:** Mock connect/authenticate/subscribe flows, bar mapping, unrelated/control messages, malformed events, reconnect/backoff, shutdown flush, and a local Kafka integration test.
-- **Runtime verification:** First use Alpaca's always-available test stream, then verify permitted IEX symbols during market hours and record observed messages, duration, events/second, reconnects, and delivery failures.
+- **Runtime verification:** FAKEPACA produced one event in 41.071 seconds; live AAPL/MSFT produced two events in 45.353 seconds. All events were Kafka-consumed and key-validated with zero malformed records, reconnects, or delivery failures.
 - **Expected output:** Symbol-keyed normalized events on `market-bars-raw`.
 - **Dependency:** Phase 2 broker and message contract.
 - **Complexity:** High.
 
 ### Phase 4 - Spark Structured Streaming
 
+- **Status:** FULLY IMPLEMENTED AND RUNTIME VERIFIED.
 - **Objective:** Consume Kafka events reliably and create processed streaming data.
-- **Architecture change:** Add `Kafka -> Spark Structured Streaming -> Parquet` with durable checkpoints.
-- **Files/components:** Streaming entry point, explicit event schema, Kafka reader, checkpoint configuration, watermark/deduplication logic, and output writer.
-- **Technologies:** Spark Structured Streaming, Kafka connector, Parquet.
-- **Tests:** Schema decoding, event-time handling, checkpoint restart, late records, duplicate events, and local Kafka-to-Spark integration.
-- **Expected output:** Validated, deduplicated event-time streaming records and rejected records, ready for analytical windows.
+- **Architecture change:** Added `Kafka -> Spark Structured Streaming -> Parquet` with durable checkpoints.
+- **Files/components:** Streaming entry point, explicit event schema, Kafka reader, checkpoint configuration, watermark/deduplication logic, sector enrichment, valid/invalid writers, validator, and progress metrics.
+- **Technologies:** Spark Structured Streaming 4.0.1, official Spark Kafka connector, Parquet, and the official Java 21 Spark Docker image.
+- **Tests:** Schema decoding, protocol/data validation, event-time handling, sector enrichment, watermark/deduplication plan, real Kafka processing, and checkpoint restart.
+- **Runtime verification:** 25 inputs produced 18 valid rows, 6 invalid rows, and 1 dropped duplicate; restart consumed only 2 new inputs, emitted 1, and dropped the repeated identity. A later restart dropped one event behind the watermark. Final output had 19 unique valid rows and zero sector mismatches.
+- **Output:** Validated, deduplicated event-time streaming records and rejected records, ready for downstream phases.
 - **Dependency:** Phases 2 and 3.
 - **Complexity:** High.
 

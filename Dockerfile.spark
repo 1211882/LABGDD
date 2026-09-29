@@ -1,0 +1,11 @@
+FROM spark:4.0.1-scala2.13-java21-python3-ubuntu
+
+USER root
+RUN pip install --no-cache-dir \
+    pandas==2.3.2 \
+    pyarrow==21.0.0 \
+    python-dotenv==1.1.1 \
+    PyYAML==6.0.2
+USER spark
+
+WORKDIR /workspace

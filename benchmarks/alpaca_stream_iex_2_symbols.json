@@ -1,0 +1,31 @@
+{
+  "benchmark": "Alpaca WebSocket to Kafka ingestion",
+  "channel": "bars",
+  "connection_count": 1,
+  "delivery_failures": 0,
+  "duration_seconds": 45.352817,
+  "endpoint": "wss://stream.data.alpaca.markets/v2/iex",
+  "environment": {
+    "confluent_kafka": "2.15.1",
+    "os": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.9",
+    "websockets": "17.1"
+  },
+  "error": null,
+  "events_per_second": 0.044,
+  "events_published": 2,
+  "events_received": 2,
+  "feed": "iex",
+  "finished_at_utc": "2026-09-29T19:53:00.118543Z",
+  "ignored_messages": 0,
+  "malformed_messages": 0,
+  "number_of_symbols": 2,
+  "reconnect_count": 0,
+  "started_at_utc": "2026-09-29T19:52:14.764161Z",
+  "status": "completed",
+  "symbols": [
+    "AAPL",
+    "MSFT"
+  ],
+  "test_stream": false
+}

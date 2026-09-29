@@ -1,0 +1,510 @@
+{
+  "active_symbols": [],
+  "average_input_rows_per_second": 0.0,
+  "average_processed_rows_per_second": 0.0,
+  "benchmark": "Spark Structured Streaming Kafka processing",
+  "checkpoint_path": "data/checkpoints/streaming",
+  "connector_package": "org.apache.spark:spark-sql-kafka-0-10_2.13:4.0.1",
+  "duplicate_events": null,
+  "duration_seconds": 105.671767,
+  "environment": {
+    "os": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+    "python": "3.10.12",
+    "spark": "4.0.1"
+  },
+  "error": null,
+  "finished_at_utc": "2026-09-29T20:34:08.665289Z",
+  "input_events": 0,
+  "invalid_events": 0,
+  "invalid_output_path": "data/processed/streaming_invalid",
+  "kafka_partitions_observed": [],
+  "kafka_topic": "market-bars-raw",
+  "micro_batches": [
+    {
+      "batch_id": 5,
+      "duration_ms": {
+        "latestOffset": 532,
+        "triggerExecution": 541
+      },
+      "event_time": {},
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 0,
+      "processed_rows_per_second": 0.0,
+      "query": "valid",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[market-bars-raw]]",
+          "endOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 0,
+          "processedRowsPerSecond": 0.0,
+          "startOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}"
+        }
+      ],
+      "state_operators": [],
+      "timestamp": "2026-09-29T20:32:27.120Z"
+    },
+    {
+      "batch_id": 5,
+      "duration_ms": {
+        "latestOffset": 9,
+        "triggerExecution": 9
+      },
+      "event_time": {},
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 0,
+      "processed_rows_per_second": 0.0,
+      "query": "valid",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[market-bars-raw]]",
+          "endOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 0,
+          "processedRowsPerSecond": 0.0,
+          "startOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}"
+        }
+      ],
+      "state_operators": [],
+      "timestamp": "2026-09-29T20:32:40.000Z"
+    },
+    {
+      "batch_id": 5,
+      "duration_ms": {
+        "latestOffset": 8,
+        "triggerExecution": 8
+      },
+      "event_time": {},
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 0,
+      "processed_rows_per_second": 0.0,
+      "query": "valid",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[market-bars-raw]]",
+          "endOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 0,
+          "processedRowsPerSecond": 0.0,
+          "startOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}"
+        }
+      ],
+      "state_operators": [],
+      "timestamp": "2026-09-29T20:32:55.000Z"
+    },
+    {
+      "batch_id": 5,
+      "duration_ms": {
+        "latestOffset": 9,
+        "triggerExecution": 9
+      },
+      "event_time": {},
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 0,
+      "processed_rows_per_second": 0.0,
+      "query": "valid",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[market-bars-raw]]",
+          "endOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 0,
+          "processedRowsPerSecond": 0.0,
+          "startOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}"
+        }
+      ],
+      "state_operators": [],
+      "timestamp": "2026-09-29T20:33:05.000Z"
+    },
+    {
+      "batch_id": 5,
+      "duration_ms": {
+        "latestOffset": 9,
+        "triggerExecution": 10
+      },
+      "event_time": {},
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 0,
+      "processed_rows_per_second": 0.0,
+      "query": "valid",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[market-bars-raw]]",
+          "endOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 0,
+          "processedRowsPerSecond": 0.0,
+          "startOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}"
+        }
+      ],
+      "state_operators": [],
+      "timestamp": "2026-09-29T20:33:15.000Z"
+    },
+    {
+      "batch_id": 5,
+      "duration_ms": {
+        "latestOffset": 8,
+        "triggerExecution": 9
+      },
+      "event_time": {},
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 0,
+      "processed_rows_per_second": 0.0,
+      "query": "valid",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[market-bars-raw]]",
+          "endOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 0,
+          "processedRowsPerSecond": 0.0,
+          "startOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}"
+        }
+      ],
+      "state_operators": [],
+      "timestamp": "2026-09-29T20:33:30.000Z"
+    },
+    {
+      "batch_id": 5,
+      "duration_ms": {
+        "latestOffset": 8,
+        "triggerExecution": 8
+      },
+      "event_time": {},
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 0,
+      "processed_rows_per_second": 0.0,
+      "query": "valid",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[market-bars-raw]]",
+          "endOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 0,
+          "processedRowsPerSecond": 0.0,
+          "startOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}"
+        }
+      ],
+      "state_operators": [],
+      "timestamp": "2026-09-29T20:33:40.001Z"
+    },
+    {
+      "batch_id": 5,
+      "duration_ms": {
+        "latestOffset": 8,
+        "triggerExecution": 9
+      },
+      "event_time": {},
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 0,
+      "processed_rows_per_second": 0.0,
+      "query": "valid",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[market-bars-raw]]",
+          "endOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 0,
+          "processedRowsPerSecond": 0.0,
+          "startOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}"
+        }
+      ],
+      "state_operators": [],
+      "timestamp": "2026-09-29T20:33:55.000Z"
+    },
+    {
+      "batch_id": 3,
+      "duration_ms": {
+        "latestOffset": 532,
+        "triggerExecution": 540
+      },
+      "event_time": {},
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 0,
+      "processed_rows_per_second": 0.0,
+      "query": "invalid",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[market-bars-raw]]",
+          "endOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 0,
+          "processedRowsPerSecond": 0.0,
+          "startOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}"
+        }
+      ],
+      "state_operators": [],
+      "timestamp": "2026-09-29T20:32:27.120Z"
+    },
+    {
+      "batch_id": 3,
+      "duration_ms": {
+        "latestOffset": 9,
+        "triggerExecution": 9
+      },
+      "event_time": {},
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 0,
+      "processed_rows_per_second": 0.0,
+      "query": "invalid",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[market-bars-raw]]",
+          "endOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 0,
+          "processedRowsPerSecond": 0.0,
+          "startOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}"
+        }
+      ],
+      "state_operators": [],
+      "timestamp": "2026-09-29T20:32:40.000Z"
+    },
+    {
+      "batch_id": 3,
+      "duration_ms": {
+        "latestOffset": 8,
+        "triggerExecution": 8
+      },
+      "event_time": {},
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 0,
+      "processed_rows_per_second": 0.0,
+      "query": "invalid",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[market-bars-raw]]",
+          "endOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 0,
+          "processedRowsPerSecond": 0.0,
+          "startOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}"
+        }
+      ],
+      "state_operators": [],
+      "timestamp": "2026-09-29T20:32:55.000Z"
+    },
+    {
+      "batch_id": 3,
+      "duration_ms": {
+        "latestOffset": 8,
+        "triggerExecution": 9
+      },
+      "event_time": {},
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 0,
+      "processed_rows_per_second": 0.0,
+      "query": "invalid",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[market-bars-raw]]",
+          "endOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 0,
+          "processedRowsPerSecond": 0.0,
+          "startOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}"
+        }
+      ],
+      "state_operators": [],
+      "timestamp": "2026-09-29T20:33:05.000Z"
+    },
+    {
+      "batch_id": 3,
+      "duration_ms": {
+        "latestOffset": 9,
+        "triggerExecution": 10
+      },
+      "event_time": {},
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 0,
+      "processed_rows_per_second": 0.0,
+      "query": "invalid",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[market-bars-raw]]",
+          "endOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 0,
+          "processedRowsPerSecond": 0.0,
+          "startOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}"
+        }
+      ],
+      "state_operators": [],
+      "timestamp": "2026-09-29T20:33:15.000Z"
+    },
+    {
+      "batch_id": 3,
+      "duration_ms": {
+        "latestOffset": 8,
+        "triggerExecution": 8
+      },
+      "event_time": {},
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 0,
+      "processed_rows_per_second": 0.0,
+      "query": "invalid",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[market-bars-raw]]",
+          "endOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 0,
+          "processedRowsPerSecond": 0.0,
+          "startOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}"
+        }
+      ],
+      "state_operators": [],
+      "timestamp": "2026-09-29T20:33:30.000Z"
+    },
+    {
+      "batch_id": 3,
+      "duration_ms": {
+        "latestOffset": 8,
+        "triggerExecution": 8
+      },
+      "event_time": {},
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 0,
+      "processed_rows_per_second": 0.0,
+      "query": "invalid",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[market-bars-raw]]",
+          "endOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 0,
+          "processedRowsPerSecond": 0.0,
+          "startOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}"
+        }
+      ],
+      "state_operators": [],
+      "timestamp": "2026-09-29T20:33:40.001Z"
+    },
+    {
+      "batch_id": 3,
+      "duration_ms": {
+        "latestOffset": 9,
+        "triggerExecution": 9
+      },
+      "event_time": {},
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 0,
+      "processed_rows_per_second": 0.0,
+      "query": "invalid",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[market-bars-raw]]",
+          "endOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 0,
+          "processedRowsPerSecond": 0.0,
+          "startOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":3}}"
+        }
+      ],
+      "state_operators": [],
+      "timestamp": "2026-09-29T20:33:55.000Z"
+    }
+  ],
+  "number_of_active_symbols": 0,
+  "output_path": "data/processed/streaming",
+  "started_at_utc": "2026-09-29T20:32:22.999433Z",
+  "status": "completed",
+  "valid_events": 0,
+  "watermark_delay": "10 minutes"
+}

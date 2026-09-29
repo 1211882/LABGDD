@@ -1,0 +1,211 @@
+{
+  "active_symbols": [
+    "MSFT"
+  ],
+  "average_input_rows_per_second": 0.0,
+  "average_processed_rows_per_second": 0.101,
+  "benchmark": "Spark Structured Streaming Kafka processing",
+  "checkpoint_path": "data/checkpoints/streaming",
+  "connector_package": "org.apache.spark:spark-sql-kafka-0-10_2.13:4.0.1",
+  "duplicate_events": 1,
+  "duration_seconds": 16.526873,
+  "environment": {
+    "os": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+    "python": "3.10.12",
+    "spark": "4.0.1"
+  },
+  "error": null,
+  "finished_at_utc": "2026-09-29T20:27:35.159848Z",
+  "input_events": 2,
+  "invalid_events": 0,
+  "invalid_output_path": "data/processed/streaming_invalid",
+  "kafka_partitions_observed": [
+    1
+  ],
+  "kafka_topic": "market-bars-raw",
+  "micro_batches": [
+    {
+      "batch_id": 1,
+      "kafka_partitions": [],
+      "output_rows": 0,
+      "query": "invalid",
+      "symbols": []
+    },
+    {
+      "batch_id": 2,
+      "kafka_partitions": [
+        1
+      ],
+      "output_rows": 1,
+      "query": "valid",
+      "symbols": [
+        "MSFT"
+      ]
+    },
+    {
+      "batch_id": 3,
+      "kafka_partitions": [],
+      "output_rows": 0,
+      "query": "valid",
+      "symbols": []
+    },
+    {
+      "batch_id": 2,
+      "duration_ms": {
+        "addBatch": 8288,
+        "commitOffsets": 244,
+        "getBatch": 3,
+        "latestOffset": 12,
+        "queryPlanning": 1061,
+        "triggerExecution": 9863,
+        "walCommit": 222
+      },
+      "event_time": {
+        "avg": "2026-09-29T20:25:30.000Z",
+        "max": "2026-09-29T20:26:00.000Z",
+        "min": "2026-09-29T20:25:00.000Z",
+        "watermark": "2026-09-29T20:15:05.000Z"
+      },
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 2,
+      "processed_rows_per_second": 0.202757502027575,
+      "query": "valid",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[market-bars-raw]]",
+          "endOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":2}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":2}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 2,
+          "processedRowsPerSecond": 0.202757502027575,
+          "startOffset": "{\"market-bars-raw\":{\"0\":11,\"1\":8,\"2\":1,\"3\":3,\"4\":0,\"5\":2}}"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 22,
+          "allUpdatesTimeMs": 242,
+          "commitTimeMs": 2092,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 0,
+            "loadedMapCacheMissCount": 6,
+            "numDroppedDuplicateRows": 1,
+            "stateOnCurrentVersionSizeBytes": 2088
+          },
+          "memoryUsedBytes": 4352,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 0,
+          "numRowsTotal": 7,
+          "numRowsUpdated": 1,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-09-29T20:27:22.873Z"
+    },
+    {
+      "batch_id": 3,
+      "duration_ms": {
+        "addBatch": 1039,
+        "commitOffsets": 331,
+        "getBatch": 0,
+        "latestOffset": 1,
+        "queryPlanning": 35,
+        "triggerExecution": 1639,
+        "walCommit": 226
+      },
+      "event_time": {
+        "watermark": "2026-09-29T20:16:00.000Z"
+      },
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 0,
+      "processed_rows_per_second": 0.0,
+      "query": "valid",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[market-bars-raw]]",
+          "endOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":2}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":2}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 0,
+          "processedRowsPerSecond": 0.0,
+          "startOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":2}}"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 0,
+          "allUpdatesTimeMs": 0,
+          "commitTimeMs": 2029,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 6,
+            "loadedMapCacheMissCount": 6,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 2120
+          },
+          "memoryUsedBytes": 4336,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 0,
+          "numRowsTotal": 7,
+          "numRowsUpdated": 0,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-09-29T20:27:32.739Z"
+    },
+    {
+      "batch_id": 1,
+      "duration_ms": {
+        "addBatch": 6902,
+        "commitOffsets": 390,
+        "getBatch": 2,
+        "latestOffset": 12,
+        "queryPlanning": 635,
+        "triggerExecution": 8192,
+        "walCommit": 224
+      },
+      "event_time": {},
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 2,
+      "processed_rows_per_second": 0.24399170428205444,
+      "query": "invalid",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[market-bars-raw]]",
+          "endOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":2}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"market-bars-raw\":{\"0\":12,\"1\":9,\"2\":1,\"3\":3,\"4\":0,\"5\":2}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 2,
+          "processedRowsPerSecond": 0.24399170428205444,
+          "startOffset": "{\"market-bars-raw\":{\"0\":11,\"1\":8,\"2\":1,\"3\":3,\"4\":0,\"5\":2}}"
+        }
+      ],
+      "state_operators": [],
+      "timestamp": "2026-09-29T20:27:22.873Z"
+    }
+  ],
+  "number_of_active_symbols": 1,
+  "output_path": "data/processed/streaming",
+  "started_at_utc": "2026-09-29T20:27:18.632953Z",
+  "status": "completed",
+  "valid_events": 1,
+  "watermark_delay": "10 minutes"
+}

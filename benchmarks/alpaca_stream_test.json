@@ -1,0 +1,30 @@
+{
+  "benchmark": "Alpaca WebSocket to Kafka ingestion",
+  "channel": "bars",
+  "connection_count": 1,
+  "delivery_failures": 0,
+  "duration_seconds": 41.071366,
+  "endpoint": "wss://stream.data.alpaca.markets/v2/test",
+  "environment": {
+    "confluent_kafka": "2.15.1",
+    "os": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.9",
+    "websockets": "17.1"
+  },
+  "error": null,
+  "events_per_second": 0.024,
+  "events_published": 1,
+  "events_received": 1,
+  "feed": "test",
+  "finished_at_utc": "2026-09-29T19:52:00.016507Z",
+  "ignored_messages": 0,
+  "malformed_messages": 0,
+  "number_of_symbols": 1,
+  "reconnect_count": 0,
+  "started_at_utc": "2026-09-29T19:51:18.953777Z",
+  "status": "completed",
+  "symbols": [
+    "FAKEPACA"
+  ],
+  "test_stream": true
+}
