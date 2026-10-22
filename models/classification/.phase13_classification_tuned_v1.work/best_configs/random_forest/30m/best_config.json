@@ -1,0 +1,57 @@
+{
+  "search_space": {
+    "n_estimators": [
+      100,
+      150,
+      200
+    ],
+    "max_depth": [
+      8,
+      12,
+      16,
+      24,
+      null
+    ],
+    "min_samples_split": [
+      2,
+      5,
+      10,
+      20
+    ],
+    "min_samples_leaf": [
+      1,
+      2,
+      5,
+      10
+    ],
+    "max_features": [
+      "sqrt",
+      "log2",
+      0.5,
+      1.0
+    ],
+    "class_weight": [
+      null,
+      "balanced",
+      "balanced_subsample"
+    ],
+    "bootstrap": [
+      true
+    ]
+  },
+  "trial_count": 3,
+  "best_validation_metric": 0.3572748449098328,
+  "selected_parameters": {
+    "bootstrap": true,
+    "class_weight": "balanced_subsample",
+    "max_depth": 24,
+    "max_features": "sqrt",
+    "min_samples_leaf": 5,
+    "min_samples_split": 20,
+    "n_estimators": 150
+  },
+  "selected_trial_id": "classification_random_forest_30m_002",
+  "seed": 42,
+  "selected_using": "VALIDATION only",
+  "test_data_used_for_selection": false
+}

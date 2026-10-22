@@ -1,0 +1,27 @@
+{
+  "search_space": {
+    "C": [
+      0.01,
+      0.1,
+      0.5,
+      1.0,
+      2.0,
+      5.0,
+      10.0
+    ],
+    "class_weight": [
+      null,
+      "balanced"
+    ]
+  },
+  "trial_count": 3,
+  "best_validation_metric": 0.30439628738213,
+  "selected_parameters": {
+    "C": 0.5,
+    "class_weight": null
+  },
+  "selected_trial_id": "classification_logistic_30m_002",
+  "seed": 42,
+  "selected_using": "VALIDATION only",
+  "test_data_used_for_selection": false
+}

@@ -1,0 +1,65 @@
+{
+  "search_space": {
+    "lookback": [
+      30,
+      60,
+      90
+    ],
+    "hidden_size": [
+      32,
+      64,
+      128
+    ],
+    "num_layers": [
+      1,
+      2
+    ],
+    "dropout": [
+      0.0,
+      0.1,
+      0.2,
+      0.3
+    ],
+    "learning_rate": [
+      0.0001,
+      0.0003,
+      0.001
+    ],
+    "batch_size": [
+      128,
+      256,
+      512
+    ],
+    "weight_decay": [
+      0.0,
+      1e-05,
+      0.0001
+    ],
+    "patience": [
+      3,
+      5,
+      8
+    ],
+    "class_weight": [
+      null,
+      "balanced"
+    ]
+  },
+  "trial_count": 2,
+  "best_validation_metric": 0.3085553754678894,
+  "selected_parameters": {
+    "batch_size": 128,
+    "class_weight": "balanced",
+    "dropout": 0.0,
+    "hidden_size": 64,
+    "learning_rate": 0.0003,
+    "lookback": 30,
+    "num_layers": 2,
+    "patience": 3,
+    "weight_decay": 0.0
+  },
+  "selected_trial_id": "classification_gru_30m_001",
+  "seed": 42,
+  "selected_using": "VALIDATION only",
+  "test_data_used_for_selection": false
+}
