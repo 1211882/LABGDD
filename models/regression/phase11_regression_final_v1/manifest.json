@@ -1,0 +1,141 @@
+{
+  "experiment_id": "phase11_regression_final_v1",
+  "status": "frozen",
+  "created_at": "2026-10-19T14:42:24.002868Z",
+  "dataset_version": "ml_dataset_v1",
+  "feature_version": "features_v1",
+  "features_checksum_sha256": "ca1e9e7b4b908bdc2872234b77b63fe65dfc658aa67a4e4e70dc4ce324add633",
+  "target_definition": "(close at exact t+H - close at t) / close at t; same symbol and trading_date",
+  "horizons_minutes": [
+    5,
+    15,
+    30
+  ],
+  "splits": {
+    "train": {
+      "start": "2025-10-01",
+      "end": "2026-06-12",
+      "trading_days": 176
+    },
+    "validation": {
+      "start": "2026-06-15",
+      "end": "2026-08-07",
+      "trading_days": 38
+    },
+    "test": {
+      "start": "2026-08-10",
+      "end": "2026-10-01",
+      "trading_days": 38
+    }
+  },
+  "models": [
+    "Zero Return Baseline",
+    "Train Mean Baseline",
+    "Linear Regression",
+    "Random Forest Regressor",
+    "LSTM",
+    "GRU"
+  ],
+  "random_seed": 42,
+  "classification_baseline": "models/classification/phase10_classification_final_v1",
+  "hyperparameters": {
+    "linear_regression": {
+      "fit_intercept": true
+    },
+    "random_forest": {
+      "n_estimators": 40,
+      "max_depth": 16,
+      "min_samples_leaf": 10,
+      "max_samples": 0.25,
+      "resource_policy": "All training rows form the sampling population; each deterministic bootstrap tree samples 25% to bound local CPU runtime."
+    },
+    "deep_learning": {
+      "lookback": 60,
+      "units": 24,
+      "dropout": 0.15,
+      "loss": "mse",
+      "learning_rate": 0.001,
+      "target_scaling": "train-only StandardScaler, inverse-transformed before evaluation",
+      "batch_size": 512,
+      "max_epochs": 4,
+      "early_stopping_patience": 1,
+      "sequence_caps": {
+        "train": 120000,
+        "validation": 30000,
+        "test": 30000
+      }
+    }
+  },
+  "selection_policy": "Predeclared parameters; validation loss selects neural best weights; test data is evaluation-only.",
+  "common_subset": "Intersection of symbol+timestamp keys across all six regression models per horizon.",
+  "financial_evaluation": "Long when prediction exceeds +5 bps; otherwise flat; 5 bps position-change cost; equal-weight by timestamp; diagnostic overlapping and clock-grid non-overlapping views.",
+  "software": {
+    "python": "3.11.9",
+    "pandas": "3.0.6",
+    "numpy": "2.4.6",
+    "scikit_learn": "1.9.1"
+  },
+  "artifact_reload_validated": true,
+  "checksums": {
+    "figures/actual_vs_predicted_best_5m.png": "123955520d472f121010c765cfe5a47c9646b8405e2c194a6a03c6c644a2cf18",
+    "figures/classification_vs_regression.png": "296d7e618ba474b6631f156423879848c6db037615963cb15512e4a25d6fec2a",
+    "figures/gru_learning_curves.png": "3bd42538d4ec9913db670d08b71ff997087cf1e01d7811cd58c51cb2484839c2",
+    "figures/lstm_learning_curves.png": "1a2838d9ea90209419c31e52dcc9cdd7ebded9b88c3488743c20148f76e5d920",
+    "figures/mae_by_model_horizon.png": "9722a8e336670d745e6fd383fc3e79d0fc1a0eb67942edf77d9068465c1e1729",
+    "figures/r2_by_model_horizon.png": "5317c7a18dd1047a16d19245095b967908ddd28b3548a657852d0e5162df92d3",
+    "figures/residual_distribution_best_5m.png": "3f9152039cebf93747d0f3b55312ddc7a52eb910a1df133c4627b02165f6f89b",
+    "figures/rmse_by_model_horizon.png": "be220ead7d809d47a3a4772d621f8f27a929f991d0eff8a56d940af79bac68d2",
+    "histories/training_history.json": "1d27dd8c3442df95abea51cd9ccebebbe999adcdcb08d16d4941fe231bda2b34",
+    "metrics/classification_vs_regression.csv": "3da1e95fb469546f9b1eb8f38b66e2d1f193f5a2812a1d9e9a9db45f7cfe7a8f",
+    "metrics/error_distribution.csv": "8e833f8a85aa28e3a142cb566b0d8a7bc5553361a21a3439e5257f2179e716c0",
+    "metrics/regression_financial_evaluation.csv": "f7198e8d81c0991602e883271d678441d969f70a86badbbdb14b024c3a7eec29",
+    "metrics/regression_metrics.csv": "0e102271d6dcc780b0b2c47775ad55a37629e39e69b837c101cbcb18219617c4",
+    "metrics/regression_metrics_common.csv": "5a41062b497818f112f756787d52d153782818ea0aa40efa3ae7b317a18e7f4f",
+    "metrics/regression_metrics_full.csv": "0e102271d6dcc780b0b2c47775ad55a37629e39e69b837c101cbcb18219617c4",
+    "metrics/regression_model_rankings.csv": "ad173f7e57a2b3c9cb4cd7de12e73350e91c3f9ac95f71245d4ce15fca2630cc",
+    "metrics/regression_sector_metrics.csv": "4523fe0a80343d8363974e3ac68a19eb1e996c2db8bc0e569707a9f701930f66",
+    "metrics/regression_summary.csv": "14a6ac37af7ab17285e62b587a75d8d8325af8c2b5d24e2d11063b7b952a82ad",
+    "metrics/regression_symbol_metrics.csv": "4da703c1f3ad1ad443da718feb3ed7acf51c194db1cfb20e60804ec9d966e266",
+    "metrics/return_magnitude_metrics.csv": "0c7cd06205284f6a8f834c98b75a3c745409cb5bb57d2b94a6e29fdfd280c349",
+    "metrics/target_distribution.csv": "5cd1d763f8c4bd54e1deb223b1e58a79e7c795dd0f2a63769d1b1b0ede6c14b6",
+    "models/gru_15m.keras": "2b6ad9ef1ef8f39471a1b52d7f9b5158848d4b1a7d5fcc253cd8d63a3f0f6079",
+    "models/gru_30m.keras": "450c022c42c14df417e2952d7b2b132d83b4af4ebb8d1f8e1531a921c3aa1226",
+    "models/gru_5m.keras": "637b70181036f00bbb1ba42e0a693abb0e88ccec279e5da2b1b8d0af46bb42b6",
+    "models/linear_regression_15m.joblib": "b8b21aa3211a40335608c1fc6df61181e7f47766303e58ed1c60557ca0dc9885",
+    "models/linear_regression_30m.joblib": "ecac491d0e4ca251e9f468b2ea0ca7f38e1f53227b53e3adaab42c4ff4c0e7be",
+    "models/linear_regression_5m.joblib": "c554832e9cef230f0a9cc72074e9f21d33e88f9683b43a33c72a1e491948db41",
+    "models/lstm_15m.keras": "603becad923d2d964c4cd3aa40275da0858e7b0b5568c5788fc4332847b26071",
+    "models/lstm_30m.keras": "2bff56918640dc1cce8068cf9b27f44f2eaf4dcd8c8338d6c78eb54c79760339",
+    "models/lstm_5m.keras": "f461a79626047757a2108af13d355f4bbec2c99403384bccebc17e94ee826c77",
+    "models/random_forest_regressor_15m.joblib": "e29cc583a1c949889fbcdf0b529a2e16d9af80d4cc274b542a317f903b43eb55",
+    "models/random_forest_regressor_30m.joblib": "b8c0bf73e35f2cda5802b43c9d0cbdc1267f8c3bbf578c047b58fdb93577f1b4",
+    "models/random_forest_regressor_5m.joblib": "328ae840ea176ee666b556a9376b14efd1504820bb2dab1a1e0c5ea6e408ec12",
+    "predictions/gru_15m.parquet": "b4d1fffc9a799aaa84fb321339f81eaa680d17e52b8f0d62ec41f1929ce40b3b",
+    "predictions/gru_30m.parquet": "9f066fbf8808b0906d532541463e9ddeedaebe9af0f1fff9c6d1a0e26df08ca1",
+    "predictions/gru_5m.parquet": "1d67c6e9ce01b882308a6e3b99cdde2c595caf79844a5ad3e9b44781d61becdc",
+    "predictions/linear_regression_15m.parquet": "1dfcddbcbfd850d3802397947647eab0f3cde55b36c670c15066595d36b73517",
+    "predictions/linear_regression_30m.parquet": "b1a4848ac2fac0dae7a19bb33c880aa7cf8a145b2f578a61bee2c977b853bfac",
+    "predictions/linear_regression_5m.parquet": "9ac8877f537985a586e1902b5a57e4e96974aaaec202f679144afa73ae88d004",
+    "predictions/lstm_15m.parquet": "ef4f3ff6495a5c3a2a839026079a0b4b699307b34959e77990a3aca4b36f9311",
+    "predictions/lstm_30m.parquet": "96586b071c2fe15e31c0f6d401693a9eb8e128f84aab90a3f75085011fd7a050",
+    "predictions/lstm_5m.parquet": "6fa6484f7831cce3d8ae7860d625d8b5c6c52ada5dfc5c0ce4603cb64bcfeef0",
+    "predictions/random_forest_regressor_15m.parquet": "242ec660e1ba10500bed774665ed631d66ea72306bf98711b828b71e8a88867a",
+    "predictions/random_forest_regressor_30m.parquet": "f978761c9d74705eb2b8db0e56ff4b697b749f6d25707fee93ac9604e736d909",
+    "predictions/random_forest_regressor_5m.parquet": "733a9209e3633744fc264db5ae239e53180dbcefc0397e4b91ccca8cb76de207",
+    "predictions/train_mean_baseline_15m.parquet": "04c0f95c9a72614c7ddf294114cb2d190b28bd2e95550d4cbc64c0014a6a50c0",
+    "predictions/train_mean_baseline_30m.parquet": "25912405456e34bb07d597d5cd3f33beb83e84bf1ed450dabf22e82442df8a7c",
+    "predictions/train_mean_baseline_5m.parquet": "6449183dbbae0d187f2b734ecee6ad2462627a0fcbec023d542d3cc3072821e2",
+    "predictions/zero_return_baseline_15m.parquet": "5c4d307c0804d527db105b20329b1a218b561d27aa6092c6fe460da8bb2ef465",
+    "predictions/zero_return_baseline_30m.parquet": "caef86c28e207ead8e790b0cee1ed9e74c6536a1ef996641c388b23227b7b0c5",
+    "predictions/zero_return_baseline_5m.parquet": "fc6e10b096ca7bc6896d91e74beb69be4e0208e81d3bc4725c1ed12df0f7da14",
+    "reports/target_validation.json": "b22fe313f45205218c25ac26c9c2e39e96f9383fc152a87c336d7c544cd9a040",
+    "reports/train_mean_baselines.json": "5ec96b208749411a3e085e3ff07695a61ccc6e73aca1b8171303cf408ffaf43c",
+    "scalers/feature_scaler_15m.joblib": "3883a1225673dd0e8f9c2611223f6e1d0037d2a6a431adfe54474332bbc44eaa",
+    "scalers/feature_scaler_30m.joblib": "116c3ca490242fb8ecc79db637dbda1e71125c1bf4e1e0cf94ad396bbba76e75",
+    "scalers/feature_scaler_5m.joblib": "85518643dd48c39dc519a408d81308cb93ccd92980930b274de209a8cce71c1f",
+    "scalers/target_scaler_15m.joblib": "1bfa617f66819b2cd1040bedcd94aa182ced4aa577182cdf6b626845c8009d9a",
+    "scalers/target_scaler_30m.joblib": "fb64bc60bf32759e73fcda47416e1af810e1a7b6e5bc8dd1cca6785a9c1ae56a",
+    "scalers/target_scaler_5m.joblib": "6e78bae50d4271e50425bc71459c340ae7caf978e2435a12b0843dea2f972e30"
+  },
+  "undefined_correlation_policy": "Pearson and Spearman are reported as 0.0 when either input is constant."
+}
