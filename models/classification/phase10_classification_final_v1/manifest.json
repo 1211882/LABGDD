@@ -1,0 +1,139 @@
+{
+  "experiment_id": "phase10_classification_final_v1",
+  "status": "frozen",
+  "source_experiment": "phase10_classification_v1",
+  "created_at": "2026-10-18T18:28:03.578432Z",
+  "dataset_version": "ml_dataset_v1",
+  "features_version": "features_v1",
+  "features_checksum_sha256": "ca1e9e7b4b908bdc2872234b77b63fe65dfc658aa67a4e4e70dc4ce324add633",
+  "class_order": [
+    "DOWN",
+    "NEUTRAL",
+    "UP"
+  ],
+  "probability_order": [
+    "probability_down",
+    "probability_neutral",
+    "probability_up"
+  ],
+  "threshold_basis_points": 5,
+  "horizons_minutes": [
+    5,
+    15,
+    30
+  ],
+  "splits": {
+    "train": {
+      "start": "2025-10-01",
+      "end": "2026-06-12",
+      "trading_days": 176
+    },
+    "validation": {
+      "start": "2026-06-15",
+      "end": "2026-08-07",
+      "trading_days": 38
+    },
+    "test": {
+      "start": "2026-08-10",
+      "end": "2026-10-01",
+      "trading_days": 38
+    }
+  },
+  "models": [
+    "GRU",
+    "LSTM",
+    "Logistic Regression",
+    "Majority Baseline",
+    "Previous Direction Baseline",
+    "Random Forest"
+  ],
+  "random_seed": 42,
+  "hyperparameters": {
+    "logistic": {
+      "C": 1.0,
+      "class_weight": "balanced",
+      "max_iter": 150
+    },
+    "random_forest": {
+      "n_estimators": 60,
+      "max_depth": 16,
+      "min_samples_leaf": 10,
+      "class_weight": "balanced_subsample"
+    },
+    "deep_learning": {
+      "units": 24,
+      "dropout": 0.15,
+      "optimizer": "Adam",
+      "learning_rate": 0.001,
+      "batch_size": 512,
+      "max_epochs": 4,
+      "early_stopping_patience": 1,
+      "sequence_caps": {
+        "train": 120000,
+        "validation": 30000,
+        "test": 30000
+      }
+    }
+  },
+  "selection_policy": "Existing predeclared Phase 10 configurations retained; neural best weights selected by validation loss only. Test metrics were recomputed but not used for tuning.",
+  "software": {
+    "python": "3.11.9",
+    "pandas": "3.0.6",
+    "numpy": "2.4.6",
+    "scikit_learn": "1.9.1"
+  },
+  "common_subset": "Intersection of symbol+timestamp keys across every model for each horizon.",
+  "financial_evaluation": "Diagnostic overlapping signal evaluation plus secondary non-overlapping clock-grid sanity check; both aggregate equal-weight symbol returns by timestamp.",
+  "checksums": {
+    "figures/balanced_accuracy_by_model_horizon.png": "61f71e80bf627971df1e292f5c6da3e188db8cec0e62c8a6ec3b60bf40f44316",
+    "figures/class_distribution.png": "07941ee49fb1356581e435f462f150d8201ded3105fd5e2a4349671bf11cc438",
+    "figures/confusion_matrix_random_forest_5m.png": "f0bd116716d6ec57376febe8de3eddae067335b5521aa21aa83483945b881fec",
+    "figures/gru_learning_curves.png": "751f739109df0f3526b12048bc4335ac2e78db3810d4d0e1e9f7c8ff99a7ce19",
+    "figures/lstm_learning_curves.png": "1baa45fb52fa35893d73649382c5a1dedadcc50870b9812795b1d47bc4f60a15",
+    "figures/macro_f1_by_model_horizon.png": "6f3ef08383fbcdaca922fff8305e102c8c69bc2157d7629a1ebd3c3c34c8f3dd",
+    "histories/training_history.json": "b47aaa598211c3fc54c9f8c9cf4e229f4bd6326ea0f01604ce97132a5b7f30a6",
+    "metrics/classification_metrics_common.csv": "97e8fb1a1b1b46dd4d1f688a3a0ca15ae81b400a2a4b4f8138b9ab469194a42b",
+    "metrics/classification_metrics_full.csv": "afe19143931db7c960b6917981c5a231f03931d05ea39777ed81b05096296dbf",
+    "metrics/classification_summary.csv": "db1f7931a2eb490ca482b5ac2acb680e68f63653076a985eade1d8e5c2a7853c",
+    "metrics/confidence_calibration.csv": "57c8039a1e2a36bb717ba8c67ee9221d572ed8b3aa0fdd7e76be7bea80f810c7",
+    "metrics/financial_evaluation.csv": "307526471981cf16f2d64c2e6672f5626372775db0dbd753b4e7c8fd0e4904a2",
+    "metrics/model_rankings.csv": "08c53417a6fed2ad8e25dbf2d4ac9e14b1b29181bcbc54990f3766d39f7df831",
+    "metrics/symbol_sector_metrics.csv": "4d8237c7da1447aa899d5bcdd46db107f1eca62e1d389548a363c485fa2b56ab",
+    "models/gru_15m.keras": "43063c7d6f36945d8bd9ae27f8a02b210b091c1d74976ea599253ad1ff439476",
+    "models/gru_30m.keras": "d0613492225f991797bffb56cc79808508a2104965cf5da081b6aad8434e813d",
+    "models/gru_5m.keras": "ecedce3af6ded2b702a3cefe98550d9f8adf2d45b81698ee339ee866a33e9b56",
+    "models/logistic_15m.joblib": "5ae862e3f2861c64aa56a59a1fb0c4757030867e07a4c0d4a8207624ebbf7606",
+    "models/logistic_30m.joblib": "c2559813c706699854bf59126bb8ccbdb6a9ce0b6fc8c56681cf55b538bd74f1",
+    "models/logistic_5m.joblib": "026872fbacfe2243ea70778d52796a8fc2395393b3db66dda16a48766d1388ab",
+    "models/lstm_15m.keras": "b56afc8e39843f707fbd62a16cdcf230cd7b52df7a29cd78d045e470abe18a15",
+    "models/lstm_30m.keras": "4615a44c486084cd31a87ccc2e61333dbf44b9442cd4aaca12163dd566f8d327",
+    "models/lstm_5m.keras": "b16196bf31ada775c43540b337b5c172b624e92da53301b1bc8a358c808d30bd",
+    "models/random_forest_15m.joblib": "992d05da5a6e16eab9e55273817e354d9ebfe7c8cdf5a8c662ee2ab5c6676e3c",
+    "models/random_forest_30m.joblib": "64b60d0fdfc82d6cdf23bcdbd5db3602240efa5204ca0e33b0298c942a494ae4",
+    "models/random_forest_5m.joblib": "de9c591a9c1caeb2dbd4218700fc3bc8f73d525e7b92de3c7ec7d889949dcc1a",
+    "predictions/gru_15m.parquet": "5e3479fa815cabd523c4987d7dc39838501e5bdb8aca03f5ea1e0bc751638339",
+    "predictions/gru_30m.parquet": "a4ea8452e913d49f4c4d1f03aa98ff6e1bf3d030648755783acab98053bd71fb",
+    "predictions/gru_5m.parquet": "7be6b6a1ac4b9fcb2b67ff9e501c835e0cdc721b6a9294afa5a3c91c30bf92e4",
+    "predictions/logistic_regression_15m.parquet": "35d4b10e3eb19950e06aafd5f0e10db0c0f6ee341e1b20f88db33a57827fc01f",
+    "predictions/logistic_regression_30m.parquet": "ad21014d8621acb06c5b54deb561f5e3714170443ebfbe8ea568167cc007fb87",
+    "predictions/logistic_regression_5m.parquet": "5470b47fb219aaa0d4dee4c88ef4ab108118e251c81807aa812c05a42c21f110",
+    "predictions/lstm_15m.parquet": "6360055a9480b86d7299633b977c5981e93de9712bdd7a8b77bcb58684adce17",
+    "predictions/lstm_30m.parquet": "3ae824c5fd93ce19887a78256bd2136f1752c306460eb6f9dc8c81b8454ab242",
+    "predictions/lstm_5m.parquet": "02439cdea06046421efe4a7a64b35bf7ce51a4936365ac1a9178c58f7dc19f2a",
+    "predictions/majority_baseline_15m.parquet": "4ad29c057762549cb0bfbf5d86b85caea6d1753465c5d1c60b2e8c4f2f560289",
+    "predictions/majority_baseline_30m.parquet": "83e90caecec7923920efc1fb4679a04e88531e8d397581a54ce957f947d4f728",
+    "predictions/majority_baseline_5m.parquet": "e8acee8c0238b02e5ffe71745a6699ec9082516d3fd4bde922b9f77fc5e45d36",
+    "predictions/previous_direction_baseline_15m.parquet": "c8830c7a631025587c03a5829e496d495bd3a95419b47988c348fe48944a9a8d",
+    "predictions/previous_direction_baseline_30m.parquet": "eb980961ed3502b85e27d488df12f0edd51774298571a38ec6384f865462cd80",
+    "predictions/previous_direction_baseline_5m.parquet": "37586ba8586a4a6fa0185aac93ed4852df3f2e205b2ddc8042373422aaa91f99",
+    "predictions/random_forest_15m.parquet": "9db30a15b8d7c92be9ba678f50e359e910546f7479e6db35c98fbd1b86cf51bc",
+    "predictions/random_forest_30m.parquet": "dc1e6294b47868d53b6abe762834bdb53ce8fc8b9657630b56a5b8ed71c56ff5",
+    "predictions/random_forest_5m.parquet": "e9819f680e64d50d3bb6e9a8c27811ca62759d4ec271a4e653108dbd5ac1a447",
+    "reports/feature_catalog.csv": "a30c9c82cb85e16293adf24fd96f9011be6eeb28c9f8490b6c01df0d0ddfc319",
+    "reports/split_validation.json": "7ca226145b1dfb268fdaa7dd358a86a9f394a86ac63c513073cbad341bf8a6c6",
+    "reports/target_validation.json": "b422c1bf8ed3327d24235c2ce8c6cbd2836767234472a62a95e27e0fdd55d866",
+    "scalers/scaler_15m.joblib": "3883a1225673dd0e8f9c2611223f6e1d0037d2a6a431adfe54474332bbc44eaa",
+    "scalers/scaler_30m.joblib": "116c3ca490242fb8ecc79db637dbda1e71125c1bf4e1e0cf94ad396bbba76e75",
+    "scalers/scaler_5m.joblib": "85518643dd48c39dc519a408d81308cb93ccd92980930b274de209a8cce71c1f"
+  }
+}

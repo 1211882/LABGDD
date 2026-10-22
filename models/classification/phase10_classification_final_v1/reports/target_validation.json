@@ -1,0 +1,51 @@
+{
+  "5m": {
+    "normal": {
+      "symbol": "AAPL",
+      "timestamp": "2025-10-01T15:43:00+00:00",
+      "close": 255.74,
+      "future_close": 255.76,
+      "stored_return": 7.820442637052061e-05,
+      "recalculated_return": 7.820442637052061e-05
+    },
+    "missing_future": {
+      "symbol": "AAPL",
+      "timestamp": "2025-10-01T16:49:00+00:00",
+      "label_is_null": true
+    }
+  },
+  "15m": {
+    "normal": {
+      "symbol": "AAPL",
+      "timestamp": "2025-10-01T15:43:00+00:00",
+      "close": 255.74,
+      "future_close": 256.02,
+      "stored_return": 0.0010948619691872885,
+      "recalculated_return": 0.0010948619691872885
+    },
+    "missing_future": {
+      "symbol": "AAPL",
+      "timestamp": "2025-10-01T16:39:00+00:00",
+      "label_is_null": true
+    }
+  },
+  "30m": {
+    "normal": {
+      "symbol": "AAPL",
+      "timestamp": "2025-10-01T15:43:00+00:00",
+      "close": 255.74,
+      "future_close": 256.88,
+      "stored_return": 0.004457652303120341,
+      "recalculated_return": 0.004457652303120341
+    },
+    "missing_future": {
+      "symbol": "AAPL",
+      "timestamp": "2025-10-01T16:24:00+00:00",
+      "label_is_null": true
+    }
+  },
+  "threshold_boundaries": {
+    "-5bps": "NEUTRAL",
+    "+5bps": "NEUTRAL"
+  }
+}

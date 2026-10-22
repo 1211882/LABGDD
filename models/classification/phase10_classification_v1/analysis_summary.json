@@ -1,0 +1,13 @@
+{
+  "prediction_files": 15,
+  "prediction_schema_valid": true,
+  "duplicate_business_keys": 0,
+  "grouped_metric_rows": 464,
+  "interpretation": [
+    "Five-minute models provide the strongest learned-model classification evidence.",
+    "Random Forest has the best Macro F1 at every tested horizon.",
+    "LSTM and GRU do not consistently outperform transparent baselines.",
+    "Accuracy alone is misleading at 15 and 30 minutes because the majority baseline benefits from class imbalance.",
+    "Long/flat simulations are negative after declared costs and do not demonstrate profitability."
+  ]
+}

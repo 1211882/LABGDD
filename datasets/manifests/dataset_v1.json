@@ -1,0 +1,23 @@
+{
+  "dataset_version": "v1",
+  "creation_timestamp": "2026-10-12T17:53:03.651924Z",
+  "start_date": "2026-09-01",
+  "end_date": "2026-09-18",
+  "configured_end_date": "2026-09-20",
+  "timeframe": "1Min",
+  "feed": "iex",
+  "symbols": [
+    "AAPL", "MSFT", "NVDA", "GOOGL", "AMD", "JNJ", "PFE", "LLY", "MRK", "ABBV",
+    "LMT", "NOC", "GD", "RTX", "HII", "BA", "TDG", "HEI", "TXT", "GE",
+    "XOM", "CVX", "COP", "SLB", "OXY", "JPM", "BAC", "GS", "MS", "V"
+  ],
+  "sectors": ["Technology", "Healthcare", "Defense", "Aerospace", "Energy", "Financial"],
+  "number_of_symbols": 30,
+  "number_of_sectors": 6,
+  "regular_session_only": false,
+  "row_count": 113988,
+  "raw_size_bytes": 2857816,
+  "processed_size_bytes": 9880026,
+  "source": "Alpaca Market Data API v2 / IEX",
+  "notes": "Baseline Dataset V1. Existing verified 30-symbol dataset; AMZN and TSLA experimental files are excluded. Existing raw paths are retained for backward compatibility."
+}

@@ -1,0 +1,21 @@
+{
+  "test": {
+    "first_timestamp": "2026-08-10T14:03:00+00:00",
+    "last_timestamp": "2026-10-01T19:59:00+00:00",
+    "trading_days": 38,
+    "rows": 292408
+  },
+  "train": {
+    "first_timestamp": "2025-10-01T14:03:00+00:00",
+    "last_timestamp": "2026-06-12T19:59:00+00:00",
+    "trading_days": 176,
+    "rows": 1394115
+  },
+  "validation": {
+    "first_timestamp": "2026-06-15T14:03:00+00:00",
+    "last_timestamp": "2026-08-07T19:59:00+00:00",
+    "trading_days": 38,
+    "rows": 315335
+  },
+  "ordered": true
+}

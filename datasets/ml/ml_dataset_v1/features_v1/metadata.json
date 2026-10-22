@@ -1,0 +1,239 @@
+{
+  "features_version": "features_v1",
+  "dataset_version": "ml_dataset_v1",
+  "created_at": "2026-10-18T17:24:47.478698Z",
+  "feature_columns": [
+    "open",
+    "high",
+    "low",
+    "close",
+    "volume",
+    "return_1m",
+    "log_return",
+    "return_5m",
+    "return_15m",
+    "return_30m",
+    "sma_5",
+    "sma_15",
+    "sma_30",
+    "ema_5",
+    "ema_15",
+    "ema_30",
+    "momentum_5",
+    "volatility_5",
+    "volatility_15",
+    "volatility_30",
+    "atr_14",
+    "rsi_14",
+    "macd",
+    "macd_signal",
+    "macd_histogram",
+    "bollinger_upper",
+    "bollinger_lower",
+    "bollinger_bandwidth",
+    "volume_change",
+    "volume_mean_30",
+    "relative_volume",
+    "hour",
+    "minute_of_day",
+    "minutes_since_open",
+    "sector_return_mean",
+    "relative_to_sector",
+    "sector_return_dispersion"
+  ],
+  "feature_count": 37,
+  "warmup": {
+    "input_rows": 2276418,
+    "warmup_rows_excluded": 274560,
+    "output_rows": 2001858
+  },
+  "target_horizons_minutes": [
+    5,
+    15,
+    30
+  ],
+  "target_formula": "(close at exact t+H - close at t) / close at t; same symbol and trading_date",
+  "threshold_methodology": "fixed transaction-cost-aware threshold",
+  "threshold_basis_points": 5,
+  "threshold_rationale": "Five basis points is an explicit reproducible movement filter and the declared one-way simulated transaction cost; candidate balances are reported rather than optimizing on test data.",
+  "threshold_analysis_train_only": {
+    "5m": {
+      "mean": 2.4342218181752456e-07,
+      "std": 0.0015778547315065524,
+      "quantiles": {
+        "0.01": -0.004345675165117933,
+        "0.05": -0.002405498281786872,
+        "0.25": -0.0007730962504831629,
+        "0.5": 0.0,
+        "0.75": 0.000780259436262476,
+        "0.95": 0.002395335958915599,
+        "0.99": 0.004283107243547196
+      },
+      "candidate_thresholds_bps": {
+        "2": {
+          "DOWN": 0.4229449372172945,
+          "NEUTRAL": 0.14966433668996643,
+          "UP": 0.4273907260927391
+        },
+        "5": {
+          "DOWN": 0.3255375779575538,
+          "NEUTRAL": 0.3458948743845895,
+          "UP": 0.32856754765785673
+        },
+        "10": {
+          "DOWN": 0.19910717559491073,
+          "NEUTRAL": 0.6005473278600547,
+          "UP": 0.20034549654503456
+        }
+      }
+    },
+    "15m": {
+      "mean": 4.098449393513003e-06,
+      "std": 0.002676822916073669,
+      "quantiles": {
+        "0.01": -0.007386010297926205,
+        "0.05": -0.004080046629104328,
+        "0.25": -0.001326636975267581,
+        "0.5": 0.0,
+        "0.75": 0.001353912808015112,
+        "0.95": 0.004058266825063939,
+        "0.99": 0.007266811868172454
+      },
+      "candidate_thresholds_bps": {
+        "2": {
+          "DOWN": 0.4529258537692495,
+          "NEUTRAL": 0.08633891236948633,
+          "UP": 0.4607352338612642
+        },
+        "5": {
+          "DOWN": 0.393306022881527,
+          "NEUTRAL": 0.20683985616533881,
+          "UP": 0.3998541209531342
+        },
+        "10": {
+          "DOWN": 0.30061565462356016,
+          "NEUTRAL": 0.393573698804814,
+          "UP": 0.3058106465716258
+        }
+      }
+    },
+    "30m": {
+      "mean": 1.1982586016065944e-05,
+      "std": 0.003708443804450174,
+      "quantiles": {
+        "0.01": -0.010153793334574503,
+        "0.05": -0.00564059700204762,
+        "0.25": -0.001848087229717299,
+        "0.5": 1.7500262504022146e-05,
+        "0.75": 0.0019005083859933158,
+        "0.95": 0.005650676517803884,
+        "0.99": 0.009951102692641333
+      },
+      "candidate_thresholds_bps": {
+        "2": {
+          "DOWN": 0.4649270295131182,
+          "NEUTRAL": 0.06142060197791436,
+          "UP": 0.4736523685089674
+        },
+        "5": {
+          "DOWN": 0.42107609158265186,
+          "NEUTRAL": 0.14894582930992664,
+          "UP": 0.42997807910742153
+        },
+        "10": {
+          "DOWN": 0.35069675488414875,
+          "NEUTRAL": 0.2904348940337646,
+          "UP": 0.35886835108208665
+        }
+      }
+    }
+  },
+  "splits": {
+    "train": {
+      "start": "2025-10-01",
+      "end": "2026-06-12",
+      "trading_days": 176
+    },
+    "validation": {
+      "start": "2026-06-15",
+      "end": "2026-08-07",
+      "trading_days": 38
+    },
+    "test": {
+      "start": "2026-08-10",
+      "end": "2026-10-01",
+      "trading_days": 38
+    }
+  },
+  "class_distributions": {
+    "5m": {
+      "test": {
+        "NEUTRAL": 94616,
+        "DOWN": 74167,
+        "UP": 73614,
+        "MISSING": 50011
+      },
+      "train": {
+        "NEUTRAL": 415078,
+        "UP": 394285,
+        "DOWN": 390649,
+        "MISSING": 194103
+      },
+      "validation": {
+        "NEUTRAL": 92494,
+        "UP": 90055,
+        "DOWN": 89998,
+        "MISSING": 42788
+      }
+    },
+    "15m": {
+      "test": {
+        "DOWN": 88855,
+        "UP": 87930,
+        "MISSING": 59974,
+        "NEUTRAL": 55649
+      },
+      "train": {
+        "UP": 461584,
+        "DOWN": 454025,
+        "MISSING": 239734,
+        "NEUTRAL": 238772
+      },
+      "validation": {
+        "UP": 104528,
+        "DOWN": 104015,
+        "NEUTRAL": 53916,
+        "MISSING": 52876
+      }
+    },
+    "30m": {
+      "test": {
+        "DOWN": 91276,
+        "UP": 90427,
+        "MISSING": 72965,
+        "NEUTRAL": 37740
+      },
+      "train": {
+        "UP": 469779,
+        "DOWN": 460053,
+        "MISSING": 301550,
+        "NEUTRAL": 162733
+      },
+      "validation": {
+        "UP": 106453,
+        "DOWN": 105858,
+        "MISSING": 66923,
+        "NEUTRAL": 36101
+      }
+    }
+  },
+  "row_count": 2001858,
+  "checksum_sha256": "ca1e9e7b4b908bdc2872234b77b63fe65dfc658aa67a4e4e70dc4ce324add633",
+  "leakage_controls": [
+    "all rolling and exponentially weighted features are backward-looking",
+    "feature histories reset by symbol and New York trading date",
+    "future targets require an exact same-symbol same-day timestamp",
+    "one date split is shared by all symbols",
+    "scalers are fit on training rows only during model training"
+  ]
+}

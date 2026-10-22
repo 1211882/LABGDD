@@ -1,0 +1,38 @@
+name,category,formula,lookback_bars,warmup_bars,leakage_safe,scaling_required,rationale
+open,raw,source open,1,0,True,True,Market state at the bar close
+high,raw,source high,1,0,True,True,Market state at the bar close
+low,raw,source low,1,0,True,True,Market state at the bar close
+close,raw,source close,1,0,True,True,Market state at the bar close
+volume,raw,source volume,1,0,True,True,Market state at the bar close
+return_1m,returns,close_t/close_t-1-1,2,1,True,True,Recent direction and magnitude
+log_return,returns,log(close_t/close_t-1),2,1,True,True,Recent direction and magnitude
+return_5m,returns,close_t/close_t-5-1,6,5,True,True,Recent direction and magnitude
+return_15m,returns,close_t/close_t-15-1,16,15,True,True,Recent direction and magnitude
+return_30m,returns,close_t/close_t-30-1,31,30,True,True,Recent direction and magnitude
+sma_5,trend,"rolling mean(close,5)",5,4,True,True,Local price trend
+sma_15,trend,"rolling mean(close,15)",15,14,True,True,Local price trend
+sma_30,trend,"rolling mean(close,30)",30,29,True,True,Local price trend
+ema_5,trend,"backward EWM(close,5)",5,4,True,True,Local price trend
+ema_15,trend,"backward EWM(close,15)",15,14,True,True,Local price trend
+ema_30,trend,"backward EWM(close,30)",30,29,True,True,Local price trend
+momentum_5,trend,close_t-close_t-5,6,5,True,True,Short-term price momentum
+volatility_5,volatility,"sample std(return_1m,5)",6,5,True,True,Recent realized variability
+volatility_15,volatility,"sample std(return_1m,15)",16,15,True,True,Recent realized variability
+volatility_30,volatility,"sample std(return_1m,30)",31,30,True,True,Recent realized variability
+atr_14,technical,"rolling mean(true range,14)",15,14,True,True,Range risk
+rsi_14,technical,Wilder-style EWM gain/loss RSI(14),15,14,True,True,Directional momentum balance
+macd,technical,EMA12(close)-EMA26(close),34,33,True,True,Trend convergence and divergence
+macd_signal,technical,EMA9(MACD),34,33,True,True,Trend convergence and divergence
+macd_histogram,technical,MACD-MACD_signal,34,33,True,True,Trend convergence and divergence
+bollinger_upper,technical,SMA20+2*STD20,20,19,True,True,Price range relative to recent dispersion
+bollinger_lower,technical,SMA20-2*STD20,20,19,True,True,Price range relative to recent dispersion
+bollinger_bandwidth,technical,(upper-lower)/SMA20,20,19,True,True,Price range relative to recent dispersion
+volume_change,volume,volume_t/volume_t-1-1,2,1,True,True,Minute activity change
+volume_mean_30,volume,"rolling mean(volume,30)",30,29,True,True,Trading-activity regime
+relative_volume,volume,volume/volume_mean_30,30,29,True,True,Trading-activity regime
+hour,time,America/New_York bar-clock encoding,1,0,True,True,Intraday seasonality
+minute_of_day,time,America/New_York bar-clock encoding,1,0,True,True,Intraday seasonality
+minutes_since_open,time,America/New_York bar-clock encoding,1,0,True,True,Intraday seasonality
+sector_return_mean,sector,"mean(return_1m) by sector,timestamp",1,1,True,True,Contemporaneous cross-sectional context available at bar close
+relative_to_sector,sector,return_1m-sector_return_mean,1,1,True,True,Contemporaneous cross-sectional context available at bar close
+sector_return_dispersion,sector,"sample std(return_1m) by sector,timestamp",2,1,True,True,Contemporaneous cross-sectional context available at bar close

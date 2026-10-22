@@ -1,0 +1,70 @@
+{
+  "experiment_id": "phase10_classification_v1",
+  "dataset_version": "ml_dataset_v1",
+  "features_version": "features_v1",
+  "created_at": "2026-10-18T17:59:47.091451Z",
+  "models": [
+    "Majority Baseline",
+    "Logistic Regression",
+    "Random Forest",
+    "LSTM",
+    "GRU"
+  ],
+  "horizons_minutes": [
+    5,
+    15,
+    30
+  ],
+  "lookback": 60,
+  "random_seed": 42,
+  "deep_learning": {
+    "units": 24,
+    "dropout": 0.15,
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "batch_size": 512,
+    "max_epochs": 4,
+    "early_stopping_patience": 1,
+    "sequence_caps": {
+      "train": 120000,
+      "validation": 30000,
+      "test": 30000
+    }
+  },
+  "splits": {
+    "train": {
+      "start": "2025-10-01",
+      "end": "2026-06-12",
+      "trading_days": 176
+    },
+    "validation": {
+      "start": "2026-06-15",
+      "end": "2026-08-07",
+      "trading_days": 38
+    },
+    "test": {
+      "start": "2026-08-10",
+      "end": "2026-10-01",
+      "trading_days": 38
+    }
+  },
+  "threshold_basis_points": 5,
+  "prediction_files": [
+    "models\\classification\\phase10_classification_v1\\predictions\\majority_5m.parquet",
+    "models\\classification\\phase10_classification_v1\\predictions\\logistic_5m.parquet",
+    "models\\classification\\phase10_classification_v1\\predictions\\random_forest_5m.parquet",
+    "models\\classification\\phase10_classification_v1\\predictions\\lstm_5m.parquet",
+    "models\\classification\\phase10_classification_v1\\predictions\\gru_5m.parquet",
+    "models\\classification\\phase10_classification_v1\\predictions\\majority_15m.parquet",
+    "models\\classification\\phase10_classification_v1\\predictions\\logistic_15m.parquet",
+    "models\\classification\\phase10_classification_v1\\predictions\\random_forest_15m.parquet",
+    "models\\classification\\phase10_classification_v1\\predictions\\lstm_15m.parquet",
+    "models\\classification\\phase10_classification_v1\\predictions\\gru_15m.parquet",
+    "models\\classification\\phase10_classification_v1\\predictions\\majority_30m.parquet",
+    "models\\classification\\phase10_classification_v1\\predictions\\logistic_30m.parquet",
+    "models\\classification\\phase10_classification_v1\\predictions\\random_forest_30m.parquet",
+    "models\\classification\\phase10_classification_v1\\predictions\\lstm_30m.parquet",
+    "models\\classification\\phase10_classification_v1\\predictions\\gru_30m.parquet"
+  ],
+  "test_policy": "Test rows were used only for final persisted evaluation after model fitting/model selection on train/validation."
+}

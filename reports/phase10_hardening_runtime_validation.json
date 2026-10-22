@@ -1,0 +1,71 @@
+{
+  "validated_at": "2026-10-19T15:12:08.520509Z",
+  "experiment_id": "phase10_classification_final_v1",
+  "status": "PASS",
+  "checksum_errors": [],
+  "features_checksum_ok": true,
+  "metric_recomputation_errors": [],
+  "duplicate_prediction_business_keys": 0,
+  "loaded_scalers": [
+    "scaler_15m.joblib",
+    "scaler_30m.joblib",
+    "scaler_5m.joblib"
+  ],
+  "loaded_tabular_models": [
+    "logistic_15m.joblib",
+    "logistic_30m.joblib",
+    "logistic_5m.joblib",
+    "random_forest_15m.joblib",
+    "random_forest_30m.joblib",
+    "random_forest_5m.joblib"
+  ],
+  "loaded_neural_models": [
+    "gru_15m.keras",
+    "gru_30m.keras",
+    "gru_5m.keras",
+    "lstm_15m.keras",
+    "lstm_30m.keras",
+    "lstm_5m.keras"
+  ],
+  "target_examples": {
+    "5m": {
+      "normal_recalculation_matches": true,
+      "missing_future": {
+        "symbol": "AAPL",
+        "timestamp": "2025-10-01T16:49:00+00:00",
+        "label_null": true
+      },
+      "end_of_session": {
+        "symbol": "AAPL",
+        "timestamp": "2025-10-01T19:59:00+00:00",
+        "label_null": true
+      }
+    },
+    "15m": {
+      "normal_recalculation_matches": true,
+      "missing_future": {
+        "symbol": "AAPL",
+        "timestamp": "2025-10-01T16:39:00+00:00",
+        "label_null": true
+      },
+      "end_of_session": {
+        "symbol": "AAPL",
+        "timestamp": "2025-10-01T19:59:00+00:00",
+        "label_null": true
+      }
+    },
+    "30m": {
+      "normal_recalculation_matches": true,
+      "missing_future": {
+        "symbol": "AAPL",
+        "timestamp": "2025-10-01T16:24:00+00:00",
+        "label_null": true
+      },
+      "end_of_session": {
+        "symbol": "AAPL",
+        "timestamp": "2025-10-01T19:59:00+00:00",
+        "label_null": true
+      }
+    }
+  }
+}
