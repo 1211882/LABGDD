@@ -1,0 +1,44 @@
+{
+  "phase": "Phase 9 - Observability with Prometheus and Grafana",
+  "validated_at_utc": "2026-10-18T16:49:00Z",
+  "status": "PASS",
+  "services": {
+    "prometheus": "up",
+    "financial-pipeline": "up",
+    "kafka": "up",
+    "containers": "up",
+    "grafana_database": "ok"
+  },
+  "grafana": {
+    "version": "12.1.1",
+    "dashboard_uid": "labgdd-financial-ops",
+    "dashboard_title": "Financial Pipeline Operations",
+    "panel_count": 11,
+    "datasource": "Prometheus",
+    "datasource_url": "http://prometheus:9090"
+  },
+  "controlled_run": {
+    "dataset": "phase7_controlled_v1",
+    "dataset_records": 392,
+    "watermark_sentinel_records": 1,
+    "topic": "phase9-observability-validation-v2",
+    "partitions": 6,
+    "starting_offsets": "earliest",
+    "active_query_observed": true,
+    "input_events": 393,
+    "valid_events": 391,
+    "invalid_events": 0,
+    "duplicate_events": 2,
+    "analytical_rows": 656,
+    "average_processed_rows_per_second": 5.633,
+    "latest_microbatch_duration_milliseconds": 10480,
+    "maximum_observed_state_rows": 391,
+    "duration_seconds": 47.111
+  },
+  "notes": [
+    "The valid count includes 390 unique dataset bars and one watermark-closing sentinel.",
+    "A preliminary zero-row run confirmed that pre-published records require startingOffsets=earliest; the corrected isolated run is the validation run.",
+    "cAdvisor exposed container_memory_working_set_bytes and container_cpu_usage_seconds_total on Docker Desktop/WSL2.",
+    "No credentials are embedded in Prometheus, dashboard, or runtime evidence files."
+  ]
+}

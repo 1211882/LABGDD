@@ -1,0 +1,27 @@
+{
+  "annotations": {"list": []},
+  "editable": true,
+  "graphTooltip": 1,
+  "panels": [
+    {"id": 1, "type": "stat", "title": "Kafka brokers", "gridPos": {"h": 4, "w": 4, "x": 0, "y": 0}, "targets": [{"expr": "kafka_brokers", "refId": "A"}]},
+    {"id": 2, "type": "stat", "title": "Pipeline exporter", "gridPos": {"h": 4, "w": 4, "x": 4, "y": 0}, "targets": [{"expr": "financial_pipeline_exporter_up", "refId": "A"}]},
+    {"id": 3, "type": "stat", "title": "Active streaming query", "gridPos": {"h": 4, "w": 4, "x": 8, "y": 0}, "targets": [{"expr": "max(financial_streaming_query_active)", "refId": "A"}]},
+    {"id": 4, "type": "stat", "title": "Container memory", "gridPos": {"h": 4, "w": 6, "x": 12, "y": 0}, "targets": [{"expr": "sum(container_memory_working_set_bytes{name=~\".*(spark|kafka).*\"})", "refId": "A"}], "fieldConfig": {"defaults": {"unit": "bytes"}, "overrides": []}},
+    {"id": 5, "type": "timeseries", "title": "Streaming and Kafka rates", "gridPos": {"h": 8, "w": 12, "x": 0, "y": 4}, "targets": [{"expr": "financial_streaming_input_rows_per_second", "legendFormat": "Spark input", "refId": "A"}, {"expr": "financial_streaming_processed_rows_per_second", "legendFormat": "Spark processed", "refId": "B"}, {"expr": "sum(rate(kafka_topic_partition_current_offset[1m]))", "legendFormat": "Kafka produced", "refId": "C"}, {"expr": "sum(rate(kafka_consumergroup_current_offset[1m]))", "legendFormat": "Kafka consumed", "refId": "D"}]},
+    {"id": 6, "type": "timeseries", "title": "Kafka consumer lag", "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4}, "targets": [{"expr": "sum(kafka_consumergroup_lag)", "legendFormat": "consumer lag", "refId": "A"}, {"expr": "financial_kafka_final_lag_events", "legendFormat": "controlled-run final lag", "refId": "B"}]},
+    {"id": 7, "type": "timeseries", "title": "Processing latency", "gridPos": {"h": 8, "w": 8, "x": 0, "y": 12}, "targets": [{"expr": "financial_streaming_processing_latency_mean_milliseconds", "legendFormat": "mean", "refId": "A"}, {"expr": "financial_streaming_processing_latency_p95_milliseconds", "legendFormat": "p95", "refId": "B"}], "fieldConfig": {"defaults": {"unit": "ms"}, "overrides": []}},
+    {"id": 8, "type": "timeseries", "title": "Micro-batch and state", "gridPos": {"h": 8, "w": 8, "x": 8, "y": 12}, "targets": [{"expr": "financial_streaming_microbatch_duration_milliseconds", "legendFormat": "duration ms", "refId": "A"}, {"expr": "financial_streaming_state_store_rows", "legendFormat": "state rows", "refId": "B"}]},
+    {"id": 9, "type": "timeseries", "title": "Event-time watermark", "gridPos": {"h": 8, "w": 8, "x": 16, "y": 12}, "targets": [{"expr": "financial_streaming_watermark_timestamp_seconds", "refId": "A"}], "fieldConfig": {"defaults": {"unit": "dateTimeAsIso"}, "overrides": []}},
+    {"id": 10, "type": "timeseries", "title": "Data quality", "gridPos": {"h": 8, "w": 12, "x": 0, "y": 20}, "targets": [{"expr": "financial_pipeline_valid_events_total", "legendFormat": "valid", "refId": "A"}, {"expr": "financial_pipeline_invalid_events_total", "legendFormat": "invalid", "refId": "B"}, {"expr": "financial_pipeline_duplicate_events_total", "legendFormat": "duplicates", "refId": "C"}, {"expr": "financial_streaming_watermark_dropped_rows_total", "legendFormat": "watermark dropped", "refId": "D"}]},
+    {"id": 11, "type": "timeseries", "title": "Container CPU", "gridPos": {"h": 8, "w": 12, "x": 12, "y": 20}, "targets": [{"expr": "sum by (name) (rate(container_cpu_usage_seconds_total{name=~\".*(spark|kafka).*\"}[1m])) * 100", "legendFormat": "{{name}}", "refId": "A"}], "fieldConfig": {"defaults": {"unit": "percent"}, "overrides": []}}
+  ],
+  "refresh": "5s",
+  "schemaVersion": 41,
+  "tags": ["LABGDD", "operations", "phase9"],
+  "templating": {"list": []},
+  "time": {"from": "now-30m", "to": "now"},
+  "timezone": "browser",
+  "title": "Financial Pipeline Operations",
+  "uid": "labgdd-financial-ops",
+  "version": 1
+}
