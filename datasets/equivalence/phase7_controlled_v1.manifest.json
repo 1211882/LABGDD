@@ -1,0 +1,32 @@
+{
+  "dataset_version": "phase7_controlled_v1",
+  "description": "Deterministic Phase 7 Batch/Streaming equivalence workload.",
+  "event_count": 392,
+  "unique_event_count": 390,
+  "duplicate_event_count": 2,
+  "symbols": [
+    "AAPL",
+    "MSFT",
+    "JNJ",
+    "JPM"
+  ],
+  "trading_dates": [
+    "2026-09-01",
+    "2026-09-02"
+  ],
+  "sha256": "7e285247cd706d3d9ccb3910d5a35221dfdc15c0f16d4ea5fe625415504e6c51",
+  "watermark_closing_sentinel": {
+    "timestamp": "2026-09-02T16:00:00Z",
+    "symbol": "AAPL",
+    "open": 110.0,
+    "high": 110.1,
+    "low": 109.9,
+    "close": 110.0,
+    "volume": 1
+  },
+  "notes": [
+    "Events contain complete and incomplete windows.",
+    "Adjacent events are swapped to exercise bounded out-of-order arrival.",
+    "The sentinel is streaming control data and is excluded from Batch input."
+  ]
+}
