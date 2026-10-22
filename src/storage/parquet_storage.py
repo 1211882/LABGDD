@@ -32,7 +32,26 @@ class ParquetStorage:
         parquet_file = output_dir / f"{filename}.parquet"
         csv_file = output_dir / f"{filename}.csv"
 
-        dataframe.to_parquet(parquet_file, index=False)
-        dataframe.to_csv(csv_file, index=False)
+        merged = dataframe.copy()
+        if parquet_file.exists():
+            merged = pd.concat([pd.read_parquet(parquet_file), merged], ignore_index=True)
+
+        other_files = [path for path in output_dir.glob("*.parquet") if path != parquet_file]
+        if other_files and not merged.empty:
+            existing_keys = pd.concat(
+                [pd.read_parquet(path, columns=["symbol", "timestamp"]) for path in other_files],
+                ignore_index=True,
+            ).drop_duplicates(["symbol", "timestamp"])
+            keys = pd.MultiIndex.from_frame(existing_keys[["symbol", "timestamp"]])
+            incoming_keys = pd.MultiIndex.from_frame(merged[["symbol", "timestamp"]])
+            merged = merged.loc[~incoming_keys.isin(keys)]
+
+        merged = (
+            merged.drop_duplicates(["symbol", "timestamp"], keep="last")
+            .sort_values("timestamp")
+            .reset_index(drop=True)
+        )
+        merged.to_parquet(parquet_file, index=False)
+        merged.to_csv(csv_file, index=False)
 
         return StorageResult(parquet_file=parquet_file, csv_file=csv_file)

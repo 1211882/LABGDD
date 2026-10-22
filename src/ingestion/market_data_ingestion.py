@@ -52,26 +52,35 @@ class MarketDataIngestionService:
         self.client = client
         self.storage = storage
 
-    def run(self) -> IngestionReport:
+    def run(
+        self,
+        *,
+        start_date: str | None = None,
+        end_date: str | None = None,
+        symbols: list[str] | None = None,
+    ) -> IngestionReport:
         results: list[IngestionResult] = []
         failures: list[IngestionFailure] = []
         ingestion = self.settings.ingestion
 
-        for symbol in ingestion.symbols:
+        selected_symbols = symbols or ingestion.symbols
+        requested_start = start_date or ingestion.start_date
+        requested_end = end_date or ingestion.end_date
+        for symbol in selected_symbols:
             start_time = time.perf_counter()
             LOGGER.info(
                 "Requesting historical bars: symbol=%s start=%s end=%s timeframe=%s",
                 symbol,
-                ingestion.start_date,
-                ingestion.end_date,
+                requested_start,
+                requested_end,
                 ingestion.timeframe,
             )
 
             try:
                 bars = self.client.get_historical_bars(
                     symbol=symbol,
-                    start=ingestion.start_date,
-                    end=ingestion.end_date,
+                    start=requested_start,
+                    end=requested_end,
                     timeframe=ingestion.timeframe,
                     limit=ingestion.limit,
                     feed=self.settings.alpaca.feed,
@@ -81,8 +90,8 @@ class MarketDataIngestionService:
                 output_files = self.storage.save_raw_bars(
                     dataframe=dataframe,
                     symbol=symbol,
-                    start_date=ingestion.start_date,
-                    end_date=ingestion.end_date,
+                    start_date=requested_start,
+                    end_date=requested_end,
                     timeframe=ingestion.timeframe,
                 )
             except (AlpacaApiError, DataQualityError, OSError) as exc:
@@ -108,8 +117,8 @@ class MarketDataIngestionService:
                 "parquet=%s csv=%s elapsed_seconds=%.2f",
                 symbol,
                 len(dataframe),
-                ingestion.start_date,
-                ingestion.end_date,
+                requested_start,
+                requested_end,
                 output_files.parquet_file,
                 output_files.csv_file,
                 elapsed_seconds,

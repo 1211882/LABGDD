@@ -244,6 +244,7 @@ def _spark_schema_to_arrow(schema):
     from pyspark.sql.types import (
         ArrayType,
         BooleanType,
+        DateType,
         DoubleType,
         FloatType,
         IntegerType,
@@ -256,6 +257,8 @@ def _spark_schema_to_arrow(schema):
     def convert(data_type):
         if isinstance(data_type, (TimestampType, TimestampNTZType)):
             return pa.timestamp("us")
+        if isinstance(data_type, DateType):
+            return pa.date32()
         if isinstance(data_type, StringType):
             return pa.string()
         if isinstance(data_type, BooleanType):

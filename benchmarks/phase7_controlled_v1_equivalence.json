@@ -1,0 +1,212 @@
+{
+  "dataset_version": "phase7_controlled_v1",
+  "status": "PASS",
+  "input": {
+    "batch": "checksummed controlled JSONL after validation and logical deduplication",
+    "streaming": "the same JSONL replayed through Kafka plus one watermark-closing sentinel"
+  },
+  "identity": "symbol + timestamp",
+  "window_policy": "fixed half-open UTC windows grouped by New York trading_date",
+  "formulas": {
+    "bar_return": "(close - open) / open when open > 0",
+    "window_return": "(last_price - first_price) / first_price when first_price > 0",
+    "volatility": "sample standard deviation of constituent bar_return values",
+    "coverage_ratio_symbol": "event_count / nominal window minutes",
+    "coverage_ratio_sector": "event_count / (nominal window minutes * active_symbols)"
+  },
+  "float_absolute_tolerance": 1e-10,
+  "float_relative_tolerance": 1e-10,
+  "classification": {
+    "exact": "all exact fields and floating-point values are identical",
+    "within_tolerance": "exact fields match and every float is within tolerance",
+    "mismatch": "an exact field differs or at least one float exceeds tolerance",
+    "missing": "an analytical key exists in only one path"
+  },
+  "comparison": [
+    {
+      "level": "symbol",
+      "window_duration": "1 minute",
+      "batch_rows": 390,
+      "streaming_rows": 390,
+      "exact_rows": 390,
+      "within_tolerance_rows": 0,
+      "mismatched_rows": 0,
+      "missing_rows": 0,
+      "maximum_absolute_difference": {
+        "average_price": 0.0,
+        "minimum_price": 0.0,
+        "maximum_price": 0.0,
+        "first_price": 0.0,
+        "last_price": 0.0,
+        "window_return": 0.0,
+        "volatility": 0.0,
+        "coverage_ratio": 0.0
+      }
+    },
+    {
+      "level": "symbol",
+      "window_duration": "5 minutes",
+      "batch_rows": 92,
+      "streaming_rows": 92,
+      "exact_rows": 61,
+      "within_tolerance_rows": 31,
+      "mismatched_rows": 0,
+      "missing_rows": 0,
+      "maximum_absolute_difference": {
+        "average_price": 5.684341886080802e-14,
+        "minimum_price": 0.0,
+        "maximum_price": 0.0,
+        "first_price": 0.0,
+        "last_price": 0.0,
+        "window_return": 0.0,
+        "volatility": 2.710505431213761e-20,
+        "coverage_ratio": 0.0
+      }
+    },
+    {
+      "level": "symbol",
+      "window_duration": "15 minutes",
+      "batch_rows": 36,
+      "streaming_rows": 36,
+      "exact_rows": 13,
+      "within_tolerance_rows": 23,
+      "mismatched_rows": 0,
+      "missing_rows": 0,
+      "maximum_absolute_difference": {
+        "average_price": 5.684341886080802e-14,
+        "minimum_price": 0.0,
+        "maximum_price": 0.0,
+        "first_price": 0.0,
+        "last_price": 0.0,
+        "window_return": 0.0,
+        "volatility": 2.710505431213761e-20,
+        "coverage_ratio": 0.0
+      }
+    },
+    {
+      "level": "symbol",
+      "window_duration": "30 minutes",
+      "batch_rows": 22,
+      "streaming_rows": 22,
+      "exact_rows": 5,
+      "within_tolerance_rows": 17,
+      "mismatched_rows": 0,
+      "missing_rows": 0,
+      "maximum_absolute_difference": {
+        "average_price": 5.684341886080802e-14,
+        "minimum_price": 0.0,
+        "maximum_price": 0.0,
+        "first_price": 0.0,
+        "last_price": 0.0,
+        "window_return": 0.0,
+        "volatility": 2.710505431213761e-20,
+        "coverage_ratio": 0.0
+      }
+    },
+    {
+      "level": "symbol",
+      "window_duration": "60 minutes",
+      "batch_rows": 16,
+      "streaming_rows": 16,
+      "exact_rows": 3,
+      "within_tolerance_rows": 13,
+      "mismatched_rows": 0,
+      "missing_rows": 0,
+      "maximum_absolute_difference": {
+        "average_price": 5.684341886080802e-14,
+        "minimum_price": 0.0,
+        "maximum_price": 0.0,
+        "first_price": 0.0,
+        "last_price": 0.0,
+        "window_return": 0.0,
+        "volatility": 2.710505431213761e-20,
+        "coverage_ratio": 0.0
+      }
+    },
+    {
+      "level": "sector",
+      "window_duration": "1 minute",
+      "batch_rows": 266,
+      "streaming_rows": 266,
+      "exact_rows": 266,
+      "within_tolerance_rows": 0,
+      "mismatched_rows": 0,
+      "missing_rows": 0,
+      "maximum_absolute_difference": {
+        "average_price": 0.0,
+        "minimum_price": 0.0,
+        "maximum_price": 0.0,
+        "volatility": 0.0,
+        "coverage_ratio": 0.0
+      }
+    },
+    {
+      "level": "sector",
+      "window_duration": "5 minutes",
+      "batch_rows": 66,
+      "streaming_rows": 66,
+      "exact_rows": 39,
+      "within_tolerance_rows": 27,
+      "mismatched_rows": 0,
+      "missing_rows": 0,
+      "maximum_absolute_difference": {
+        "average_price": 5.684341886080802e-14,
+        "minimum_price": 0.0,
+        "maximum_price": 0.0,
+        "volatility": 2.710505431213761e-20,
+        "coverage_ratio": 0.0
+      }
+    },
+    {
+      "level": "sector",
+      "window_duration": "15 minutes",
+      "batch_rows": 26,
+      "streaming_rows": 26,
+      "exact_rows": 12,
+      "within_tolerance_rows": 14,
+      "mismatched_rows": 0,
+      "missing_rows": 0,
+      "maximum_absolute_difference": {
+        "average_price": 5.684341886080802e-14,
+        "minimum_price": 0.0,
+        "maximum_price": 0.0,
+        "volatility": 2.710505431213761e-20,
+        "coverage_ratio": 0.0
+      }
+    },
+    {
+      "level": "sector",
+      "window_duration": "30 minutes",
+      "batch_rows": 16,
+      "streaming_rows": 16,
+      "exact_rows": 4,
+      "within_tolerance_rows": 12,
+      "mismatched_rows": 0,
+      "missing_rows": 0,
+      "maximum_absolute_difference": {
+        "average_price": 5.684341886080802e-14,
+        "minimum_price": 0.0,
+        "maximum_price": 0.0,
+        "volatility": 2.710505431213761e-20,
+        "coverage_ratio": 0.0
+      }
+    },
+    {
+      "level": "sector",
+      "window_duration": "60 minutes",
+      "batch_rows": 12,
+      "streaming_rows": 12,
+      "exact_rows": 2,
+      "within_tolerance_rows": 10,
+      "mismatched_rows": 0,
+      "missing_rows": 0,
+      "maximum_absolute_difference": {
+        "average_price": 5.684341886080802e-14,
+        "minimum_price": 0.0,
+        "maximum_price": 0.0,
+        "volatility": 2.710505431213761e-20,
+        "coverage_ratio": 0.0
+      }
+    }
+  ]
+}

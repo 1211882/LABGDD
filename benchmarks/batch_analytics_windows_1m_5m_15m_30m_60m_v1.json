@@ -1,0 +1,166 @@
+{
+  "coverage_by_duration": {
+    "1 minute": {
+      "sector": {
+        "average_coverage_ratio": 1.0,
+        "average_event_count": 3.763222,
+        "complete_windows": 30290,
+        "incomplete_windows": 0,
+        "median_coverage_ratio": 1.0,
+        "median_event_count": 4,
+        "minimum_coverage_ratio": 1.0,
+        "total_windows": 30290,
+        "valid_volatility_ratio": 0.940178,
+        "valid_volatility_windows": 28478
+      },
+      "symbol": {
+        "average_coverage_ratio": 1.0,
+        "average_event_count": 1.0,
+        "complete_windows": 113988,
+        "incomplete_windows": 0,
+        "median_coverage_ratio": 1.0,
+        "median_event_count": 1,
+        "minimum_coverage_ratio": 1.0,
+        "total_windows": 113988,
+        "valid_volatility_ratio": 0.0,
+        "valid_volatility_windows": 0
+      }
+    },
+    "15 minutes": {
+      "sector": {
+        "average_coverage_ratio": 0.720139,
+        "average_event_count": 53.666667,
+        "complete_windows": 210,
+        "incomplete_windows": 1914,
+        "median_coverage_ratio": 0.773333,
+        "median_event_count": 58,
+        "minimum_coverage_ratio": 0.066667,
+        "total_windows": 2124,
+        "valid_volatility_ratio": 0.983522,
+        "valid_volatility_windows": 2089
+      },
+      "symbol": {
+        "average_coverage_ratio": 0.739438,
+        "average_event_count": 11.091564,
+        "complete_windows": 3373,
+        "incomplete_windows": 6904,
+        "median_coverage_ratio": 0.8,
+        "median_event_count": 12,
+        "minimum_coverage_ratio": 0.066667,
+        "total_windows": 10277,
+        "valid_volatility_ratio": 0.980928,
+        "valid_volatility_windows": 10081
+      }
+    },
+    "30 minutes": {
+      "sector": {
+        "average_coverage_ratio": 0.707839,
+        "average_event_count": 105.83844,
+        "complete_windows": 75,
+        "incomplete_windows": 1002,
+        "median_coverage_ratio": 0.76,
+        "median_event_count": 114,
+        "minimum_coverage_ratio": 0.033333,
+        "total_windows": 1077,
+        "valid_volatility_ratio": 0.980501,
+        "valid_volatility_windows": 1056
+      },
+      "symbol": {
+        "average_coverage_ratio": 0.731396,
+        "average_event_count": 21.941867,
+        "complete_windows": 1365,
+        "incomplete_windows": 3830,
+        "median_coverage_ratio": 0.8,
+        "median_event_count": 24,
+        "minimum_coverage_ratio": 0.033333,
+        "total_windows": 5195,
+        "valid_volatility_ratio": 0.986526,
+        "valid_volatility_windows": 5125
+      }
+    },
+    "5 minutes": {
+      "sector": {
+        "average_coverage_ratio": 0.754503,
+        "average_event_count": 18.240999,
+        "complete_windows": 1019,
+        "incomplete_windows": 5230,
+        "median_coverage_ratio": 0.8,
+        "median_event_count": 19,
+        "minimum_coverage_ratio": 0.2,
+        "total_windows": 6249,
+        "valid_volatility_ratio": 0.985278,
+        "valid_volatility_windows": 6157
+      },
+      "symbol": {
+        "average_coverage_ratio": 0.77071,
+        "average_event_count": 3.85355,
+        "complete_windows": 14316,
+        "incomplete_windows": 15264,
+        "median_coverage_ratio": 0.8,
+        "median_event_count": 4,
+        "minimum_coverage_ratio": 0.2,
+        "total_windows": 29580,
+        "valid_volatility_ratio": 0.913861,
+        "valid_volatility_windows": 27032
+      }
+    },
+    "60 minutes": {
+      "sector": {
+        "average_coverage_ratio": 0.660518,
+        "average_event_count": 197.895833,
+        "complete_windows": 20,
+        "incomplete_windows": 556,
+        "median_coverage_ratio": 0.703333,
+        "median_event_count": 211,
+        "minimum_coverage_ratio": 0.016667,
+        "total_windows": 576,
+        "valid_volatility_ratio": 0.980903,
+        "valid_volatility_windows": 565
+      },
+      "symbol": {
+        "average_coverage_ratio": 0.6785,
+        "average_event_count": 40.71,
+        "complete_windows": 476,
+        "incomplete_windows": 2324,
+        "median_coverage_ratio": 0.716667,
+        "median_event_count": 43,
+        "minimum_coverage_ratio": 0.016667,
+        "total_windows": 2800,
+        "valid_volatility_ratio": 0.9875,
+        "valid_volatility_windows": 2765
+      }
+    }
+  },
+  "dataset_version": "v1",
+  "generated_at_utc": "2026-10-12T20:08:26.333804Z",
+  "input_rows": 113988,
+  "number_of_sectors": 6,
+  "number_of_symbols": 30,
+  "output_root": "data\\analytics\\batch\\v1",
+  "output_size_bytes": 7173911,
+  "processing_duration_seconds": 79.625719,
+  "regular_session_only": false,
+  "rows_after_session_filter": 113988,
+  "rows_per_second": 1431.548,
+  "sector_windows": {
+    "1 minute": 30290,
+    "15 minutes": 2124,
+    "30 minutes": 1077,
+    "5 minutes": 6249,
+    "60 minutes": 576
+  },
+  "symbol_windows": {
+    "1 minute": 113988,
+    "15 minutes": 10277,
+    "30 minutes": 5195,
+    "5 minutes": 29580,
+    "60 minutes": 2800
+  },
+  "symbol_windows_with_missing_minutes": {
+    "1 minute": 0,
+    "15 minutes": 6904,
+    "30 minutes": 3830,
+    "5 minutes": 15264,
+    "60 minutes": 2324
+  }
+}

@@ -8,20 +8,26 @@ first-class processing paths: historical **Batch Analytics** and near-real-time
 sector metadata, compatible OHLCV schemas, and equivalent mathematical definitions
 wherever a metric exists in both modes.
 
-The batch path is implemented through historical feature generation. The streaming
+The batch path is implemented through historical feature generation and versioned
+1, 5, 15, 30, and 60-minute event-time analytics. The streaming
 path is implemented through validated, deduplicated, sector-enriched event persistence:
 Alpaca WebSocket, Kafka, and Spark Structured Streaming are runtime verified. Windowed
-streaming analytics remain a planned phase.
+streaming analytics are implemented and runtime verified for 1, 5, 15, 30, and 60-minute
+symbol and sector windows.
+
+Phase 10 adds a frozen one-year ML dataset, leakage-safe financial features, exact
+5/15/30-minute direction targets, chronological evaluation, three transparent baselines,
+and CPU-trained LSTM/GRU models. Results are persisted for later Power BI integration;
+regression remains a separate planned phase.
 
 ## Academic Context
 
 The scientific objective is to compare batch and streaming processing for correctness,
-throughput, latency, completeness, resource use, and operational behavior. Later
-experiments will replay equivalent market records through both paths and compare
-windowed price, return, volume, and volatility results within defined numerical
-tolerances. Existing batch benchmarks are preserved as baselines, not treated as
-directly comparable to future streaming measurements until workload and environment
-are controlled.
+throughput, latency, completeness, resource use, and operational behavior. Phase 7
+established analytical equivalence through controlled replay, and Phase 8 measured
+performance over four equivalent workload sizes with repeated isolated runs. Existing
+historical benchmarks remain preserved as baselines and are not mixed with the
+controlled comparison results.
 
 ## Architecture Overview
 
@@ -43,10 +49,20 @@ flowchart TD
     K --> SS[Spark Structured Streaming]
     SS --> SV[Validation, Deduplication, Sector Enrichment]
     SV --> SP[Processed Streaming Parquet]
-    SS -.-> SA[Streaming Analytics]
-    BA -.-> CA[Comparative Analysis]
-    SA -.-> CA
-    CA -.-> ML[ML and Research]
+    SS --> SA[Streaming Analytics]
+    BA --> CA[Comparative Analysis]
+    SA --> CA
+    K --> PROM[Prometheus]
+    SS --> PROM
+    BA --> PROM
+    PROM --> GRAF[Grafana Operations]
+    CA --> FE[Unified Feature Engineering]
+    FE --> CL[Classification]
+    CL --> EVAL[Statistical and Financial Evaluation]
+    CL -.-> REG[Regression]
+    CA -.-> PBI[Power BI]
+    CL -.-> PBI
+    REG -.-> PBI
 ```
 
 ### Batch Architecture
@@ -62,6 +78,8 @@ flowchart LR
     ENRICH --> FEATURES[Returns, Moving Averages, Volatility]
     FEATURES --> OUT[Partitioned Processed Parquet]
     FEATURES --> METRICS[Batch Metrics]
+    OUT --> WINDOWS[1m, 5m, 15m, 30m, 60m Time Windows]
+    WINDOWS --> ANALYTICS[Versioned Symbol and Sector Analytics]
 ```
 
 ### Streaming Architecture
@@ -78,8 +96,8 @@ flowchart LR
     CHECK --> DEDUP[Watermark-Aware Deduplication]
     DEDUP --> ENRICH[Sector Enrichment]
     ENRICH --> STREAMOUT[Processed Streaming Parquet]
-    SS -.-> WINDOWS[Planned 1m, 5m, 15m Analytics]
-    WINDOWS -.-> ANALYTICS[Planned Analytics Outputs]
+    SS --> WINDOWS[1m, 5m, 15m, 30m, 60m Analytics]
+    WINDOWS --> ANALYTICS[Symbol and Sector Parquet]
 ```
 
 ### Future Batch vs Streaming Comparison
@@ -106,11 +124,12 @@ flowchart TD
 - Confluent Python client for Apache Kafka
 - websockets 17.1 asynchronous client
 - Docker Compose for local Kafka and Windows Spark runtime infrastructure
+- Prometheus 3.5.0, Kafka Exporter, and cAdvisor for operational metrics
+- Grafana 12.1.1 with provisioned datasource and dashboard
 - YAML configuration and environment variables
 - pytest
 
-Streaming analytics, machine learning, and paper trading are future phases and are not
-implemented yet.
+Classification and deep learning are implemented. Regression and Power BI remain future phases.
 
 ## Project Structure
 
@@ -733,9 +752,8 @@ exists. A previous close of zero also produces null percentage and log returns.
 
 ## Shared Analytical Definitions
 
-Batch currently implements the definitions below. Future streaming analytics
-must preserve the same mathematics even when event-time windows require different
-Spark APIs:
+Batch implements the definitions below. Streaming windows use the explicitly related,
+but not identical, definitions documented in the Phase 5 section:
 
 - `price_change = close_t - close_(t-1)`
 - `return_pct = (close_t - close_(t-1)) / close_(t-1)` when the previous close is positive
@@ -820,7 +838,7 @@ python scripts/validate_raw_data.py
 
 Spark tests use small in-memory deterministic datasets and never call Alpaca. The
 Kafka and WebSocket unit tests do not require external services; documented runtime
-smoke tests do. The complete suite currently reports 37 passed, 0 failed, and 0 skipped
+smoke tests do. The complete suite currently reports 51 passed, 0 failed, and 0 skipped
 and is verified on Java 21. The 17 emitted warnings are upstream PySpark/Pandas
 deprecation warnings.
 
@@ -831,7 +849,7 @@ deprecation warnings.
   reports lower volume than SIP data.
 - The local Kafka topology has one broker and replication factor one.
 - The ten-event Kafka run is a transport smoke test, not a performance benchmark.
-- Event-time windows and streaming financial analytics are not implemented yet.
+- Phase 5 evidence is a functional runtime validation, not a controlled performance benchmark.
 - Phase 4 records later than the configured watermark may be dropped.
 - Phase 4 invalid records use local Parquet quarantine rather than `market-bars-dlq`.
 - The local Spark runtime is a single Docker worker, not a production cluster.
@@ -887,18 +905,208 @@ Implemented and runtime verified:
 - Verified six-sector Kafka-to-Spark run and checkpoint restart recovery
 - Verified a late event is dropped after the 10-minute watermark
 - Preserved deterministic and restart streaming benchmark artifacts
+- Versioned Dataset V1 manifest and idempotent overlapping historical refresh
+- Event-time 1, 5, 15, 30, and 60-minute symbol and sector analytics
+- Separate duration checkpoints and Parquet outputs for reliable watermark finalization
+- Phase 5 runtime evidence covering all six sectors
+- Version-aware Phase 6 Batch time-window analytics for symbols and sectors
+- Verified trading-day isolation and DST-aware regular-session filtering
+- Preserved row-count features beside the new elapsed-time analytical layer
+- Centrally configured 1/5/15/30/60-minute Batch and Streaming windows
+- Per-window expected event counts, coverage ratios, and completeness evidence
 
 Planned, not implemented:
 
-- Event-time windows and streaming analytics
-- Batch analytics extensions for equivalent window and sector studies
 - Batch vs streaming correctness and performance experiments
 - Advanced indicators and machine-learning models
 - Paper trading
 
+## Dataset Versions and Historical Refresh
+
+The verified September dataset is registered as **Baseline Dataset V1** in
+`datasets/manifests/dataset_v1.json`. The manifest fixes the source, feed, configured
+universe, observed dates, row count, raw and processed sizes, and the regular-session
+policy without moving the existing files or changing the preserved batch benchmarks.
+`dataset.active_version` identifies the active development version.
+
+Development data may be refreshed or expanded. Experiment data is different: before
+Phases 7 and 8, a named version such as `final_experiment_v1` must be frozen with exact
+dates, symbols, sectors, feed, timeframe, session policy, row count, and checksums. A
+frozen experiment version must never be overwritten, and every scientific benchmark
+must name that version.
+
+Historical refresh accepts a date range and either the full configured universe or a
+configured subset:
+
+```powershell
+python -m src.main --start 2026-10-01 --end 2026-10-31
+python -m src.main --start 2026-10-01 --end 2026-10-31 --symbols AAPL MSFT
+```
+
+Each request is stored under its own date-range filename. Before writing, storage merges
+an existing same-range file and removes identities already present in every other raw
+file for that symbol. The logical identity is `(symbol, timestamp)`, making repeated or
+overlapping refreshes idempotent while retaining failure isolation per symbol. The
+original V1 files and benchmarks are not replaced.
+
+Raw data retain regular and pre/post-market observations. The configurable
+`dataset.regular_session_only` policy is applied only to analytics; it never deletes raw
+events. Missing minutes are measured rather than filled: no synthetic prices or
+forward-fill are introduced. Existing Phase 1 row-count windows remain unchanged.
+Phase 6 intraday analytics group by symbol and New York trading date. Continuous
+historical and overnight returns remain separate concepts and are not mixed implicitly.
+
+## Phase 5 Streaming Financial Analytics
+
+Phase 5 consumes the Phase 4 validated, deduplicated, sector-enriched event-time stream
+and emits configured 1, 5, 15, 30, and 60-minute analytical windows. Outputs do not overwrite
+Phase 4 events:
+
+- symbol analytics: `data/analytics/streaming/symbol`
+- sector analytics: `data/analytics/streaming/sector`
+- checkpoints: `data/checkpoints/streaming_analytics`
+- versioned evidence: `benchmarks/streaming_phase5_v1.json`
+
+Each duration has an independent query and checkpoint. Its output is stored below a
+`duration=1_minute`, `duration=5_minutes`, or `duration=15_minutes` directory so
+watermark finalization is independent and the embedded `window_duration` column
+remains unambiguous.
+
+Per-symbol windows contain average/minimum/maximum close, event-time first/last close,
+total volume, event count, window return, and volatility. Window return is
+`(last_close - first_close) / first_close`; it is distinct from Phase 1 row-to-row
+return. Phase 5 volatility is the sample standard deviation of source-bar returns
+`(close - open) / open` inside the window. It is null with fewer than two valid returns.
+Missing minutes remain absent, windows are ordered by event time, and late events follow
+the existing ten-minute watermark. Sector windows provide appropriate pooled price,
+volume, event, symbol-count, and volatility measures; Defense and Aerospace remain
+separate configured sectors.
+
+Deterministic tests cover boundaries, first/last ordering, average/min/max, volume,
+count, return, volatility, multiple symbols and sectors, sparse minutes, regular-session
+filtering, and the upstream watermark/deduplication contract. Phase 6 reproduces these
+definitions in Batch as documented below.
+
+Runtime validation on October 12, 2026 processed 120 controlled Kafka events for one
+symbol in each configured sector. It emitted 120 valid records, zero invalid records,
+and zero duplicates in 39.370 seconds. Both symbol and sector sinks emitted 54
+one-minute, 12 five-minute, and 6 fifteen-minute finalized windows. All six sectors
+and the six selected symbols were present. The analytics output occupied 121,478 bytes.
+This small single-worker run proves behavior and persistence; it is not a throughput
+or scalability benchmark.
+
+## Phase 6 Batch Analytics Extension
+
+Phase 6 reads the active version from `dataset.active_version` and processes the
+existing historical output without modifying `data/processed/batch`. Run it with:
+
+```powershell
+python -m src.spark.batch_analytics
+```
+
+Outputs are written to `data/analytics/batch/<dataset_version>/symbol` and
+`data/analytics/batch/<dataset_version>/sector`, with separate `duration=1_minute`,
+`duration=5_minutes`, `duration=15_minutes`, `duration=30_minutes`, and
+`duration=60_minutes` directories. Every row carries
+`dataset_version`, `trading_date`, window boundaries, and duration. Generation
+evidence for the extended run is stored in
+`benchmarks/batch_analytics_windows_1m_5m_15m_30m_60m_<dataset_version>.json`.
+
+These elapsed-time windows do not replace the Phase 1 row-count features `ma_5`,
+`ma_15`, `ma_30`, and `rolling_volatility_30`. Missing minutes are not synthesized, so
+a five-minute symbol window may contain fewer than five observations; `event_count`
+and benchmark coverage counts expose that condition. `trading_date` is derived in
+`America/New_York` and included in every grouping key. If enabled, the shared regular
+session filter keeps 09:30 inclusive through 16:00 exclusive with DST awareness.
+
+### Phase 5/6 Definition Consistency
+
+| Metric | Streaming definition | Batch definition | Equivalent? |
+|---|---|---|---|
+| `average_price` | Mean of observed close values | Mean of observed close values | Yes |
+| `minimum_price` | Minimum observed close | Minimum observed close | Yes |
+| `maximum_price` | Maximum observed close | Maximum observed close | Yes |
+| `first_price` | Close at minimum event timestamp | Close at minimum event timestamp | Yes |
+| `last_price` | Close at maximum event timestamp | Close at maximum event timestamp | Yes |
+| `total_volume` | Sum of observed volume | Sum of observed volume | Yes |
+| `event_count` | Number of observed valid events | Number of observed valid events | Yes |
+| `window_return` | `(last_price-first_price)/first_price` | `(last_price-first_price)/first_price` | Yes |
+| `volatility` | Sample standard deviation of `(close-open)/open` | Sample standard deviation of `(close-open)/open` | Yes |
+
+Both paths align fixed, half-open Spark windows in UTC: `window_start <= timestamp <
+window_end`. Volatility is null when fewer than two valid bar returns exist. Sector
+analytics intentionally omit first/last/window return, matching Phase 5, because a
+pooled sector has simultaneous observations from multiple symbols without one unique
+sector price sequence. The retained sector `volatility` field is therefore the sample
+dispersion of all observed individual-stock bar returns pooled inside the
+sector/window. It combines temporal and cross-sectional dispersion; it is not the
+temporal volatility of a separately constructed sector-return series.
+
+Runtime validation on October 12, 2026 used Dataset V1 with the full-session policy.
+All 113,988 input rows remained after filtering. The run represented 30 symbols and
+six sectors and produced 113,988/29,580/10,277 symbol windows and
+30,290/6,249/2,124 sector windows for 1/5/15 minutes respectively. Processing took
+36.027 seconds at 3,164.002 input rows/second and wrote 6,489,385 bytes. No duplicate
+analytical keys or trading-date mismatches were found. A real AAPL five-minute window
+(`2026-09-01 13:30-13:35 UTC`) was independently recalculated from five processed
+bars: return `-0.0042942848` and volatility `0.0011661492`, together with every price,
+volume, and count value, matched the Spark output.
+
+## Larger Analytical Windows and Coverage
+
+The shared `analytics.window_durations` configuration now defines `1 minute`,
+`5 minutes`, `15 minutes`, `30 minutes`, and `60 minutes` once for both Batch and
+Streaming. Larger windows reuse every Phase 5/6 formula and output layout. Each symbol
+row includes nominal `expected_event_count`, observed `event_count`, and
+`coverage_ratio = event_count / expected_event_count`. For a sector, the denominator
+is nominal minutes multiplied by `active_symbols`. Incomplete windows are measured and
+persisted, never filtered or filled.
+
+Fixed windows remain UTC-aligned and half-open. With regular-session filtering, the US
+close (20:00 UTC during daylight time and 21:00 UTC during standard time) lies on an
+hour boundary, so the final 60-minute session window ends at the close. The 09:30 open
+falls halfway through its UTC hour; that first nominal 60-minute window is therefore
+expected to have at most 30 regular-session observations. Coverage records this
+alignment rather than manufacturing data. `trading_date` grouping prevents any Batch
+window from mixing observations from different New York trading dates.
+
+### Dataset V1 Coverage Summary
+
+The historical symbol outputs provide the most representative current coverage view:
+
+| Window | Total | Complete | Incomplete | Avg. coverage | Median events | Valid volatility |
+|---|---:|---:|---:|---:|---:|---:|
+| 1m | 113,988 | 113,988 | 0 | 100.00% | 1 | 0.00% |
+| 5m | 29,580 | 14,316 | 15,264 | 77.07% | 4 | 91.39% |
+| 15m | 10,277 | 3,373 | 6,904 | 73.94% | 12 | 98.09% |
+| 30m | 5,195 | 1,365 | 3,830 | 73.14% | 24 | 98.65% |
+| 60m | 2,800 | 476 | 2,324 | 67.85% | 43 | 98.75% |
+
+The declining nominal coverage reflects missing IEX minutes and partial boundary
+windows. The increasing availability of volatility reflects the greater chance of
+having at least two observed returns. Larger windows may yield estimates based on more
+observations, but this run does not establish that they are automatically better;
+stability, responsiveness, missing-data sensitivity, and usable sample counts still
+require later controlled analysis.
+
+Streaming runtime validation consumed 600 valid Kafka events with zero invalid or
+duplicate events. It finalized 24 symbol and 24 sector 30-minute windows, including 6
+complete windows per level, at 59.17% average coverage. It finalized 18 symbol and 18
+sector 60-minute windows; all were incomplete in this bounded retained workload, with
+39.44% average coverage. The run is functional evidence, not a market-data benchmark.
+Its evidence is stored in
+`benchmarks/streaming_analytics_windows_1m_5m_15m_30m_60m_v1.json`.
+
+Manual Dataset V1 checks used complete AAPL windows. The 30-minute window
+`2026-09-01 13:30-14:00 UTC` contained 30 events, return `0.0190243132`, volatility
+`0.0017072625`, and 100% coverage. The 60-minute window
+`2026-09-01 14:00-15:00 UTC` contained 60 events, return `0.0038064586`, volatility
+`0.0009561299`, and 100% coverage. Independent recalculation matched average,
+minimum, maximum, first and last close, volume, count, return, volatility, and coverage.
+
 ## Next Steps Roadmap
 
-Recommended order is Phase 2 through Phase 10 because each phase establishes the
+Recommended order is Phase 2 through Phase 12 because each phase establishes the
 contracts, data, or measurements required by the following phase.
 
 ### Phase 2 - Kafka Infrastructure
@@ -944,59 +1152,156 @@ contracts, data, or measurements required by the following phase.
 
 ### Phase 5 - Streaming Financial Analytics
 
+- **Status:** FULLY IMPLEMENTED AND RUNTIME VERIFIED.
 - **Objective:** Produce useful near-real-time market aggregates.
 - **Architecture change:** Add windowed analytics after streaming validation.
-- **Files/components:** Window transformations, analytics sinks, anomaly rules, and metric definitions.
+- **Files/components:** Window transformations, per-duration analytics sinks and checkpoints, session filtering, and metric definitions.
 - **Technologies:** Spark SQL windows and Structured Streaming state.
-- **Tests:** Average/min/max price, volume, event count, first/last price, short return, volatility, sector enrichment, configurable detections, and late-window updates.
-- **Expected output:** Per-symbol and per-sector 1, 5, and 15-minute analytics outputs.
+- **Tests:** Average/min/max price, volume, event count, first/last price, short return, volatility, sector separation, sparse minutes, and regular-session boundaries.
+- **Runtime verification:** 120 valid events, zero invalid/duplicate events, and finalized 1, 5, and 15-minute outputs for symbols and all six sectors; evidence is stored in `benchmarks/streaming_phase5_v1.json`.
+- **Expected output:** Per-symbol and per-sector 1, 5, 15, 30, and 60-minute analytics outputs.
 - **Dependency:** Phase 4 event-time pipeline.
 - **Complexity:** Medium.
 
 ### Phase 6 - Batch Analytics Extension
 
+- **Status:** FULLY IMPLEMENTED AND RUNTIME VERIFIED.
 - **Objective:** Add historical symbol, sector, and time-window analytics equivalent to the streaming measures where appropriate.
 - **Architecture change:** Extend the first-class batch path after feature generation.
-- **Analytics:** Average/min/max price, volume, first/last price, return, volatility, best/worst performers, and stock/sector correlations over configurable periods.
-- **Tests:** Symbol isolation, sector completeness, window boundaries, formulas, correlations, and missing intervals.
+- **Analytics:** Phase 5-equivalent average/min/max close, volume, event count, deterministic first/last price, window return, sample bar-return volatility, and active sector symbol count.
+- **Tests:** Symbol and sector isolation, 1/5/15/30/60-minute boundaries, formulas, event ordering, coverage, missing intervals, trading-day separation, DST-aware sessions, and dataset-version propagation.
+- **Runtime verification:** Dataset V1 produced all durations for 30 symbols and six sectors with zero duplicate analytical keys; evidence is stored in `benchmarks/batch_analytics_phase6_v1.json`.
 - **Expected output:** Historical per-symbol and per-sector analytical datasets.
 - **Dependency:** Stable Phase 1 batch output and Phase 5 metric definitions.
 - **Complexity:** Medium.
 
 ### Phase 7 - Batch vs Streaming Equivalence
 
+- **Status:** FULLY IMPLEMENTED AND RUNTIME VERIFIED.
 - **Objective:** Establish numerical correctness across both processing paradigms.
-- **Architecture change:** Add a controlled OHLCV replay workload and shared expected results.
-- **Tests:** Feed identical 1, 5, and 15-minute sequences through both paths and reconcile average/min/max price, volume, return, and volatility within declared tolerances.
-- **Expected output:** Persisted correctness report with inputs, formulas, precision, mismatches, and explanations.
+- **Architecture change:** Added a deterministic, checksummed OHLCV workload, an isolated Kafka replay topic, versioned outputs, and an automated reconciliation report.
+- **Tests:** Feed identical 1, 5, 15, 30, and 60-minute sequences through both paths and reconcile average/min/max price, volume, return, volatility, and coverage within declared tolerances.
+- **Runtime verification:** `phase7_controlled_v1` contains 392 records over two trading days, four symbols, and three sectors. Batch and Streaming each removed two duplicate identities and produced matching symbol/sector row counts at every duration. All 556 symbol rows and 386 sector rows reconciled with zero missing or mismatched rows. Floating-point differences were at most `5.684341886080802e-14` for averages and `2.710505431213761e-20` for volatility, below the declared absolute/relative tolerance of `1e-10`.
+- **Evidence:** Input and manifest are under `datasets/equivalence/`; the persisted report is `benchmarks/phase7_controlled_v1_equivalence.json`, with separate Batch and Streaming runtime metrics beside it.
+- **Window policy:** Both paths use fixed, half-open, UTC clock-aligned windows and a New York `trading_date`. Session-aligned windows are a possible later analytical variant, not part of this correctness baseline.
+- **Sector interpretation:** Sector volatility remains the sample dispersion of pooled constituent bar returns inside each window, not the temporal volatility of a synthetic sector-return series.
+- **Expected output:** Persisted correctness report with inputs, formulas, precision, mismatches, and explanations. Delivered.
 - **Dependency:** Phases 4-6.
 - **Complexity:** High.
 
+Reproduce the controlled validation from the repository root while Kafka and the Spark
+Docker service are running:
+
+```powershell
+python -m src.equivalence.controlled_dataset
+python -m src.equivalence.phase7 batch
+docker compose exec -T kafka /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:29092 --create --if-not-exists --topic market-bars-equivalence-v1 --partitions 6 --replication-factor 1
+python -m src.equivalence.phase7 replay
+```
+
+Run Structured Streaming in the documented Docker environment with the isolated
+topic, `earliest` offsets, `phase7_controlled_v1`, and fresh paths under
+`data/analytics/equivalence/phase7_controlled_v1` and
+`data/checkpoints/equivalence/phase7_controlled_v1`; then run:
+
+```powershell
+python -m src.equivalence.phase7 compare
+```
+
+The generator deliberately includes exact duplicates, incomplete windows, events on
+window boundaries, two trading dates, and bounded out-of-order arrival. A final
+control event advances the ten-minute watermark and is outside the compared source
+windows. The current V1 historical catalog still uses stable logical manifests with
+unversioned physical raw/processed paths; Phase 7 avoids that residual reproducibility
+risk by using an isolated, immutable controlled input with its own checksum.
+
 ### Phase 8 - Batch vs Streaming Performance
 
+- **Status:** FULLY IMPLEMENTED AND RUNTIME VERIFIED as a controlled local scalability experiment.
 - **Objective:** Compare throughput, latency, resource use, completeness, lag, late events, and stability under controlled workloads.
-- **Files/components:** Benchmark runner, resource sampler, Kafka lag collection, Spark progress listener, experiment manifests, tables, and charts.
-- **Expected output:** New `benchmarks/streaming_*.json` and `benchmarks/batch_vs_streaming_*.json` artifacts without replacing historical batch baselines.
+- **Experimental design:** Deterministic equivalent workloads of 10k, 25k, 50k, and 100k unique OHLCV events; one 1k warm-up; three measured repetitions per size and architecture; fixed 5/15/30-minute windows and five-second Streaming trigger.
+- **Isolation:** Every Streaming attempt uses a unique Kafka topic, checkpoint, output directory, and run identifier. Batch runs also use independent outputs.
+- **Latency definition:** Kafka record timestamp to `processing_time` in the committed valid sink. Historical event time is never treated as wall-clock latency. Bounded producer-first replay means this includes queue residence and Spark startup, not steady-state live latency.
+- **Resource monitoring:** Host process memory for Batch and Docker container CPU/memory for Streaming. Batch CPU is marked unavailable because the original sampler could not reliably attribute JVM child CPU.
+- **Mean results:** Batch throughput increased from 316.03 to 2,028.61 rows/s and mean total duration ranged from 68.21 to 99.90 seconds. Streaming throughput ranged from 97.30 to 186.19 events/s, duration increased from 118.40 to 650.70 seconds, and p95 processing latency increased from 17.78 to 558.12 seconds as producer-first backlog grew.
+- **Backpressure:** Producer throughput was 16.6k-38.9k events/s, far above Spark throughput. Backlog grew during replay but final Kafka lag was zero for every run; there were no watermark drops.
+- **Correctness sanity:** All 24 measured runs completed with expected input counts, zero invalid events, zero duplicates, zero duplicate analytical keys, and existing outputs. Equivalent paths generated matching analytical row counts at every size.
+- **Evidence:** `benchmarks/phase8_batch_streaming_performance.json`, `benchmarks/phase8_performance_summary.csv`, `reports/PHASE8_PERFORMANCE_ANALYSIS.md`, and four plots under `reports/figures/phase8/`.
+- **Interpretation:** Batch is more efficient for bounded data already at rest in this setup. Streaming trades throughput and memory for continuous incremental processing, Kafka decoupling, checkpoint recovery, watermarking, and result freshness. Neither is universally better.
+- **Limitations:** One local machine, one Kafka broker, one `local[*]` Spark container, Docker/WSL2 and OS scheduling overhead, burst replay rather than exchange traffic, and no evidence for production-cluster or distributed scalability.
 - **Dependency:** Phase 7 correctness baseline.
 - **Complexity:** High.
 
-### Phase 9 - Advanced Features and Machine Learning
+### Phase 9 - Observability with Prometheus and Grafana
 
-- **Objective:** Build leakage-aware indicators and evaluate models only after both data paths are validated.
-- **Features:** RSI, MACD, EMA, Bollinger Bands, momentum, volatility, and volume indicators where scientifically justified.
-- **Models:** Begin with transparent baselines and temporal splits before considering more complex models.
-- **Tests:** Formula fixtures, warm-up behavior, symbol isolation, label alignment, no future leakage, deterministic temporal splits, and model smoke tests.
-- **Expected output:** Versioned feature datasets, evaluation reports, and reproducible model artifacts.
-- **Dependency:** Phases 6-8.
+- **Status:** FULLY IMPLEMENTED AND RUNTIME VERIFIED.
+- **Objective:** Continuously expose and visualize operational health, activity, rates, latency, state, and data-quality metrics without turning Grafana into the financial BI layer.
+- **Architecture change:** Added a read-only pipeline metrics exporter, Kafka Exporter, cAdvisor, Prometheus, and a provisioned Grafana datasource/dashboard to Docker Compose.
+- **Dashboard:** `Financial Pipeline Operations` contains 11 panels covering broker/exporter/query health, rates, Kafka lag, processing latency, micro-batch duration, state rows, watermark, quality counts, and container CPU/memory.
+- **Runtime verification:** All four Prometheus scrape targets were up. A controlled isolated replay exposed an active Spark query, six Kafka partitions, 393 inputs, 391 valid outputs, zero invalid events, two duplicates, and 656 one-minute analytical rows. The query transitioned from active to completed and Grafana loaded the provisioned dashboard and datasource.
+- **Evidence:** `benchmarks/phase9_observability_streaming_v2.json`, `reports/phase9_runtime_validation.json`, and `monitoring/README.md`.
+- **Security:** Monitoring mounts the repository read-only and does not receive Alpaca credentials. Grafana credentials are configurable through environment variables.
+- **Limitations:** Spark observations come from persisted progress snapshots rather than the native driver servlet. Container visibility depends on Docker Desktop/WSL2. The local single-broker deployment is not a production monitoring topology.
+- **Dependency:** Phases 2-8.
+- **Complexity:** Medium.
+
+### Phase 10 - Feature Engineering, Classification, and Deep Learning
+
+- **Status:** FULLY IMPLEMENTED AND RUNTIME VERIFIED.
+- **Dataset:** Immutable `ml_dataset_v1`, requested for 2025-10-01 through 2026-10-01: 2,276,418 Alpaca IEX regular-session bars, 252 trading dates, 30 symbols, and six sectors. Dataset V1 and controlled Phase 7/8 data are unchanged.
+- **Quality:** Zero duplicate identities, null fields, OHLC violations, and zero-volume rows. There are 671,982 expected symbol-minutes without an IEX bar; gaps are retained with no interpolation, forward fill, or synthetic OHLC.
+- **Session:** Primary experiment uses `09:30 <= local_time < 16:00 America/New_York` and preserves raw source bars separately.
+- **Features:** 37 raw, return, SMA/EMA, momentum, volatility, ATR, RSI, MACD, Bollinger, volume, time, and sector-relative features. Warm-up exclusion reduced the ML-ready table to 2,001,858 rows.
+- **Leakage controls:** Backward-only windows; symbol/trading-date isolation; exact same-symbol same-day future timestamps; common chronological date splits; train-only scaler fitting; contiguous same-session LSTM/GRU sequences.
+- **Targets:** DOWN/NEUTRAL/UP for exact 5/15/30-minute future returns. A fixed five-basis-point transaction-cost-aware threshold was selected from train-only distribution analysis; two/five/ten-basis-point candidate balances are retained.
+- **Splits:** Train 2025-10-01..2026-06-12 (176 dates), validation 2026-06-15..2026-08-07 (38), and test 2026-08-10..2026-10-01 (38).
+- **Models:** Majority baseline, Logistic Regression, Random Forest, LSTM, and GRU. Recurrent models use 60-bar contiguous sequences, early stopping, and deterministic local-CPU caps of 120k/30k/30k train/validation/test sequences.
+- **Results:** Five minutes is the strongest horizon. Random Forest achieved the best full-test Macro F1 at each horizon (0.3844/0.3448/0.3288) and remained first on the identical-key common subsets. LSTM/GRU did not consistently beat simpler baselines. Full per-class, confusion-matrix, ROC-AUC, confidence, calibration, symbol, and sector results are persisted.
+- **Financial evaluation:** The UP=long, NEUTRAL/DOWN=flat evaluation with five-basis-point position-change costs is explicitly diagnostic because horizon returns overlap. A secondary non-overlapping clock-grid check is also negative at every horizon. Neither result demonstrates profitability or constitutes a trading-strategy backtest.
+- **Frozen baseline:** `models/classification/phase10_classification_final_v1/` is immutable and checksum-verified. It contains full/common metrics, confidence/calibration evidence, corrected financial diagnostics, rankings, feature catalog, prediction outputs, loadable model/scaler artifacts, histories, and six publication figures. The original `phase10_classification_v1` is retained as source evidence.
+- **Reproduce without downloading data:** `python -m src.ml.run_phase10 --work-output models/classification/<new_work_id> --final-output models/classification/<new_final_id>` trains from frozen `features_v1` and refuses to overwrite existing outputs. Validate the canonical freeze with `python -m src.ml.validate_frozen`.
+- **Documentation:** `reports/PHASE10_CLASSIFICATION_ANALYSIS.md` and `reports/PHASE10_CLASSIFICATION_HARDENING_AUDIT.md` record the scientific interpretation and hardening corrections. Large Parquet/model binaries remain local; manifests, checksums, metrics, and builders provide reproducibility.
+- **Dependency:** Phase 9 and a dedicated ML dataset manifest.
 - **Complexity:** High.
 
-### Phase 10 - Final Validation and Scientific Paper
+### Phase 11 - Regression Experiment
 
-- **Objective:** Make the project reproducible and communicate defensible findings.
-- **Architecture change:** Freeze versioned configurations, datasets, experiments, and diagrams into a final release.
-- **Files/components:** Reproduction script, final test suite, architecture diagrams, experiment manifests, paper, appendices, and 10-minute presentation.
-- **Technologies:** Existing stack plus a document/presentation toolchain.
-- **Tests:** Clean-machine reproduction, full integration run, data checksums, result regeneration, citation review, and presentation timing.
-- **Expected output:** Final datasets, models, benchmark evidence, limitations, conclusions, scientific paper, and presentation.
-- **Dependency:** All selected earlier phases.
+- **Status:** FULLY IMPLEMENTED AND RUNTIME VERIFIED as a secondary experiment. Classification remains the primary ML task.
+- **Objective and targets:** Predict exact same-symbol, same-session 5/15/30-minute future returns using unchanged `ml_dataset_v1`, `features_v1`, 37 features, and Phase 10 train/validation/test dates.
+- **Models:** Zero-return and train-mean baselines, Linear Regression, Random Forest Regressor, LSTM, and GRU. Feature and neural-target scalers are train-only; recurrent models reuse exact contiguous 60-bar sequences.
+- **Evaluation:** Full model test populations and identical-key common subsets; MAE, MSE, RMSE, R-squared, Median AE, Pearson/Spearman correlation, +/-5 bps directional accuracy, error distributions, return-magnitude buckets, and symbol/sector breakdowns.
+- **Results:** GRU has the lowest full-population MAE at 5/15/30m (0.000863/0.001453/0.002020), but those recurrent sets contain 30,000 sequence endpoints. On the common 30,000-row subsets, zero return wins 5m and 30m; Random Forest wins 15m by about 0.000001 MAE. Best R-squared remains near or below zero, so low error mainly reflects returns concentrated near zero.
+- **Classification comparison:** Regression predictions were converted with the same inclusive +/-5 bps boundaries. Frozen Phase 10 direct classification remains materially stronger on directional class metrics; regression and deep learning do not establish an out-of-sample advantage.
+- **Financial diagnostics:** Long above +5 bps, otherwise flat, with 5 bps position-change cost and timestamp-level equal weighting. Overlapping and non-overlapping checks provide no robust profitability evidence.
+- **Frozen experiment:** `models/regression/phase11_regression_final_v1/` contains checksummed predictions, full/common metrics, models, separate feature/target scalers, histories, reports, and figures. Publication copies are under `reports/figures/phase11/`.
+- **Reproduce/validate:** `python -m src.ml.run_phase11 --output models/regression/<new_id> --figures reports/figures/<new_id>` and `python -m src.ml.validate_regression`.
+- **Limitations:** IEX coverage, one market year, local compute caps, weak return stationarity, overlapping diagnostic labels, sparse signals, and no claim of profitability or production scalability.
+- **Dependency:** Phase 10.
+- **Complexity:** Medium.
+
+### Phase 12 - Power BI Final Analytics
+
+- **Status:** FULLY IMPLEMENTED AND RUNTIME VERIFIED as the final analytical presentation layer.
+- **Separation of concerns:** Prometheus collects operational metrics and Grafana presents Kafka/Spark/pipeline health. Power BI presents frozen financial analytics, correctness/performance experiments, ML evaluation, and research conclusions; it does not duplicate the operational dashboard.
+- **Data mart:** `data/powerbi/` contains six dimensions; Batch symbol and pooled-sector analytical facts; Phase 10 classification predictions, metrics, diagnostics, and confusion matrices; Phase 11 regression predictions, metrics, and diagnostics; task-aware model comparison; and normalized Phase 7/8 evidence.
+- **Scale:** Each ML prediction fact contains 2,957,096 rows. Financial facts contain 161,840 symbol windows and 40,316 sector windows. Compact facts and dimensions are CSV; large facts are compressed Parquet.
+- **Scientific integrity:** Classification remains primary and Random Forest remains strongest by Macro F1. Regression remains secondary, generally fails to beat zero return on common populations, and does not improve directional decisions. Deep Learning has no consistent advantage and no profitable strategy is claimed.
+- **Model:** Single-direction dimension-to-fact relationships use date, symbol, sector, task-scoped model ID, horizon, and dataset version. Task-scoped IDs prevent LSTM/GRU ambiguity between classification and regression.
+- **Dashboard:** Twelve specified pages cover overview, markets, sectors, windows, Batch/Streaming evidence, classification, regression, comparison, diagnostics, methodology, and limitations. Grafana-only operational details remain excluded.
+- **Refresh:** `python -m src.powerbi.export --force` reads frozen artifacts, validates keys/references/counts, and atomically regenerates files plus `data/powerbi/manifest.json`; it performs no download, ingestion, or training.
+- **Documentation:** `reports/POWERBI_READINESS_REPORT.md`, `reports/POWERBI_DATA_MODEL.md`, `reports/POWERBI_MEASURES.md`, and `reports/POWERBI_DASHBOARD_SPEC.md` provide audit findings, schemas, relationships, DAX, page design, and deterministic assembly instructions.
+- **PBIX:** Power BI Desktop is installed, but reliable unattended PBIX automation is unavailable. No synthetic PBIX was fabricated; the documented local import procedure deterministically produces `LABGDD_Analytics.pbix`.
+- **Dependency:** Phases 10 and 11.
 - **Complexity:** High.
+
+## Final Architecture
+
+```text
+Alpaca Historical REST -> Spark Batch -> Historical Analytics
+Alpaca WebSocket -> Kafka -> Spark Structured Streaming -> Streaming Analytics
+
+Kafka / Spark / Pipeline -> Prometheus -> Grafana (operational observability)
+
+Historical Analytics -> Feature Engineering -> Classification + Regression -> Evaluation
+Financial Analytics + ML Evaluation + Phase 7/8 Evidence -> Power BI (research presentation)
+```

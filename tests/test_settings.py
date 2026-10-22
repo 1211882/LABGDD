@@ -1,11 +1,22 @@
 from __future__ import annotations
 
 from src.config.settings import (
+    load_batch_analytics_settings,
     load_kafka_settings,
     load_spark_settings,
     load_structured_streaming_settings,
     load_streaming_settings,
 )
+
+
+def test_loads_versioned_batch_analytics_settings() -> None:
+    settings = load_batch_analytics_settings()
+    assert settings.dataset_version == "v1"
+    assert settings.regular_session_only is False
+    assert settings.window_durations == (
+        "1 minute", "5 minutes", "15 minutes", "30 minutes", "60 minutes"
+    )
+    assert settings.metrics_path.name == "batch_analytics_windows_1m_5m_15m_30m_60m_v1.json"
 
 
 def test_configured_market_universe_has_six_sectors_and_thirty_symbols() -> None:
@@ -55,3 +66,8 @@ def test_structured_streaming_settings_keep_outputs_and_checkpoints_separate() -
     assert settings.invalid_output_path.as_posix() == "data/processed/streaming_invalid"
     assert settings.checkpoint_path.as_posix() == "data/checkpoints/streaming"
     assert settings.kafka_connector_package.endswith(":4.0.1")
+    assert settings.dataset_version == "v1"
+    assert settings.analytics_window_durations == (
+        "1 minute", "5 minutes", "15 minutes", "30 minutes", "60 minutes"
+    )
+    assert settings.analytics_symbol_output_path.as_posix() == "data/analytics/streaming/symbol"

@@ -1,0 +1,6 @@
+FROM python:3.11-slim
+
+RUN pip install --no-cache-dir prometheus-client==0.22.1
+
+WORKDIR /workspace
+CMD ["python", "-m", "src.monitoring.exporter"]

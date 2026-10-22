@@ -13,6 +13,7 @@ from urllib.parse import quote
 
 from pyspark import StorageLevel
 from pyspark.sql import DataFrame, SparkSession
+from pyspark.sql import functions as F
 from pyspark.sql.streaming import StreamingQuery
 
 from src.config.settings import (
@@ -30,6 +31,11 @@ from src.spark.streaming_transformations import (
     parse_kafka_market_bars,
     split_stream_records,
     validate_and_enrich_stream,
+)
+from src.spark.streaming_analytics import (
+    build_sector_analytics,
+    build_symbol_analytics,
+    filter_regular_session,
 )
 
 LOGGER = logging.getLogger(__name__)
@@ -53,6 +59,7 @@ def create_streaming_spark_session(
         .config("spark.sql.session.timeZone", "UTC")
         .config("spark.sql.shuffle.partitions", "6")
         .config("spark.ui.enabled", "false")
+        .config("spark.ui.prometheus.enabled", "true")
     )
     if os.environ.get("SPARK_IVY_DIR"):
         builder = builder.config("spark.jars.ivy", os.environ["SPARK_IVY_DIR"])
@@ -101,13 +108,23 @@ def run_structured_streaming(
         output_path=str(settings.output_path),
         invalid_output_path=str(settings.invalid_output_path),
         connector_package=settings.kafka_connector_package,
+        dataset_version=settings.dataset_version,
+        regular_session_only=settings.regular_session_only,
+        analytics_symbol_output_path=str(settings.analytics_symbol_output_path),
+        analytics_sector_output_path=str(settings.analytics_sector_output_path),
     )
     queries: dict[str, StreamingQuery] = {}
     failure: BaseException | None = None
+    # Publish a running-state snapshot immediately. The monitoring exporter can
+    # distinguish an active application from its final persisted metrics.
+    metrics.save(settings.metrics_path)
 
     try:
         kafka_stream = read_kafka_stream(spark, settings)
         valid, invalid = build_streaming_frames(kafka_stream, settings)
+        analytics_source = (
+            filter_regular_session(valid) if settings.regular_session_only else valid
+        )
         queries["valid"] = _start_query(
             valid,
             "financial-market-valid-stream",
@@ -130,6 +147,38 @@ def run_structured_streaming(
             metrics=metrics,
             stream_name="invalid",
         )
+        # Each stateful duration uses an independent query so every watermark can
+        # finalize its own windows. A union of stateful window aggregations only
+        # advanced the first branch reliably under available-now execution.
+        for duration in settings.analytics_window_durations:
+            duration_key = duration.replace(" ", "_")
+            for level, frame, output_root in (
+                (
+                    "symbol",
+                    build_symbol_analytics(
+                        analytics_source, (duration,), settings.dataset_version
+                    ),
+                    settings.analytics_symbol_output_path,
+                ),
+                (
+                    "sector",
+                    build_sector_analytics(
+                        analytics_source, (duration,), settings.dataset_version
+                    ),
+                    settings.analytics_sector_output_path,
+                ),
+            ):
+                stream_name = f"{level}_analytics_{duration_key}"
+                queries[stream_name] = _start_analytics_query(
+                    frame,
+                    f"financial-market-{stream_name.replace('_', '-')}",
+                    output_root / f"duration={duration_key}",
+                    settings.analytics_checkpoint_path / level / duration_key,
+                    settings.trigger_interval,
+                    available_now,
+                    metrics,
+                    stream_name,
+                )
 
         if available_now:
             for query in queries.values():
@@ -154,6 +203,7 @@ def run_structured_streaming(
             error=str(failure) if failure else None,
         )
         metrics.save(settings.metrics_path)
+        metrics.save(settings.analytics_metrics_path)
         spark.stop()
 
     LOGGER.info(
@@ -170,6 +220,70 @@ def run_structured_streaming(
     if failure:
         raise failure
     return metrics
+
+
+def _start_analytics_query(
+    dataframe: DataFrame,
+    query_name: str,
+    output_path: Path,
+    checkpoint_path: Path,
+    trigger_interval: str,
+    available_now: bool,
+    metrics: StructuredStreamingMetrics,
+    stream_name: str,
+) -> StreamingQuery:
+    output_path.mkdir(parents=True, exist_ok=True)
+    checkpoint_path.mkdir(parents=True, exist_ok=True)
+
+    def write_batch(batch: DataFrame, batch_id: int) -> None:
+        batch.persist(StorageLevel.MEMORY_AND_DISK)
+        try:
+            row_count = batch.count()
+            symbols = [row.symbol for row in batch.select("symbol").distinct().collect()] if "symbol" in batch.columns else []
+            sectors = [row.sector for row in batch.select("sector").distinct().collect()]
+            durations = [row.window_duration for row in batch.select("window_duration").distinct().collect()]
+            coverage = _analytics_coverage_summary(batch) if row_count else None
+            if row_count:
+                _write_micro_batch(batch, output_path, int(batch_id), False)
+            metrics.record_analytics(
+                stream_name, int(batch_id), row_count, durations, symbols, sectors, coverage
+            )
+        finally:
+            batch.unpersist()
+
+    writer = dataframe.writeStream.queryName(query_name).outputMode("append").option(
+        "checkpointLocation", checkpoint_path.resolve().as_posix()
+    ).foreachBatch(write_batch)
+    writer = writer.trigger(availableNow=True) if available_now else writer.trigger(processingTime=trigger_interval)
+    return writer.start()
+
+
+def _analytics_coverage_summary(dataframe: DataFrame) -> dict[str, float | int]:
+    row = dataframe.agg(
+        F.count(F.lit(1)).alias("total_windows"),
+        F.sum(F.when(F.col("event_count") >= F.col("expected_event_count"), 1).otherwise(0)).alias("complete_windows"),
+        F.avg("event_count").alias("average_event_count"),
+        F.expr("percentile_approx(event_count, 0.5, 10000)").alias("median_event_count"),
+        F.avg("coverage_ratio").alias("average_coverage_ratio"),
+        F.min("coverage_ratio").alias("minimum_coverage_ratio"),
+        F.expr("percentile_approx(coverage_ratio, 0.5, 10000)").alias("median_coverage_ratio"),
+        F.sum(F.when(F.col("volatility").isNotNull(), 1).otherwise(0)).alias("valid_volatility_windows"),
+    ).first()
+    total = int(row.total_windows)
+    complete = int(row.complete_windows or 0)
+    valid_volatility = int(row.valid_volatility_windows or 0)
+    return {
+        "total_windows": total,
+        "complete_windows": complete,
+        "incomplete_windows": total - complete,
+        "average_event_count": round(float(row.average_event_count or 0.0), 6),
+        "median_event_count": int(row.median_event_count or 0),
+        "average_coverage_ratio": round(float(row.average_coverage_ratio or 0.0), 6),
+        "minimum_coverage_ratio": round(float(row.minimum_coverage_ratio or 0.0), 6),
+        "median_coverage_ratio": round(float(row.median_coverage_ratio or 0.0), 6),
+        "valid_volatility_windows": valid_volatility,
+        "valid_volatility_ratio": round(valid_volatility / total, 6) if total else 0.0,
+    }
 
 
 def _start_query(
@@ -252,11 +366,23 @@ def _write_micro_batch(
             if partition_by_symbol:
                 writer = writer.partitionBy("symbol")
             writer.parquet(temporary_dir.as_posix())
-        temporary_dir.replace(final_dir)
+        _replace_directory_with_retry(temporary_dir, final_dir)
     except BaseException:
         if temporary_dir.exists():
             shutil.rmtree(temporary_dir)
         raise
+
+
+def _replace_directory_with_retry(source: Path, destination: Path) -> None:
+    """Handle short-lived bind-mount locks observed with Docker Desktop."""
+    for attempt in range(6):
+        try:
+            source.replace(destination)
+            return
+        except PermissionError:
+            if attempt == 5:
+                raise
+            time.sleep(0.5 * (attempt + 1))
 
 
 def _write_micro_batch_with_pyarrow(
@@ -345,6 +471,13 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--invalid-output-path", type=Path)
     parser.add_argument("--checkpoint-path", type=Path)
     parser.add_argument("--metrics-path", type=Path)
+    parser.add_argument("--analytics-symbol-output-path", type=Path)
+    parser.add_argument("--analytics-sector-output-path", type=Path)
+    parser.add_argument("--analytics-checkpoint-path", type=Path)
+    parser.add_argument("--analytics-metrics-path", type=Path)
+    parser.add_argument("--topic")
+    parser.add_argument("--dataset-version")
+    parser.add_argument("--analytics-windows", nargs="+")
     return parser.parse_args()
 
 
@@ -364,12 +497,21 @@ def main() -> int:
     try:
         settings = load_structured_streaming_settings(args.config)
         overrides = {
-            "starting_offsets": args.starting_offsets,
             "bootstrap_servers": args.bootstrap_servers,
             "output_path": args.output_path,
             "invalid_output_path": args.invalid_output_path,
             "checkpoint_path": args.checkpoint_path,
             "metrics_path": args.metrics_path,
+            "analytics_symbol_output_path": args.analytics_symbol_output_path,
+            "analytics_sector_output_path": args.analytics_sector_output_path,
+            "analytics_checkpoint_path": args.analytics_checkpoint_path,
+            "analytics_metrics_path": args.analytics_metrics_path,
+            "topic": args.topic,
+            "dataset_version": args.dataset_version,
+            "analytics_window_durations": tuple(args.analytics_windows)
+            if args.analytics_windows
+            else None,
+            "starting_offsets": args.starting_offsets,
         }
         settings = replace(
             settings,

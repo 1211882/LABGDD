@@ -20,6 +20,18 @@ env/
 # Data outputs
 data/raw/**
 data/processed/**
+data/analytics/**
+data/checkpoints/**
+data/monitoring_validation*/**
+checkpoints/**
+datasets/ml/**/raw/**
+datasets/ml/**/processed/**
+datasets/ml/**/features_v*/features_targets.parquet
+datasets/ml/**/.features_v*.failed/**
+models/classification/**/models/**
+models/classification/**/predictions/**
+models/regression/**/models/**
+models/regression/**/predictions/**
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 

@@ -49,6 +49,19 @@ class SparkSettings:
 
 
 @dataclass(frozen=True)
+class BatchAnalyticsSettings:
+    app_name: str
+    master: str
+    input_path: Path
+    output_root: Path
+    metrics_path: Path
+    window_durations: tuple[str, ...]
+    dataset_version: str
+    regular_session_only: bool
+    symbol_sectors: dict[str, str]
+
+
+@dataclass(frozen=True)
 class KafkaSettings:
     bootstrap_servers: str
     raw_topic: str
@@ -94,6 +107,13 @@ class StructuredStreamingSettings:
     invalid_output_path: Path
     checkpoint_path: Path
     metrics_path: Path
+    analytics_symbol_output_path: Path
+    analytics_sector_output_path: Path
+    analytics_checkpoint_path: Path
+    analytics_metrics_path: Path
+    analytics_window_durations: tuple[str, ...]
+    dataset_version: str
+    regular_session_only: bool
     watermark_delay: str
     starting_offsets: str
     fail_on_data_loss: bool
@@ -178,6 +198,37 @@ def load_spark_settings(
         metrics_path=Path(
             spark_config.get("metrics_path", "data/processed/batch_metrics.json")
         ),
+        symbol_sectors=_parse_symbol_sectors(raw_config),
+    )
+
+
+def load_batch_analytics_settings(
+    config_path: str | Path = "config/config.yaml",
+) -> BatchAnalyticsSettings:
+    """Load version-aware Phase 6 Batch analytics settings."""
+    raw_config = _load_yaml(config_path)
+    analytics = raw_config.get("batch_analytics", {})
+    dataset = raw_config.get("dataset", {})
+    version = str(dataset.get("active_version", "v1")).strip()
+    if not version:
+        raise ConfigurationError("dataset.active_version must not be empty.")
+    durations = _parse_analytics_durations(raw_config)
+    if not durations:
+        raise ConfigurationError("analytics.window_durations must not be empty.")
+    metrics_template = str(
+        analytics.get(
+            "metrics_path", "benchmarks/batch_analytics_windows_{dataset_version}.json"
+        )
+    )
+    return BatchAnalyticsSettings(
+        app_name=str(analytics.get("app_name", "financial-market-batch-analytics")),
+        master=str(analytics.get("master", "local[*]")),
+        input_path=Path(analytics.get("input_path", "data/processed/batch")),
+        output_root=Path(analytics.get("output_root", "data/analytics/batch")),
+        metrics_path=Path(metrics_template.format(dataset_version=version)),
+        window_durations=durations,
+        dataset_version=version,
+        regular_session_only=bool(dataset.get("regular_session_only", False)),
         symbol_sectors=_parse_symbol_sectors(raw_config),
     )
 
@@ -388,6 +439,25 @@ def load_structured_streaming_settings(
                 "metrics_path", "data/processed/structured_streaming_metrics.json"
             )
         ),
+        analytics_symbol_output_path=Path(
+            stream_config.get("analytics_symbol_output_path", "data/analytics/streaming/symbol")
+        ),
+        analytics_sector_output_path=Path(
+            stream_config.get("analytics_sector_output_path", "data/analytics/streaming/sector")
+        ),
+        analytics_checkpoint_path=Path(
+            stream_config.get("analytics_checkpoint_path", "data/checkpoints/streaming_analytics")
+        ),
+        analytics_metrics_path=Path(
+            str(stream_config.get("analytics_metrics_path", "benchmarks/streaming_analytics_windows_{dataset_version}.json")).format(
+                dataset_version=str(raw_config.get("dataset", {}).get("active_version", "v1"))
+            )
+        ),
+        analytics_window_durations=_parse_analytics_durations(raw_config),
+        dataset_version=str(raw_config.get("dataset", {}).get("active_version", "v1")),
+        regular_session_only=bool(
+            raw_config.get("dataset", {}).get("regular_session_only", False)
+        ),
         watermark_delay=strings["watermark_delay"],
         starting_offsets=strings["starting_offsets"],
         fail_on_data_loss=bool(stream_config.get("fail_on_data_loss", True)),
@@ -407,6 +477,22 @@ def _load_yaml(config_path: str | Path) -> dict[str, Any]:
     if not isinstance(raw_config, dict):
         raise ConfigurationError("Configuration root must be a mapping.")
     return raw_config
+
+
+def _parse_analytics_durations(raw_config: dict[str, Any]) -> tuple[str, ...]:
+    values = raw_config.get("analytics", {}).get("window_durations", [])
+    durations = tuple(str(value).strip() for value in values)
+    if not durations or any(not value for value in durations):
+        raise ConfigurationError("analytics.window_durations must not be empty.")
+    if len(set(durations)) != len(durations):
+        raise ConfigurationError("analytics.window_durations must be unique.")
+    for duration in durations:
+        parts = duration.split()
+        if len(parts) != 2 or not parts[0].isdigit() or int(parts[0]) <= 0 or parts[1] not in {"minute", "minutes"}:
+            raise ConfigurationError(
+                f"Unsupported analytics window duration: {duration}."
+            )
+    return durations
 
 
 def _parse_symbol_sectors(raw_config: dict[str, Any]) -> dict[str, str]:

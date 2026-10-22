@@ -77,6 +77,14 @@ storage:
   raw_data_dir: "data/raw"
   processed_data_dir: "data/processed"
 
+dataset:
+  active_version: "v1"
+  manifest_dir: "datasets/manifests"
+  regular_session_only: false
+
+analytics:
+  window_durations: ["1 minute", "5 minutes", "15 minutes", "30 minutes", "60 minutes"]
+
 spark:
   app_name: "financial-market-batch"
   master: "local[*]"
@@ -84,6 +92,13 @@ spark:
   output_path: "data/processed/batch"
   invalid_output_path: "data/processed/invalid"
   metrics_path: "data/processed/batch_metrics.json"
+
+batch_analytics:
+  app_name: "financial-market-batch-analytics"
+  master: "local[*]"
+  input_path: "data/processed/batch"
+  output_root: "data/analytics/batch"
+  metrics_path: "benchmarks/batch_analytics_windows_1m_5m_15m_30m_60m_{dataset_version}.json"
 
 kafka:
   bootstrap_servers: "localhost:9092"
@@ -123,3 +138,7 @@ spark_streaming:
   fail_on_data_loss: true
   max_offsets_per_trigger: 10000
   trigger_interval: "5 seconds"
+  analytics_symbol_output_path: "data/analytics/streaming/symbol"
+  analytics_sector_output_path: "data/analytics/streaming/sector"
+  analytics_checkpoint_path: "data/checkpoints/streaming_analytics"
+  analytics_metrics_path: "benchmarks/streaming_analytics_windows_1m_5m_15m_30m_60m_{dataset_version}.json"

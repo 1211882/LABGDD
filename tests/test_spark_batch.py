@@ -10,12 +10,19 @@ import pytest
 
 pyspark = pytest.importorskip("pyspark")
 from pyspark.sql import SparkSession
+from pyspark.sql import types as T
 
 from src.spark.batch_processor import (
+    _spark_schema_to_arrow,
     _write_partitioned_with_pyarrow,
     discover_parquet_files,
     transform_batch,
 )
+
+
+def test_arrow_schema_supports_phase6_trading_date() -> None:
+    schema = _spark_schema_to_arrow(T.StructType([T.StructField("trading_date", T.DateType())]))
+    assert str(schema.field("trading_date").type) == "date32[day]"
 from src.spark.transformations import add_financial_features, add_sector
 
 

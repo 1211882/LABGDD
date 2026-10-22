@@ -24,6 +24,10 @@ class StructuredStreamingMetrics:
     output_path: str
     invalid_output_path: str
     connector_package: str
+    dataset_version: str = "v1"
+    regular_session_only: bool = False
+    analytics_symbol_output_path: str | None = None
+    analytics_sector_output_path: str | None = None
     started_at_utc: str = field(default_factory=_utc_now)
     finished_at_utc: str | None = None
     duration_seconds: float = 0.0
@@ -37,11 +41,21 @@ class StructuredStreamingMetrics:
     average_input_rows_per_second: float = 0.0
     average_processed_rows_per_second: float = 0.0
     micro_batches: list[dict[str, Any]] = field(default_factory=list)
+    analytical_windows_emitted: dict[str, int] = field(default_factory=dict)
+    analytical_windows_per_duration: dict[str, dict[str, int]] = field(default_factory=dict)
+    analytics_coverage_by_query: dict[str, dict[str, Any]] = field(default_factory=dict)
+    analytics_symbols: list[str] = field(default_factory=list)
+    analytics_sectors: list[str] = field(default_factory=list)
+    analytics_output_size_bytes: int = 0
+    late_events: int = 0
+    dropped_watermark_events: int = 0
     status: str = "running"
     error: str | None = None
     _started_monotonic: float = field(default_factory=time.perf_counter, repr=False)
     _symbols: set[str] = field(default_factory=set, repr=False)
     _partitions: set[int] = field(default_factory=set, repr=False)
+    _analytics_symbols: set[str] = field(default_factory=set, repr=False)
+    _analytics_sectors: set[str] = field(default_factory=set, repr=False)
     _lock: threading.Lock = field(default_factory=threading.Lock, repr=False)
 
     def record_output(
@@ -101,6 +115,12 @@ class StructuredStreamingMetrics:
                     duplicate_metric_found = True
                     duplicate_count += int(custom["numDroppedDuplicateRows"])
         self.duplicate_events = duplicate_count if duplicate_metric_found else None
+        self.dropped_watermark_events = sum(
+            int(operator.get("numRowsDroppedByWatermark", 0))
+            for item in valid_progress
+            for operator in item.get("stateOperators", [])
+        )
+        self.late_events = self.dropped_watermark_events
 
         progress_records = []
         for query_name, items in progress_by_query.items():
@@ -127,6 +147,49 @@ class StructuredStreamingMetrics:
         self.kafka_partitions_observed = sorted(self._partitions)
         self.status = status
         self.error = error
+        self.analytics_symbols = sorted(self._analytics_symbols)
+        self.analytics_sectors = sorted(self._analytics_sectors)
+        self.analytics_output_size_bytes = sum(
+            path.stat().st_size
+            for root in (self.analytics_symbol_output_path, self.analytics_sector_output_path)
+            if root and Path(root).exists()
+            for path in Path(root).rglob("*")
+            if path.is_file()
+        )
+
+    def record_analytics(
+        self,
+        stream_name: str,
+        batch_id: int,
+        row_count: int,
+        durations: list[str],
+        symbols: list[str],
+        sectors: list[str],
+        coverage_summary: dict[str, Any] | None = None,
+    ) -> None:
+        with self._lock:
+            self.analytical_windows_emitted[stream_name] = (
+                self.analytical_windows_emitted.get(stream_name, 0) + row_count
+            )
+            level = "symbol" if stream_name.startswith("symbol_") else "sector"
+            for duration in durations:
+                counts = self.analytical_windows_per_duration.setdefault(
+                    duration, {"symbol": 0, "sector": 0}
+                )
+                counts[level] += row_count
+            self._analytics_symbols.update(symbols)
+            self._analytics_sectors.update(sectors)
+            if coverage_summary is not None and row_count:
+                self.analytics_coverage_by_query[stream_name] = coverage_summary
+            self.micro_batches.append({
+                "query": stream_name,
+                "batch_id": batch_id,
+                "output_rows": row_count,
+                "window_durations": sorted(durations),
+                "symbols": sorted(symbols),
+                "sectors": sorted(sectors),
+                "coverage": coverage_summary,
+            })
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -137,6 +200,8 @@ class StructuredStreamingMetrics:
                 "spark": pyspark.__version__,
             },
             "connector_package": self.connector_package,
+            "dataset_version": self.dataset_version,
+            "regular_session_only": self.regular_session_only,
             "kafka_topic": self.kafka_topic,
             "watermark_delay": self.watermark_delay,
             "checkpoint_path": self.checkpoint_path,
@@ -155,6 +220,16 @@ class StructuredStreamingMetrics:
             "active_symbols": self.active_symbols,
             "kafka_partitions_observed": self.kafka_partitions_observed,
             "micro_batches": self.micro_batches,
+            "analytical_windows_emitted": self.analytical_windows_emitted,
+            "analytical_windows_per_duration": self.analytical_windows_per_duration,
+            "analytics_coverage_by_query": self.analytics_coverage_by_query,
+            "analytics_symbols": self.analytics_symbols,
+            "analytics_sectors": self.analytics_sectors,
+            "analytics_output_size_bytes": self.analytics_output_size_bytes,
+            "late_events": self.late_events,
+            "dropped_watermark_events": self.dropped_watermark_events,
+            "analytics_symbol_output_path": self.analytics_symbol_output_path,
+            "analytics_sector_output_path": self.analytics_sector_output_path,
             "status": self.status,
             "error": self.error,
         }

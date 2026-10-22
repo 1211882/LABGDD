@@ -1,0 +1,28 @@
+{
+  "dataset_version": "v1",
+  "generated_at_utc": "2026-10-12T18:43:55.323793Z",
+  "input_rows": 113988,
+  "number_of_sectors": 6,
+  "number_of_symbols": 30,
+  "output_root": "data\\analytics\\batch\\v1",
+  "output_size_bytes": 6489385,
+  "processing_duration_seconds": 36.026521,
+  "regular_session_only": false,
+  "rows_after_session_filter": 113988,
+  "rows_per_second": 3164.002,
+  "sector_windows": {
+    "1 minute": 30290,
+    "15 minutes": 2124,
+    "5 minutes": 6249
+  },
+  "symbol_windows": {
+    "1 minute": 113988,
+    "15 minutes": 10277,
+    "5 minutes": 29580
+  },
+  "symbol_windows_with_missing_minutes": {
+    "1 minute": 0,
+    "15 minutes": 6904,
+    "5 minutes": 15264
+  }
+}

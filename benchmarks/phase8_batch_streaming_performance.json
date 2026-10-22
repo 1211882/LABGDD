@@ -1,0 +1,1828 @@
+{
+  "phase": "Phase 8 - Batch vs Streaming Performance and Scalability",
+  "timestamp_utc": "2026-10-18T16:07:46.053241Z",
+  "environment": {
+    "scope": "local single-machine controlled scalability experiment",
+    "os": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.9",
+    "java": "openjdk version \"21.0.12.1\" 2026-08-18 LTS",
+    "spark": "4.0.1",
+    "kafka": "4.3.1",
+    "docker": "Docker version 29.8.2, build 7fc2dff",
+    "docker_compose": "Docker Compose version v5.6.0",
+    "cpu_model": "Intel64 Family 6 Model 158 Stepping 13, GenuineIntel",
+    "logical_cpu_count": 8,
+    "total_memory_bytes": 17086664704,
+    "spark_master": "local[*]",
+    "spark_shuffle_partitions": 6,
+    "spark_workers": 1,
+    "kafka_brokers": 1,
+    "kafka_partitions_per_run": 6,
+    "container_memory_limit": null
+  },
+  "configuration": {
+    "workload_sizes": [
+      10000,
+      25000,
+      50000,
+      100000
+    ],
+    "repetitions": 3,
+    "warmup": true,
+    "windows": [
+      "5 minutes",
+      "15 minutes",
+      "30 minutes"
+    ],
+    "trigger_interval": "5 seconds",
+    "watermark_delay": "10 minutes"
+  },
+  "workload_generation": "Deterministic timestamp-safe OHLCV expansion; identical logical events feed both paths; one Streaming-only watermark sentinel is excluded from analytical output.",
+  "latency_definition": "Kafka record timestamp to processing_time in the committed valid sink; historical market event time is not used.",
+  "runs": [
+    {
+      "architecture": "batch",
+      "status": "completed",
+      "input_rows": 10000,
+      "input_bytes": 1216972,
+      "valid_rows": 10000,
+      "invalid_rows": 0,
+      "duplicate_rows": 0,
+      "output_rows": 4518,
+      "output_bytes": 194864,
+      "startup_time_seconds": 11.364135300042108,
+      "processing_time_seconds": 34.46638030000031,
+      "total_duration_seconds": 77.0185058999341,
+      "throughput_rows_per_second": 290.1378071314298,
+      "analytical_windows": {
+        "5 minutes": {
+          "symbol": 2004,
+          "sector": 1002
+        },
+        "15 minutes": {
+          "symbol": 672,
+          "sector": 336
+        },
+        "30 minutes": {
+          "symbol": 336,
+          "sector": 168
+        }
+      },
+      "run_id": "run_1",
+      "workload_rows": 10000,
+      "wall_duration_seconds": 78.75547560001723,
+      "cpu_mean_percent": null,
+      "cpu_peak_percent": null,
+      "memory_peak_mb": 908.49609375,
+      "duplicate_analytical_keys": 0,
+      "output_exists": true,
+      "cpu_measurement_note": "Unavailable: the host parent-process sampler did not reliably attribute JVM child CPU."
+    },
+    {
+      "architecture": "streaming",
+      "status": "completed",
+      "run_id": "run_1",
+      "workload_rows": 10000,
+      "input_rows": 10001,
+      "valid_rows": 10001,
+      "invalid_rows": 0,
+      "duplicate_rows": 0,
+      "output_rows": 4518,
+      "output_bytes": 583664,
+      "total_duration_seconds": 122.96298440010287,
+      "spark_duration_seconds": 107.787743,
+      "spark_throughput_events_per_second": 92.78420460107417,
+      "spark_reported_processed_rows_per_second": 40.369,
+      "microbatch_count": 3,
+      "microbatch_mean_duration_ms": 30993.333333333332,
+      "microbatch_max_duration_ms": 83007.0,
+      "mean_processing_latency_ms": 15529.61803819618,
+      "median_processing_latency_ms": 15485.0,
+      "p95_processing_latency_ms": 15580.0,
+      "p99_processing_latency_ms": 15589.0,
+      "late_events": 0,
+      "watermark_dropped_events": 0,
+      "analytical_windows": {
+        "15 minutes": {
+          "sector": 336,
+          "symbol": 672
+        },
+        "30 minutes": {
+          "sector": 168,
+          "symbol": 336
+        },
+        "5 minutes": {
+          "sector": 1002,
+          "symbol": 2004
+        }
+      },
+      "events_produced": 10001,
+      "producer_duration_seconds": 0.6256256999913603,
+      "producer_throughput_events_per_second": 15985.596499853043,
+      "cpu_mean_percent": 411.8959016393443,
+      "cpu_peak_percent": 803.15,
+      "memory_peak_mb": 2244.12041216,
+      "kafka_topic": "phase8-10000-run-1",
+      "kafka_final_lag_events": 0,
+      "watermark_progression": [
+        "1970-01-01T00:00:00.000Z",
+        "2026-01-06T18:06:00.000Z",
+        "2026-01-06T20:06:00.000Z"
+      ],
+      "state_store_peak_rows": 9996,
+      "duplicate_analytical_keys": 0,
+      "output_exists": true
+    },
+    {
+      "architecture": "batch",
+      "status": "completed",
+      "input_rows": 10000,
+      "input_bytes": 1216972,
+      "valid_rows": 10000,
+      "invalid_rows": 0,
+      "duplicate_rows": 0,
+      "output_rows": 4518,
+      "output_bytes": 194864,
+      "startup_time_seconds": 13.730789800174534,
+      "processing_time_seconds": 32.32374619995244,
+      "total_duration_seconds": 81.02460470004007,
+      "throughput_rows_per_second": 309.37008161556207,
+      "analytical_windows": {
+        "5 minutes": {
+          "symbol": 2004,
+          "sector": 1002
+        },
+        "15 minutes": {
+          "symbol": 672,
+          "sector": 336
+        },
+        "30 minutes": {
+          "symbol": 336,
+          "sector": 168
+        }
+      },
+      "run_id": "run_2",
+      "workload_rows": 10000,
+      "wall_duration_seconds": 83.29766839998774,
+      "cpu_mean_percent": null,
+      "cpu_peak_percent": null,
+      "memory_peak_mb": 902.453125,
+      "duplicate_analytical_keys": 0,
+      "output_exists": true,
+      "cpu_measurement_note": "Unavailable: the host parent-process sampler did not reliably attribute JVM child CPU."
+    },
+    {
+      "architecture": "streaming",
+      "status": "completed",
+      "run_id": "run_2",
+      "workload_rows": 10000,
+      "input_rows": 10001,
+      "valid_rows": 10001,
+      "invalid_rows": 0,
+      "duplicate_rows": 0,
+      "output_rows": 4518,
+      "output_bytes": 583428,
+      "total_duration_seconds": 114.70886199991219,
+      "spark_duration_seconds": 98.316247,
+      "spark_throughput_events_per_second": 101.72276002357982,
+      "spark_reported_processed_rows_per_second": 43.516,
+      "microbatch_count": 3,
+      "microbatch_mean_duration_ms": 28018.0,
+      "microbatch_max_duration_ms": 77074.0,
+      "mean_processing_latency_ms": 20458.1498850115,
+      "median_processing_latency_ms": 20418.0,
+      "p95_processing_latency_ms": 20530.0,
+      "p99_processing_latency_ms": 20541.0,
+      "late_events": 0,
+      "watermark_dropped_events": 0,
+      "analytical_windows": {
+        "15 minutes": {
+          "sector": 336,
+          "symbol": 672
+        },
+        "30 minutes": {
+          "sector": 168,
+          "symbol": 336
+        },
+        "5 minutes": {
+          "sector": 1002,
+          "symbol": 2004
+        }
+      },
+      "events_produced": 10001,
+      "producer_duration_seconds": 0.6048098998144269,
+      "producer_throughput_events_per_second": 16535.774303741713,
+      "cpu_mean_percent": 445.2815789473684,
+      "cpu_peak_percent": 978.42,
+      "memory_peak_mb": 2093.7965568,
+      "kafka_topic": "phase8-10000-run-2",
+      "kafka_final_lag_events": 0,
+      "watermark_progression": [
+        "1970-01-01T00:00:00.000Z",
+        "2026-01-06T18:06:00.000Z",
+        "2026-01-06T20:06:00.000Z"
+      ],
+      "state_store_peak_rows": 9996,
+      "duplicate_analytical_keys": 0,
+      "output_exists": true
+    },
+    {
+      "architecture": "batch",
+      "status": "completed",
+      "input_rows": 10000,
+      "input_bytes": 1216972,
+      "valid_rows": 10000,
+      "invalid_rows": 0,
+      "duplicate_rows": 0,
+      "output_rows": 4518,
+      "output_bytes": 194864,
+      "startup_time_seconds": 11.598692399915308,
+      "processing_time_seconds": 28.686696300050244,
+      "total_duration_seconds": 73.36132769985124,
+      "throughput_rows_per_second": 348.59364408520213,
+      "analytical_windows": {
+        "5 minutes": {
+          "symbol": 2004,
+          "sector": 1002
+        },
+        "15 minutes": {
+          "symbol": 672,
+          "sector": 336
+        },
+        "30 minutes": {
+          "symbol": 336,
+          "sector": 168
+        }
+      },
+      "run_id": "run_3",
+      "workload_rows": 10000,
+      "wall_duration_seconds": 74.98373869992793,
+      "cpu_mean_percent": null,
+      "cpu_peak_percent": null,
+      "memory_peak_mb": 1092.7734375,
+      "duplicate_analytical_keys": 0,
+      "output_exists": true,
+      "cpu_measurement_note": "Unavailable: the host parent-process sampler did not reliably attribute JVM child CPU."
+    },
+    {
+      "architecture": "streaming",
+      "status": "completed",
+      "run_id": "run_3",
+      "workload_rows": 10000,
+      "input_rows": 10001,
+      "valid_rows": 10001,
+      "invalid_rows": 0,
+      "duplicate_rows": 0,
+      "output_rows": 4518,
+      "output_bytes": 583527,
+      "total_duration_seconds": 117.5183590000961,
+      "spark_duration_seconds": 102.684288,
+      "spark_throughput_events_per_second": 97.39562103210962,
+      "spark_reported_processed_rows_per_second": 42.333,
+      "microbatch_count": 3,
+      "microbatch_mean_duration_ms": 29501.0,
+      "microbatch_max_duration_ms": 79139.0,
+      "mean_processing_latency_ms": 17174.054494550546,
+      "median_processing_latency_ms": 17138.0,
+      "p95_processing_latency_ms": 17238.0,
+      "p99_processing_latency_ms": 17245.0,
+      "late_events": 0,
+      "watermark_dropped_events": 0,
+      "analytical_windows": {
+        "15 minutes": {
+          "sector": 336,
+          "symbol": 672
+        },
+        "30 minutes": {
+          "sector": 168,
+          "symbol": 336
+        },
+        "5 minutes": {
+          "sector": 1002,
+          "symbol": 2004
+        }
+      },
+      "events_produced": 10001,
+      "producer_duration_seconds": 0.5795234001707286,
+      "producer_throughput_events_per_second": 17257.284170153765,
+      "cpu_mean_percent": 425.57689655172413,
+      "cpu_peak_percent": 860.03,
+      "memory_peak_mb": 2044.404432896,
+      "kafka_topic": "phase8-10000-run-3",
+      "kafka_final_lag_events": 0,
+      "watermark_progression": [
+        "1970-01-01T00:00:00.000Z",
+        "2026-01-06T18:06:00.000Z",
+        "2026-01-06T20:06:00.000Z"
+      ],
+      "state_store_peak_rows": 9996,
+      "duplicate_analytical_keys": 0,
+      "output_exists": true
+    },
+    {
+      "architecture": "batch",
+      "status": "completed",
+      "input_rows": 25000,
+      "input_bytes": 3042436,
+      "valid_rows": 25000,
+      "invalid_rows": 0,
+      "duplicate_rows": 0,
+      "output_rows": 11259,
+      "output_bytes": 319199,
+      "startup_time_seconds": 9.76698900014162,
+      "processing_time_seconds": 33.98148879990913,
+      "total_duration_seconds": 69.83296329993755,
+      "throughput_rows_per_second": 735.6946644452745,
+      "analytical_windows": {
+        "5 minutes": {
+          "symbol": 5004,
+          "sector": 2502
+        },
+        "15 minutes": {
+          "symbol": 1668,
+          "sector": 834
+        },
+        "30 minutes": {
+          "symbol": 834,
+          "sector": 417
+        }
+      },
+      "run_id": "run_1",
+      "workload_rows": 25000,
+      "wall_duration_seconds": 71.44975779997185,
+      "cpu_mean_percent": null,
+      "cpu_peak_percent": null,
+      "memory_peak_mb": 1066.15234375,
+      "duplicate_analytical_keys": 0,
+      "output_exists": true,
+      "cpu_measurement_note": "Unavailable: the host parent-process sampler did not reliably attribute JVM child CPU."
+    },
+    {
+      "architecture": "streaming",
+      "status": "completed",
+      "run_id": "run_1",
+      "workload_rows": 25000,
+      "input_rows": 25001,
+      "valid_rows": 25001,
+      "invalid_rows": 0,
+      "duplicate_rows": 0,
+      "output_rows": 11259,
+      "output_bytes": 1214430,
+      "total_duration_seconds": 147.51116069988348,
+      "spark_duration_seconds": 132.897846,
+      "spark_throughput_events_per_second": 188.12193539991614,
+      "spark_reported_processed_rows_per_second": 172.994,
+      "microbatch_count": 4,
+      "microbatch_mean_duration_ms": 30218.0,
+      "microbatch_max_duration_ms": 65130.0,
+      "mean_processing_latency_ms": 60403.876364945405,
+      "median_processing_latency_ms": 80111.0,
+      "p95_processing_latency_ms": 110980.0,
+      "p99_processing_latency_ms": 111003.0,
+      "late_events": 0,
+      "watermark_dropped_events": 0,
+      "analytical_windows": {
+        "15 minutes": {
+          "sector": 834,
+          "symbol": 1668
+        },
+        "30 minutes": {
+          "sector": 417,
+          "symbol": 834
+        },
+        "5 minutes": {
+          "sector": 2502,
+          "symbol": 5004
+        }
+      },
+      "events_produced": 25001,
+      "producer_duration_seconds": 0.6745178001001477,
+      "producer_throughput_events_per_second": 37064.99664840279,
+      "cpu_mean_percent": 450.83712328767126,
+      "cpu_peak_percent": 831.31,
+      "memory_peak_mb": 2237.677961216,
+      "kafka_topic": "phase8-25000-run-1",
+      "kafka_final_lag_events": 0,
+      "watermark_progression": [
+        "1970-01-01T00:00:00.000Z",
+        "2026-01-06T18:06:00.000Z",
+        "2026-01-07T21:52:00.000Z",
+        "2026-01-08T13:46:00.000Z"
+      ],
+      "state_store_peak_rows": 10112,
+      "duplicate_analytical_keys": 0,
+      "output_exists": true
+    },
+    {
+      "architecture": "batch",
+      "status": "completed",
+      "input_rows": 25000,
+      "input_bytes": 3042436,
+      "valid_rows": 25000,
+      "invalid_rows": 0,
+      "duplicate_rows": 0,
+      "output_rows": 11259,
+      "output_bytes": 319199,
+      "startup_time_seconds": 9.806523300008848,
+      "processing_time_seconds": 32.59370460011996,
+      "total_duration_seconds": 67.8651133000385,
+      "throughput_rows_per_second": 767.019285064883,
+      "analytical_windows": {
+        "5 minutes": {
+          "symbol": 5004,
+          "sector": 2502
+        },
+        "15 minutes": {
+          "symbol": 1668,
+          "sector": 834
+        },
+        "30 minutes": {
+          "symbol": 834,
+          "sector": 417
+        }
+      },
+      "run_id": "run_2",
+      "workload_rows": 25000,
+      "wall_duration_seconds": 69.57295590010472,
+      "cpu_mean_percent": null,
+      "cpu_peak_percent": null,
+      "memory_peak_mb": 1029.828125,
+      "duplicate_analytical_keys": 0,
+      "output_exists": true,
+      "cpu_measurement_note": "Unavailable: the host parent-process sampler did not reliably attribute JVM child CPU."
+    },
+    {
+      "architecture": "streaming",
+      "status": "completed",
+      "run_id": "run_2",
+      "workload_rows": 25000,
+      "input_rows": 25001,
+      "valid_rows": 25001,
+      "invalid_rows": 0,
+      "duplicate_rows": 0,
+      "output_rows": 11259,
+      "output_bytes": 1214423,
+      "total_duration_seconds": 153.4512028999161,
+      "spark_duration_seconds": 137.166194,
+      "spark_throughput_events_per_second": 182.26794278479434,
+      "spark_reported_processed_rows_per_second": 169.193,
+      "microbatch_count": 4,
+      "microbatch_mean_duration_ms": 31336.25,
+      "microbatch_max_duration_ms": 68974.0,
+      "mean_processing_latency_ms": 63482.64513419463,
+      "median_processing_latency_ms": 84303.0,
+      "p95_processing_latency_ms": 117261.0,
+      "p99_processing_latency_ms": 117280.0,
+      "late_events": 0,
+      "watermark_dropped_events": 0,
+      "analytical_windows": {
+        "15 minutes": {
+          "sector": 834,
+          "symbol": 1668
+        },
+        "30 minutes": {
+          "sector": 417,
+          "symbol": 834
+        },
+        "5 minutes": {
+          "sector": 2502,
+          "symbol": 5004
+        }
+      },
+      "events_produced": 25001,
+      "producer_duration_seconds": 0.6366171000991017,
+      "producer_throughput_events_per_second": 39271.6438124394,
+      "cpu_mean_percent": 440.39986842105264,
+      "cpu_peak_percent": 850.01,
+      "memory_peak_mb": 2199.023255552,
+      "kafka_topic": "phase8-25000-run-2",
+      "kafka_final_lag_events": 0,
+      "watermark_progression": [
+        "1970-01-01T00:00:00.000Z",
+        "2026-01-06T18:06:00.000Z",
+        "2026-01-07T21:52:00.000Z",
+        "2026-01-08T13:46:00.000Z"
+      ],
+      "state_store_peak_rows": 10112,
+      "duplicate_analytical_keys": 0,
+      "output_exists": true
+    },
+    {
+      "architecture": "batch",
+      "status": "completed",
+      "input_rows": 25000,
+      "input_bytes": 3042436,
+      "valid_rows": 25000,
+      "invalid_rows": 0,
+      "duplicate_rows": 0,
+      "output_rows": 11259,
+      "output_bytes": 319199,
+      "startup_time_seconds": 9.532781600020826,
+      "processing_time_seconds": 31.112506299978122,
+      "total_duration_seconds": 66.93269739998505,
+      "throughput_rows_per_second": 803.5353937402845,
+      "analytical_windows": {
+        "5 minutes": {
+          "symbol": 5004,
+          "sector": 2502
+        },
+        "15 minutes": {
+          "symbol": 1668,
+          "sector": 834
+        },
+        "30 minutes": {
+          "symbol": 834,
+          "sector": 417
+        }
+      },
+      "run_id": "run_3",
+      "workload_rows": 25000,
+      "wall_duration_seconds": 68.59076299984008,
+      "cpu_mean_percent": null,
+      "cpu_peak_percent": null,
+      "memory_peak_mb": 1056.70703125,
+      "duplicate_analytical_keys": 0,
+      "output_exists": true,
+      "cpu_measurement_note": "Unavailable: the host parent-process sampler did not reliably attribute JVM child CPU."
+    },
+    {
+      "architecture": "streaming",
+      "status": "completed",
+      "run_id": "run_3",
+      "workload_rows": 25000,
+      "input_rows": 25001,
+      "valid_rows": 25001,
+      "invalid_rows": 0,
+      "duplicate_rows": 0,
+      "output_rows": 11259,
+      "output_bytes": 1214617,
+      "total_duration_seconds": 149.22225230000913,
+      "spark_duration_seconds": 132.860609,
+      "spark_throughput_events_per_second": 188.17466055721601,
+      "spark_reported_processed_rows_per_second": 174.533,
+      "microbatch_count": 4,
+      "microbatch_mean_duration_ms": 30284.0,
+      "microbatch_max_duration_ms": 66075.0,
+      "mean_processing_latency_ms": 61009.77548898044,
+      "median_processing_latency_ms": 81375.0,
+      "p95_processing_latency_ms": 110888.0,
+      "p99_processing_latency_ms": 110897.0,
+      "late_events": 0,
+      "watermark_dropped_events": 0,
+      "analytical_windows": {
+        "15 minutes": {
+          "sector": 834,
+          "symbol": 1668
+        },
+        "30 minutes": {
+          "sector": 417,
+          "symbol": 834
+        },
+        "5 minutes": {
+          "sector": 2502,
+          "symbol": 5004
+        }
+      },
+      "events_produced": 25001,
+      "producer_duration_seconds": 0.6210902999155223,
+      "producer_throughput_events_per_second": 40253.40599168996,
+      "cpu_mean_percent": 436.9056756756757,
+      "cpu_peak_percent": 754.74,
+      "memory_peak_mb": 2339.683434496,
+      "kafka_topic": "phase8-25000-run-3",
+      "kafka_final_lag_events": 0,
+      "watermark_progression": [
+        "1970-01-01T00:00:00.000Z",
+        "2026-01-06T18:06:00.000Z",
+        "2026-01-07T21:52:00.000Z",
+        "2026-01-08T13:46:00.000Z"
+      ],
+      "state_store_peak_rows": 10112,
+      "duplicate_analytical_keys": 0,
+      "output_exists": true
+    },
+    {
+      "architecture": "batch",
+      "status": "completed",
+      "input_rows": 50000,
+      "input_bytes": 6084866,
+      "valid_rows": 50000,
+      "invalid_rows": 0,
+      "duplicate_rows": 0,
+      "output_rows": 22509,
+      "output_bytes": 512596,
+      "startup_time_seconds": 9.449298900086433,
+      "processing_time_seconds": 36.164272599853575,
+      "total_duration_seconds": 72.28633409994654,
+      "throughput_rows_per_second": 1382.5799996929136,
+      "analytical_windows": {
+        "5 minutes": {
+          "symbol": 10002,
+          "sector": 5001
+        },
+        "15 minutes": {
+          "symbol": 3336,
+          "sector": 1668
+        },
+        "30 minutes": {
+          "symbol": 1668,
+          "sector": 834
+        }
+      },
+      "run_id": "run_1",
+      "workload_rows": 50000,
+      "wall_duration_seconds": 73.8593290001154,
+      "cpu_mean_percent": null,
+      "cpu_peak_percent": null,
+      "memory_peak_mb": 1005.390625,
+      "duplicate_analytical_keys": 0,
+      "output_exists": true,
+      "cpu_measurement_note": "Unavailable: the host parent-process sampler did not reliably attribute JVM child CPU."
+    },
+    {
+      "architecture": "streaming",
+      "status": "completed",
+      "run_id": "run_1",
+      "workload_rows": 50000,
+      "input_rows": 50001,
+      "valid_rows": 50001,
+      "invalid_rows": 0,
+      "duplicate_rows": 0,
+      "output_rows": 22509,
+      "output_bytes": 2335826,
+      "total_duration_seconds": 253.74358809995465,
+      "spark_duration_seconds": 234.660537,
+      "spark_throughput_events_per_second": 213.07800893679877,
+      "spark_reported_processed_rows_per_second": 221.174,
+      "microbatch_count": 7,
+      "microbatch_mean_duration_ms": 30661.285714285714,
+      "microbatch_max_duration_ms": 62494.0,
+      "mean_processing_latency_ms": 113054.83940321194,
+      "median_processing_latency_ms": 112631.0,
+      "p95_processing_latency_ms": 206979.0,
+      "p99_processing_latency_ms": 207057.0,
+      "late_events": 0,
+      "watermark_dropped_events": 0,
+      "analytical_windows": {
+        "15 minutes": {
+          "sector": 1668,
+          "symbol": 3336
+        },
+        "30 minutes": {
+          "sector": 834,
+          "symbol": 1668
+        },
+        "5 minutes": {
+          "sector": 5001,
+          "symbol": 10002
+        }
+      },
+      "events_produced": 50001,
+      "producer_duration_seconds": 1.3958326000720263,
+      "producer_throughput_events_per_second": 35821.630758172505,
+      "cpu_mean_percent": 437.37016,
+      "cpu_peak_percent": 837.35,
+      "memory_peak_mb": 2375.116914688,
+      "kafka_topic": "phase8-50000-run-1",
+      "kafka_final_lag_events": 0,
+      "watermark_progression": [
+        "1970-01-01T00:00:00.000Z",
+        "2026-01-06T18:06:00.000Z",
+        "2026-01-07T21:52:00.000Z",
+        "2026-01-09T01:39:00.000Z",
+        "2026-01-10T05:25:00.000Z",
+        "2026-01-11T09:11:00.000Z",
+        "2026-01-11T11:13:00.000Z"
+      ],
+      "state_store_peak_rows": 10113,
+      "duplicate_analytical_keys": 0,
+      "output_exists": true
+    },
+    {
+      "architecture": "batch",
+      "status": "completed",
+      "input_rows": 50000,
+      "input_bytes": 6084866,
+      "valid_rows": 50000,
+      "invalid_rows": 0,
+      "duplicate_rows": 0,
+      "output_rows": 22509,
+      "output_bytes": 512596,
+      "startup_time_seconds": 9.577938599977642,
+      "processing_time_seconds": 37.56240940000862,
+      "total_duration_seconds": 80.55431280005723,
+      "throughput_rows_per_second": 1331.1180192820252,
+      "analytical_windows": {
+        "5 minutes": {
+          "symbol": 10002,
+          "sector": 5001
+        },
+        "15 minutes": {
+          "symbol": 3336,
+          "sector": 1668
+        },
+        "30 minutes": {
+          "symbol": 1668,
+          "sector": 834
+        }
+      },
+      "run_id": "run_2",
+      "workload_rows": 50000,
+      "wall_duration_seconds": 82.09270299994387,
+      "cpu_mean_percent": null,
+      "cpu_peak_percent": null,
+      "memory_peak_mb": 1229.44921875,
+      "duplicate_analytical_keys": 0,
+      "output_exists": true,
+      "cpu_measurement_note": "Unavailable: the host parent-process sampler did not reliably attribute JVM child CPU."
+    },
+    {
+      "architecture": "streaming",
+      "status": "completed",
+      "run_id": "run_2",
+      "workload_rows": 50000,
+      "input_rows": 50001,
+      "valid_rows": 50001,
+      "invalid_rows": 0,
+      "duplicate_rows": 0,
+      "output_rows": 22509,
+      "output_bytes": 2335503,
+      "total_duration_seconds": 284.68175869993865,
+      "spark_duration_seconds": 263.694347,
+      "spark_throughput_events_per_second": 189.6172616851737,
+      "spark_reported_processed_rows_per_second": 200.124,
+      "microbatch_count": 7,
+      "microbatch_mean_duration_ms": 34808.42857142857,
+      "microbatch_max_duration_ms": 75944.0,
+      "mean_processing_latency_ms": 136949.39461210775,
+      "median_processing_latency_ms": 147159.0,
+      "p95_processing_latency_ms": 235731.0,
+      "p99_processing_latency_ms": 235805.0,
+      "late_events": 0,
+      "watermark_dropped_events": 0,
+      "analytical_windows": {
+        "15 minutes": {
+          "sector": 1668,
+          "symbol": 3336
+        },
+        "30 minutes": {
+          "sector": 834,
+          "symbol": 1668
+        },
+        "5 minutes": {
+          "sector": 5001,
+          "symbol": 10002
+        }
+      },
+      "events_produced": 50001,
+      "producer_duration_seconds": 1.9847869998775423,
+      "producer_throughput_events_per_second": 25192.123891926425,
+      "cpu_mean_percent": 436.0345714285714,
+      "cpu_peak_percent": 895.78,
+      "memory_peak_mb": 2400.8867184640003,
+      "kafka_topic": "phase8-50000-run-2",
+      "kafka_final_lag_events": 0,
+      "watermark_progression": [
+        "1970-01-01T00:00:00.000Z",
+        "2026-01-06T18:06:00.000Z",
+        "2026-01-07T21:52:00.000Z",
+        "2026-01-09T01:39:00.000Z",
+        "2026-01-10T05:25:00.000Z",
+        "2026-01-11T09:11:00.000Z",
+        "2026-01-11T11:13:00.000Z"
+      ],
+      "state_store_peak_rows": 10113,
+      "duplicate_analytical_keys": 0,
+      "output_exists": true
+    },
+    {
+      "architecture": "batch",
+      "status": "completed",
+      "input_rows": 50000,
+      "input_bytes": 6084866,
+      "valid_rows": 50000,
+      "invalid_rows": 0,
+      "duplicate_rows": 0,
+      "output_rows": 22509,
+      "output_bytes": 512596,
+      "startup_time_seconds": 13.358581200009212,
+      "processing_time_seconds": 57.9758399000857,
+      "total_duration_seconds": 117.23914389987476,
+      "throughput_rows_per_second": 862.4282129619668,
+      "analytical_windows": {
+        "5 minutes": {
+          "symbol": 10002,
+          "sector": 5001
+        },
+        "15 minutes": {
+          "symbol": 3336,
+          "sector": 1668
+        },
+        "30 minutes": {
+          "symbol": 1668,
+          "sector": 834
+        }
+      },
+      "run_id": "run_3",
+      "workload_rows": 50000,
+      "wall_duration_seconds": 118.98380950000137,
+      "cpu_mean_percent": null,
+      "cpu_peak_percent": null,
+      "memory_peak_mb": 965.46484375,
+      "duplicate_analytical_keys": 0,
+      "output_exists": true,
+      "cpu_measurement_note": "Unavailable: the host parent-process sampler did not reliably attribute JVM child CPU."
+    },
+    {
+      "architecture": "streaming",
+      "status": "completed",
+      "run_id": "run_3_retry",
+      "workload_rows": 50000,
+      "input_rows": 50001,
+      "valid_rows": 50001,
+      "invalid_rows": 0,
+      "duplicate_rows": 0,
+      "output_rows": 22509,
+      "output_bytes": 2335028,
+      "total_duration_seconds": 402.74610319989733,
+      "spark_duration_seconds": 362.847758,
+      "spark_throughput_events_per_second": 137.80159556614927,
+      "spark_reported_processed_rows_per_second": 225.634,
+      "microbatch_count": 7,
+      "microbatch_mean_duration_ms": 47688.71428571428,
+      "microbatch_max_duration_ms": 113793.0,
+      "mean_processing_latency_ms": 223787.63650726987,
+      "median_processing_latency_ms": 257329.0,
+      "p95_processing_latency_ms": 342466.0,
+      "p99_processing_latency_ms": 342565.0,
+      "late_events": 0,
+      "watermark_dropped_events": 0,
+      "analytical_windows": {
+        "15 minutes": {
+          "sector": 1668,
+          "symbol": 3336
+        },
+        "30 minutes": {
+          "sector": 834,
+          "symbol": 1668
+        },
+        "5 minutes": {
+          "sector": 5001,
+          "symbol": 10002
+        }
+      },
+      "events_produced": 50001,
+      "producer_duration_seconds": 2.418866300024092,
+      "producer_throughput_events_per_second": 20671.254132360264,
+      "cpu_mean_percent": 387.30805128205134,
+      "cpu_peak_percent": 890.76,
+      "memory_peak_mb": 2353.642078208,
+      "kafka_topic": "phase8-50000-run-3-retry-0fe5c8f3",
+      "kafka_final_lag_events": 0,
+      "watermark_progression": [
+        "1970-01-01T00:00:00.000Z",
+        "2026-01-06T18:06:00.000Z",
+        "2026-01-07T21:52:00.000Z",
+        "2026-01-09T01:39:00.000Z",
+        "2026-01-10T05:25:00.000Z",
+        "2026-01-11T09:11:00.000Z",
+        "2026-01-11T11:13:00.000Z"
+      ],
+      "state_store_peak_rows": 10113,
+      "reported_run_id": "run_3",
+      "replaces_contaminated_run": "data\\benchmarks\\phase8\\50000\\run_3\\streaming\\phase8_run_metrics.json",
+      "duplicate_analytical_keys": 0,
+      "output_exists": true
+    },
+    {
+      "architecture": "batch",
+      "status": "completed",
+      "input_rows": 100000,
+      "input_bytes": 12169744,
+      "valid_rows": 100000,
+      "invalid_rows": 0,
+      "duplicate_rows": 0,
+      "output_rows": 45018,
+      "output_bytes": 869115,
+      "startup_time_seconds": 13.416972700040787,
+      "processing_time_seconds": 36.5265496999491,
+      "total_duration_seconds": 72.67391370004043,
+      "throughput_rows_per_second": 2737.734629234344,
+      "analytical_windows": {
+        "5 minutes": {
+          "symbol": 20004,
+          "sector": 10002
+        },
+        "15 minutes": {
+          "symbol": 6672,
+          "sector": 3336
+        },
+        "30 minutes": {
+          "symbol": 3336,
+          "sector": 1668
+        }
+      },
+      "run_id": "run_1",
+      "workload_rows": 100000,
+      "wall_duration_seconds": 74.45175200002268,
+      "cpu_mean_percent": null,
+      "cpu_peak_percent": null,
+      "memory_peak_mb": 1121.28125,
+      "duplicate_analytical_keys": 0,
+      "output_exists": true,
+      "cpu_measurement_note": "Unavailable: the host parent-process sampler did not reliably attribute JVM child CPU."
+    },
+    {
+      "architecture": "streaming",
+      "status": "completed",
+      "run_id": "run_1",
+      "workload_rows": 100000,
+      "input_rows": 100001,
+      "valid_rows": 100001,
+      "invalid_rows": 0,
+      "duplicate_rows": 0,
+      "output_rows": 45018,
+      "output_bytes": 4578409,
+      "total_duration_seconds": 664.3641125001013,
+      "spark_duration_seconds": 633.719927,
+      "spark_throughput_events_per_second": 157.79999292968424,
+      "spark_reported_processed_rows_per_second": 277.527,
+      "microbatch_count": 12,
+      "microbatch_mean_duration_ms": 49404.583333333336,
+      "microbatch_max_duration_ms": 111957.0,
+      "mean_processing_latency_ms": 361282.5443245568,
+      "median_processing_latency_ms": 454493.0,
+      "p95_processing_latency_ms": 568555.0,
+      "p99_processing_latency_ms": 568714.0,
+      "late_events": 0,
+      "watermark_dropped_events": 0,
+      "analytical_windows": {
+        "15 minutes": {
+          "sector": 3336,
+          "symbol": 6672
+        },
+        "30 minutes": {
+          "sector": 1668,
+          "symbol": 3336
+        },
+        "5 minutes": {
+          "sector": 10002,
+          "symbol": 20004
+        }
+      },
+      "events_produced": 100001,
+      "producer_duration_seconds": 3.2901662001386285,
+      "producer_throughput_events_per_second": 30393.905327878736,
+      "cpu_mean_percent": 414.9274539877301,
+      "cpu_peak_percent": 1072.85,
+      "memory_peak_mb": 2434.1727150079996,
+      "kafka_topic": "phase8-100000-run-1",
+      "kafka_final_lag_events": 0,
+      "watermark_progression": [
+        "1970-01-01T00:00:00.000Z",
+        "2026-01-06T18:06:00.000Z",
+        "2026-01-07T21:52:00.000Z",
+        "2026-01-09T01:39:00.000Z",
+        "2026-01-10T05:25:00.000Z",
+        "2026-01-11T09:12:00.000Z",
+        "2026-01-12T12:58:00.000Z",
+        "2026-01-13T16:44:00.000Z",
+        "2026-01-14T20:30:00.000Z",
+        "2026-01-16T00:16:00.000Z",
+        "2026-01-17T04:02:00.000Z",
+        "2026-01-17T06:06:00.000Z"
+      ],
+      "state_store_peak_rows": 10113,
+      "duplicate_analytical_keys": 0,
+      "output_exists": true
+    },
+    {
+      "architecture": "batch",
+      "status": "completed",
+      "input_rows": 100000,
+      "input_bytes": 12169744,
+      "valid_rows": 100000,
+      "invalid_rows": 0,
+      "duplicate_rows": 0,
+      "output_rows": 45018,
+      "output_bytes": 869115,
+      "startup_time_seconds": 18.198395099956542,
+      "processing_time_seconds": 72.33984899986535,
+      "total_duration_seconds": 129.4812171999365,
+      "throughput_rows_per_second": 1382.363958213213,
+      "analytical_windows": {
+        "5 minutes": {
+          "symbol": 20004,
+          "sector": 10002
+        },
+        "15 minutes": {
+          "symbol": 6672,
+          "sector": 3336
+        },
+        "30 minutes": {
+          "symbol": 3336,
+          "sector": 1668
+        }
+      },
+      "run_id": "run_2",
+      "workload_rows": 100000,
+      "wall_duration_seconds": 131.61043539992534,
+      "cpu_mean_percent": null,
+      "cpu_peak_percent": null,
+      "memory_peak_mb": 1074.0859375,
+      "duplicate_analytical_keys": 0,
+      "output_exists": true,
+      "cpu_measurement_note": "Unavailable: the host parent-process sampler did not reliably attribute JVM child CPU."
+    },
+    {
+      "architecture": "streaming",
+      "status": "completed",
+      "run_id": "run_2",
+      "workload_rows": 100000,
+      "input_rows": 100001,
+      "valid_rows": 100001,
+      "invalid_rows": 0,
+      "duplicate_rows": 0,
+      "output_rows": 45018,
+      "output_bytes": 4577826,
+      "total_duration_seconds": 691.251889300067,
+      "spark_duration_seconds": 644.983472,
+      "spark_throughput_events_per_second": 155.04428305722539,
+      "spark_reported_processed_rows_per_second": 275.946,
+      "microbatch_count": 12,
+      "microbatch_mean_duration_ms": 50273.583333333336,
+      "microbatch_max_duration_ms": 103416.0,
+      "mean_processing_latency_ms": 383291.19341806584,
+      "median_processing_latency_ms": 466045.0,
+      "p95_processing_latency_ms": 612684.0,
+      "p99_processing_latency_ms": 612873.0,
+      "late_events": 0,
+      "watermark_dropped_events": 0,
+      "analytical_windows": {
+        "15 minutes": {
+          "sector": 3336,
+          "symbol": 6672
+        },
+        "30 minutes": {
+          "sector": 1668,
+          "symbol": 3336
+        },
+        "5 minutes": {
+          "sector": 10002,
+          "symbol": 20004
+        }
+      },
+      "events_produced": 100001,
+      "producer_duration_seconds": 3.5582483001053333,
+      "producer_throughput_events_per_second": 28103.997126068945,
+      "cpu_mean_percent": 374.5075304878049,
+      "cpu_peak_percent": 1030.25,
+      "memory_peak_mb": 2472.827420672,
+      "kafka_topic": "phase8-100000-run-2",
+      "kafka_final_lag_events": 0,
+      "watermark_progression": [
+        "1970-01-01T00:00:00.000Z",
+        "2026-01-06T18:06:00.000Z",
+        "2026-01-07T21:52:00.000Z",
+        "2026-01-09T01:39:00.000Z",
+        "2026-01-10T05:25:00.000Z",
+        "2026-01-11T09:12:00.000Z",
+        "2026-01-12T12:58:00.000Z",
+        "2026-01-13T16:44:00.000Z",
+        "2026-01-14T20:30:00.000Z",
+        "2026-01-16T00:16:00.000Z",
+        "2026-01-17T04:02:00.000Z",
+        "2026-01-17T06:06:00.000Z"
+      ],
+      "state_store_peak_rows": 10113,
+      "duplicate_analytical_keys": 0,
+      "output_exists": true
+    },
+    {
+      "architecture": "batch",
+      "status": "completed",
+      "input_rows": 100000,
+      "input_bytes": 12169744,
+      "valid_rows": 100000,
+      "invalid_rows": 0,
+      "duplicate_rows": 0,
+      "output_rows": 45018,
+      "output_bytes": 869115,
+      "startup_time_seconds": 14.695292900083587,
+      "processing_time_seconds": 50.87127309991047,
+      "total_duration_seconds": 97.55800740001723,
+      "throughput_rows_per_second": 1965.7459683307197,
+      "analytical_windows": {
+        "5 minutes": {
+          "symbol": 20004,
+          "sector": 10002
+        },
+        "15 minutes": {
+          "symbol": 6672,
+          "sector": 3336
+        },
+        "30 minutes": {
+          "symbol": 3336,
+          "sector": 1668
+        }
+      },
+      "run_id": "run_3",
+      "workload_rows": 100000,
+      "wall_duration_seconds": 101.03838289994746,
+      "cpu_mean_percent": null,
+      "cpu_peak_percent": null,
+      "memory_peak_mb": 1095.25,
+      "duplicate_analytical_keys": 0,
+      "output_exists": true,
+      "cpu_measurement_note": "Unavailable: the host parent-process sampler did not reliably attribute JVM child CPU."
+    },
+    {
+      "architecture": "streaming",
+      "status": "completed",
+      "run_id": "run_3",
+      "workload_rows": 100000,
+      "input_rows": 100001,
+      "valid_rows": 100001,
+      "invalid_rows": 0,
+      "duplicate_rows": 0,
+      "output_rows": 45018,
+      "output_bytes": 4578484,
+      "total_duration_seconds": 596.4708051998168,
+      "spark_duration_seconds": 547.591777,
+      "spark_throughput_events_per_second": 182.61961592604413,
+      "spark_reported_processed_rows_per_second": 299.976,
+      "microbatch_count": 12,
+      "microbatch_mean_duration_ms": 42732.583333333336,
+      "microbatch_max_duration_ms": 110378.0,
+      "mean_processing_latency_ms": 332076.6626133739,
+      "median_processing_latency_ms": 410451.0,
+      "p95_processing_latency_ms": 493106.0,
+      "p99_processing_latency_ms": 493271.0,
+      "late_events": 0,
+      "watermark_dropped_events": 0,
+      "analytical_windows": {
+        "15 minutes": {
+          "sector": 3336,
+          "symbol": 6672
+        },
+        "30 minutes": {
+          "sector": 1668,
+          "symbol": 3336
+        },
+        "5 minutes": {
+          "sector": 10002,
+          "symbol": 20004
+        }
+      },
+      "events_produced": 100001,
+      "producer_duration_seconds": 5.582417499972507,
+      "producer_throughput_events_per_second": 17913.565225190072,
+      "cpu_mean_percent": 381.35276223776225,
+      "cpu_peak_percent": 870.61,
+      "memory_peak_mb": 2442.7626496,
+      "kafka_topic": "phase8-100000-run-3",
+      "kafka_final_lag_events": 0,
+      "watermark_progression": [
+        "1970-01-01T00:00:00.000Z",
+        "2026-01-06T18:06:00.000Z",
+        "2026-01-07T21:52:00.000Z",
+        "2026-01-09T01:39:00.000Z",
+        "2026-01-10T05:25:00.000Z",
+        "2026-01-11T09:12:00.000Z",
+        "2026-01-12T12:58:00.000Z",
+        "2026-01-13T16:44:00.000Z",
+        "2026-01-14T20:30:00.000Z",
+        "2026-01-16T00:16:00.000Z",
+        "2026-01-17T04:02:00.000Z",
+        "2026-01-17T06:06:00.000Z"
+      ],
+      "state_store_peak_rows": 10113,
+      "duplicate_analytical_keys": 0,
+      "output_exists": true
+    }
+  ],
+  "aggregated_results": [
+    {
+      "architecture": "batch",
+      "workload_rows": 10000,
+      "successful_runs": 3,
+      "statistics": {
+        "total_duration_seconds": {
+          "mean": 77.13481276660848,
+          "median": 77.0185058999341,
+          "standard_deviation": 3.8329621783722936,
+          "minimum": 73.36132769985124,
+          "maximum": 81.02460470004007
+        },
+        "processing_time_seconds": {
+          "mean": 31.825607600000996,
+          "median": 32.32374619995244,
+          "standard_deviation": 2.921864701417724,
+          "minimum": 28.686696300050244,
+          "maximum": 34.46638030000031
+        },
+        "throughput_rows_per_second": {
+          "mean": 316.033844277398,
+          "median": 309.37008161556207,
+          "standard_deviation": 29.79220566023038,
+          "minimum": 290.1378071314298,
+          "maximum": 348.59364408520213
+        },
+        "cpu_mean_percent": {
+          "mean": null,
+          "median": null,
+          "standard_deviation": null,
+          "minimum": null,
+          "maximum": null
+        },
+        "cpu_peak_percent": {
+          "mean": null,
+          "median": null,
+          "standard_deviation": null,
+          "minimum": null,
+          "maximum": null
+        },
+        "memory_peak_mb": {
+          "mean": 967.9075520833334,
+          "median": 908.49609375,
+          "standard_deviation": 108.1792326349862,
+          "minimum": 902.453125,
+          "maximum": 1092.7734375
+        }
+      }
+    },
+    {
+      "architecture": "streaming",
+      "workload_rows": 10000,
+      "successful_runs": 3,
+      "statistics": {
+        "total_duration_seconds": {
+          "mean": 118.39673513337038,
+          "median": 117.5183590000961,
+          "standard_deviation": 4.19658106355183,
+          "minimum": 114.70886199991219,
+          "maximum": 122.96298440010287
+        },
+        "spark_duration_seconds": {
+          "mean": 102.92942599999999,
+          "median": 102.684288,
+          "standard_deviation": 4.740504044802305,
+          "minimum": 98.316247,
+          "maximum": 107.787743
+        },
+        "producer_throughput_events_per_second": {
+          "mean": 16592.884991249506,
+          "median": 16535.774303741713,
+          "standard_deviation": 637.7645377954384,
+          "minimum": 15985.596499853043,
+          "maximum": 17257.284170153765
+        },
+        "spark_throughput_events_per_second": {
+          "mean": 97.30086188558788,
+          "median": 97.39562103210962,
+          "standard_deviation": 4.470031066132368,
+          "minimum": 92.78420460107417,
+          "maximum": 101.72276002357982
+        },
+        "mean_processing_latency_ms": {
+          "mean": 17720.607472586074,
+          "median": 17174.054494550546,
+          "standard_deviation": 2509.3119892946415,
+          "minimum": 15529.61803819618,
+          "maximum": 20458.1498850115
+        },
+        "p95_processing_latency_ms": {
+          "mean": 17782.666666666668,
+          "median": 17238.0,
+          "standard_deviation": 2519.5478430332164,
+          "minimum": 15580.0,
+          "maximum": 20530.0
+        },
+        "p99_processing_latency_ms": {
+          "mean": 17791.666666666668,
+          "median": 17245.0,
+          "standard_deviation": 2520.854881450603,
+          "minimum": 15589.0,
+          "maximum": 20541.0
+        },
+        "microbatch_mean_duration_ms": {
+          "mean": 29504.11111111111,
+          "median": 29501.0,
+          "standard_deviation": 1487.669106478443,
+          "minimum": 28018.0,
+          "maximum": 30993.333333333332
+        },
+        "cpu_mean_percent": {
+          "mean": 427.584792379479,
+          "median": 425.57689655172413,
+          "standard_deviation": 16.78316408101332,
+          "minimum": 411.8959016393443,
+          "maximum": 445.2815789473684
+        },
+        "cpu_peak_percent": {
+          "mean": 880.5333333333333,
+          "median": 860.03,
+          "standard_deviation": 89.41578850143486,
+          "minimum": 803.15,
+          "maximum": 978.42
+        },
+        "memory_peak_mb": {
+          "mean": 2127.440467285333,
+          "median": 2093.7965568,
+          "standard_deviation": 104.02188533142177,
+          "minimum": 2044.404432896,
+          "maximum": 2244.12041216
+        }
+      }
+    },
+    {
+      "architecture": "batch",
+      "workload_rows": 25000,
+      "successful_runs": 3,
+      "statistics": {
+        "total_duration_seconds": {
+          "mean": 68.21025799998704,
+          "median": 67.8651133000385,
+          "standard_deviation": 1.4806178509439034,
+          "minimum": 66.93269739998505,
+          "maximum": 69.83296329993755
+        },
+        "processing_time_seconds": {
+          "mean": 32.56256656666907,
+          "median": 32.59370460011996,
+          "standard_deviation": 1.4347446912510202,
+          "minimum": 31.112506299978122,
+          "maximum": 33.98148879990913
+        },
+        "throughput_rows_per_second": {
+          "mean": 768.7497810834807,
+          "median": 767.019285064883,
+          "standard_deviation": 33.95345490774823,
+          "minimum": 735.6946644452745,
+          "maximum": 803.5353937402845
+        },
+        "cpu_mean_percent": {
+          "mean": null,
+          "median": null,
+          "standard_deviation": null,
+          "minimum": null,
+          "maximum": null
+        },
+        "cpu_peak_percent": {
+          "mean": null,
+          "median": null,
+          "standard_deviation": null,
+          "minimum": null,
+          "maximum": null
+        },
+        "memory_peak_mb": {
+          "mean": 1050.8958333333333,
+          "median": 1056.70703125,
+          "standard_deviation": 18.846477996417956,
+          "minimum": 1029.828125,
+          "maximum": 1066.15234375
+        }
+      }
+    },
+    {
+      "architecture": "streaming",
+      "workload_rows": 25000,
+      "successful_runs": 3,
+      "statistics": {
+        "total_duration_seconds": {
+          "mean": 150.06153863326958,
+          "median": 149.22225230000913,
+          "standard_deviation": 3.057666838692602,
+          "minimum": 147.51116069988348,
+          "maximum": 153.4512028999161
+        },
+        "spark_duration_seconds": {
+          "mean": 134.30821633333332,
+          "median": 132.897846,
+          "standard_deviation": 2.4751512895005647,
+          "minimum": 132.860609,
+          "maximum": 137.166194
+        },
+        "producer_throughput_events_per_second": {
+          "mean": 38863.34881751071,
+          "median": 39271.6438124394,
+          "standard_deviation": 1632.9473773680172,
+          "minimum": 37064.99664840279,
+          "maximum": 40253.40599168996
+        },
+        "spark_throughput_events_per_second": {
+          "mean": 186.18817958064218,
+          "median": 188.12193539991614,
+          "standard_deviation": 3.395127006047414,
+          "minimum": 182.26794278479434,
+          "maximum": 188.17466055721601
+        },
+        "mean_processing_latency_ms": {
+          "mean": 61632.09899604016,
+          "median": 61009.77548898044,
+          "standard_deviation": 1631.0025120168966,
+          "minimum": 60403.876364945405,
+          "maximum": 63482.64513419463
+        },
+        "p95_processing_latency_ms": {
+          "mean": 113043.0,
+          "median": 110980.0,
+          "standard_deviation": 3653.184774960062,
+          "minimum": 110888.0,
+          "maximum": 117261.0
+        },
+        "p99_processing_latency_ms": {
+          "mean": 113060.0,
+          "median": 111003.0,
+          "standard_deviation": 3655.0114910900074,
+          "minimum": 110897.0,
+          "maximum": 117280.0
+        },
+        "microbatch_mean_duration_ms": {
+          "mean": 30612.75,
+          "median": 30284.0,
+          "standard_deviation": 627.4377957216158,
+          "minimum": 30218.0,
+          "maximum": 31336.25
+        },
+        "cpu_mean_percent": {
+          "mean": 442.71422246146653,
+          "median": 440.39986842105264,
+          "standard_deviation": 7.248343542474329,
+          "minimum": 436.9056756756757,
+          "maximum": 450.83712328767126
+        },
+        "cpu_peak_percent": {
+          "mean": 812.02,
+          "median": 831.31,
+          "standard_deviation": 50.47941461625717,
+          "minimum": 754.74,
+          "maximum": 850.01
+        },
+        "memory_peak_mb": {
+          "mean": 2258.7948837546664,
+          "median": 2237.677961216,
+          "standard_deviation": 72.66887090266052,
+          "minimum": 2199.023255552,
+          "maximum": 2339.683434496
+        }
+      }
+    },
+    {
+      "architecture": "batch",
+      "workload_rows": 50000,
+      "successful_runs": 3,
+      "statistics": {
+        "total_duration_seconds": {
+          "mean": 90.02659693329285,
+          "median": 80.55431280005723,
+          "standard_deviation": 23.926594037862785,
+          "minimum": 72.28633409994654,
+          "maximum": 117.23914389987476
+        },
+        "processing_time_seconds": {
+          "mean": 43.900840633315966,
+          "median": 37.56240940000862,
+          "standard_deviation": 12.209336587123127,
+          "minimum": 36.164272599853575,
+          "maximum": 57.9758399000857
+        },
+        "throughput_rows_per_second": {
+          "mean": 1192.042077312302,
+          "median": 1331.1180192820252,
+          "standard_deviation": 286.6113370680293,
+          "minimum": 862.4282129619668,
+          "maximum": 1382.5799996929136
+        },
+        "cpu_mean_percent": {
+          "mean": null,
+          "median": null,
+          "standard_deviation": null,
+          "minimum": null,
+          "maximum": null
+        },
+        "cpu_peak_percent": {
+          "mean": null,
+          "median": null,
+          "standard_deviation": null,
+          "minimum": null,
+          "maximum": null
+        },
+        "memory_peak_mb": {
+          "mean": 1066.7682291666667,
+          "median": 1005.390625,
+          "standard_deviation": 142.29316666996053,
+          "minimum": 965.46484375,
+          "maximum": 1229.44921875
+        }
+      }
+    },
+    {
+      "architecture": "streaming",
+      "workload_rows": 50000,
+      "successful_runs": 3,
+      "statistics": {
+        "total_duration_seconds": {
+          "mean": 313.72381666659686,
+          "median": 284.68175869993865,
+          "standard_deviation": 78.6321704185457,
+          "minimum": 253.74358809995465,
+          "maximum": 402.74610319989733
+        },
+        "spark_duration_seconds": {
+          "mean": 287.0675473333333,
+          "median": 263.694347,
+          "standard_deviation": 67.21399242190803,
+          "minimum": 234.660537,
+          "maximum": 362.847758
+        },
+        "producer_throughput_events_per_second": {
+          "mean": 27228.33626081973,
+          "median": 25192.123891926425,
+          "standard_deviation": 7777.730940603117,
+          "minimum": 20671.254132360264,
+          "maximum": 35821.630758172505
+        },
+        "spark_throughput_events_per_second": {
+          "mean": 180.16562206270726,
+          "median": 189.6172616851737,
+          "standard_deviation": 38.517979193513746,
+          "minimum": 137.80159556614927,
+          "maximum": 213.07800893679877
+        },
+        "mean_processing_latency_ms": {
+          "mean": 157930.62350752985,
+          "median": 136949.39461210775,
+          "standard_deviation": 58271.7518450723,
+          "minimum": 113054.83940321194,
+          "maximum": 223787.63650726987
+        },
+        "p95_processing_latency_ms": {
+          "mean": 261725.33333333334,
+          "median": 235731.0,
+          "standard_deviation": 71385.9987415833,
+          "minimum": 206979.0,
+          "maximum": 342466.0
+        },
+        "p99_processing_latency_ms": {
+          "mean": 261809.0,
+          "median": 235805.0,
+          "standard_deviation": 71398.6031235906,
+          "minimum": 207057.0,
+          "maximum": 342565.0
+        },
+        "microbatch_mean_duration_ms": {
+          "mean": 37719.47619047619,
+          "median": 34808.42857142857,
+          "standard_deviation": 8879.131692854184,
+          "minimum": 30661.285714285714,
+          "maximum": 47688.71428571428
+        },
+        "cpu_mean_percent": {
+          "mean": 420.23759423687426,
+          "median": 436.0345714285714,
+          "standard_deviation": 28.52563844365587,
+          "minimum": 387.30805128205134,
+          "maximum": 437.37016
+        },
+        "cpu_peak_percent": {
+          "mean": 874.63,
+          "median": 890.76,
+          "standard_deviation": 32.38284885552842,
+          "minimum": 837.35,
+          "maximum": 895.78
+        },
+        "memory_peak_mb": {
+          "mean": 2376.5485704533335,
+          "median": 2375.116914688,
+          "standard_deviation": 23.654835381006812,
+          "minimum": 2353.642078208,
+          "maximum": 2400.8867184640003
+        }
+      }
+    },
+    {
+      "architecture": "batch",
+      "workload_rows": 100000,
+      "successful_runs": 3,
+      "statistics": {
+        "total_duration_seconds": {
+          "mean": 99.90437943333139,
+          "median": 97.55800740001723,
+          "standard_deviation": 28.47624499510716,
+          "minimum": 72.67391370004043,
+          "maximum": 129.4812171999365
+        },
+        "processing_time_seconds": {
+          "mean": 53.24589059990831,
+          "median": 50.87127309991047,
+          "standard_deviation": 18.024350415197144,
+          "minimum": 36.5265496999491,
+          "maximum": 72.33984899986535
+        },
+        "throughput_rows_per_second": {
+          "mean": 2028.6148519260923,
+          "median": 1965.7459683307197,
+          "standard_deviation": 679.8689479300141,
+          "minimum": 1382.363958213213,
+          "maximum": 2737.734629234344
+        },
+        "cpu_mean_percent": {
+          "mean": null,
+          "median": null,
+          "standard_deviation": null,
+          "minimum": null,
+          "maximum": null
+        },
+        "cpu_peak_percent": {
+          "mean": null,
+          "median": null,
+          "standard_deviation": null,
+          "minimum": null,
+          "maximum": null
+        },
+        "memory_peak_mb": {
+          "mean": 1096.8723958333333,
+          "median": 1095.25,
+          "standard_deviation": 23.639448104242557,
+          "minimum": 1074.0859375,
+          "maximum": 1121.28125
+        }
+      }
+    },
+    {
+      "architecture": "streaming",
+      "workload_rows": 100000,
+      "successful_runs": 3,
+      "statistics": {
+        "total_duration_seconds": {
+          "mean": 650.6956023333283,
+          "median": 664.3641125001013,
+          "standard_deviation": 48.846541366191474,
+          "minimum": 596.4708051998168,
+          "maximum": 691.251889300067
+        },
+        "spark_duration_seconds": {
+          "mean": 608.7650586666667,
+          "median": 633.719927,
+          "standard_deviation": 53.2761171060144,
+          "minimum": 547.591777,
+          "maximum": 644.983472
+        },
+        "producer_throughput_events_per_second": {
+          "mean": 25470.489226379254,
+          "median": 28103.997126068945,
+          "standard_deviation": 6643.8878048166,
+          "minimum": 17913.565225190072,
+          "maximum": 30393.905327878736
+        },
+        "spark_throughput_events_per_second": {
+          "mean": 165.15463063765125,
+          "median": 157.79999292968424,
+          "standard_deviation": 15.187750576307428,
+          "minimum": 155.04428305722539,
+          "maximum": 182.61961592604413
+        },
+        "mean_processing_latency_ms": {
+          "mean": 358883.4667853322,
+          "median": 361282.5443245568,
+          "standard_deviation": 25691.413374230586,
+          "minimum": 332076.6626133739,
+          "maximum": 383291.19341806584
+        },
+        "p95_processing_latency_ms": {
+          "mean": 558115.0,
+          "median": 568555.0,
+          "standard_deviation": 60468.749954005165,
+          "minimum": 493106.0,
+          "maximum": 612684.0
+        },
+        "p99_processing_latency_ms": {
+          "mean": 558286.0,
+          "median": 568714.0,
+          "standard_deviation": 60479.062401793235,
+          "minimum": 493271.0,
+          "maximum": 612873.0
+        },
+        "microbatch_mean_duration_ms": {
+          "mean": 47470.25,
+          "median": 49404.583333333336,
+          "standard_deviation": 4125.882249087258,
+          "minimum": 42732.583333333336,
+          "maximum": 50273.583333333336
+        },
+        "cpu_mean_percent": {
+          "mean": 390.2625822377657,
+          "median": 381.35276223776225,
+          "standard_deviation": 21.632873670857915,
+          "minimum": 374.5075304878049,
+          "maximum": 414.9274539877301
+        },
+        "cpu_peak_percent": {
+          "mean": 991.2366666666667,
+          "median": 1030.25,
+          "standard_deviation": 106.6151233800033,
+          "minimum": 870.61,
+          "maximum": 1072.85
+        },
+        "memory_peak_mb": {
+          "mean": 2449.9209284266667,
+          "median": 2442.7626496,
+          "standard_deviation": 20.297223561680777,
+          "minimum": 2434.1727150079996,
+          "maximum": 2472.827420672
+        }
+      }
+    }
+  ],
+  "warmup_runs": [
+    {
+      "architecture": "batch",
+      "status": "completed",
+      "input_rows": 1000,
+      "input_bytes": 121696,
+      "valid_rows": 1000,
+      "invalid_rows": 0,
+      "duplicate_rows": 0,
+      "output_rows": 468,
+      "output_bytes": 88590,
+      "startup_time_seconds": 8.75774100003764,
+      "processing_time_seconds": 25.604357700096443,
+      "total_duration_seconds": 91.11225760006346,
+      "throughput_rows_per_second": 39.05585180901583,
+      "analytical_windows": {
+        "5 minutes": {
+          "symbol": 204,
+          "sector": 102
+        },
+        "15 minutes": {
+          "symbol": 72,
+          "sector": 36
+        },
+        "30 minutes": {
+          "symbol": 36,
+          "sector": 18
+        }
+      },
+      "run_id": "warmup",
+      "workload_rows": 1000,
+      "wall_duration_seconds": 92.6791306999512,
+      "cpu_mean_percent": 0.3396676300578035,
+      "cpu_peak_percent": 12.2125,
+      "memory_peak_mb": 904.84375
+    },
+    {
+      "architecture": "streaming",
+      "status": "completed",
+      "run_id": "warmup",
+      "workload_rows": 1000,
+      "input_rows": 1001,
+      "valid_rows": 1001,
+      "invalid_rows": 0,
+      "duplicate_rows": 0,
+      "output_rows": 468,
+      "output_bytes": 224104,
+      "total_duration_seconds": 100.69854180002585,
+      "spark_duration_seconds": 86.694963,
+      "spark_throughput_events_per_second": 11.546230200248196,
+      "spark_reported_processed_rows_per_second": 6.934,
+      "microbatch_count": 2,
+      "microbatch_mean_duration_ms": 37170.5,
+      "microbatch_max_duration_ms": 72175.0,
+      "mean_processing_latency_ms": 18673.982017982016,
+      "median_processing_latency_ms": 18673.0,
+      "p95_processing_latency_ms": 18690.0,
+      "p99_processing_latency_ms": 18692.0,
+      "late_events": 0,
+      "watermark_dropped_events": 0,
+      "analytical_windows": {
+        "15 minutes": {
+          "sector": 36,
+          "symbol": 72
+        },
+        "30 minutes": {
+          "sector": 18,
+          "symbol": 36
+        },
+        "5 minutes": {
+          "sector": 102,
+          "symbol": 204
+        }
+      },
+      "events_produced": 1001,
+      "producer_duration_seconds": 0.6316711998078972,
+      "producer_throughput_events_per_second": 1584.6851974641593,
+      "cpu_mean_percent": 396.99183673469383,
+      "cpu_peak_percent": 756.1,
+      "memory_peak_mb": 2097.017782272
+    }
+  ],
+  "errors": [],
+  "limitations": [
+    "Local single-machine experiment",
+    "One Kafka broker and one local[*] Spark container",
+    "Docker and OS scheduling overhead",
+    "Synthetic replay rather than live exchange traffic",
+    "Results do not prove distributed-cluster scalability"
+  ]
+}
