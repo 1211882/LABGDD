@@ -1,0 +1,35 @@
+{
+  "architecture": "batch",
+  "status": "completed",
+  "input_rows": 50000,
+  "input_bytes": 6084866,
+  "valid_rows": 50000,
+  "invalid_rows": 0,
+  "duplicate_rows": 0,
+  "output_rows": 22509,
+  "output_bytes": 512596,
+  "startup_time_seconds": 9.577938599977642,
+  "processing_time_seconds": 37.56240940000862,
+  "total_duration_seconds": 80.55431280005723,
+  "throughput_rows_per_second": 1331.1180192820252,
+  "analytical_windows": {
+    "5 minutes": {
+      "symbol": 10002,
+      "sector": 5001
+    },
+    "15 minutes": {
+      "symbol": 3336,
+      "sector": 1668
+    },
+    "30 minutes": {
+      "symbol": 1668,
+      "sector": 834
+    }
+  },
+  "run_id": "run_2",
+  "workload_rows": 50000,
+  "wall_duration_seconds": 82.09270299994387,
+  "cpu_mean_percent": 1.5551424050632912,
+  "cpu_peak_percent": 12.5125,
+  "memory_peak_mb": 1229.44921875
+}

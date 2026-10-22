@@ -1,0 +1,30 @@
+{
+  "dataset_version": "phase8_1000",
+  "generation_method": "deterministic timestamp-safe OHLCV expansion across six configured symbols",
+  "event_count": 1000,
+  "unique_logical_keys": 1000,
+  "input_bytes": 121696,
+  "sha256": "cf8543f605e0c6caa2347672c0f6dd8cab4079fe2a2e3dba77fe698e516d0134",
+  "symbols": [
+    "AAPL",
+    "MSFT",
+    "JNJ",
+    "PFE",
+    "JPM",
+    "BAC"
+  ],
+  "sectors": [
+    "Financial",
+    "Healthcare",
+    "Technology"
+  ],
+  "watermark_closing_sentinel": {
+    "timestamp": "2026-01-05T19:16:00Z",
+    "symbol": "AAPL",
+    "open": 100.0,
+    "high": 100.1,
+    "low": 99.9,
+    "close": 100.0,
+    "volume": 1
+  }
+}

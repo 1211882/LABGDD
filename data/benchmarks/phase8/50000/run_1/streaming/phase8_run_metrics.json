@@ -1,0 +1,45 @@
+{
+  "architecture": "streaming",
+  "status": "completed",
+  "run_id": "run_1",
+  "workload_rows": 50000,
+  "input_rows": 50001,
+  "valid_rows": 50001,
+  "invalid_rows": 0,
+  "duplicate_rows": 0,
+  "output_rows": 22509,
+  "output_bytes": 2335826,
+  "total_duration_seconds": 253.74358809995465,
+  "spark_duration_seconds": 234.660537,
+  "spark_throughput_events_per_second": 213.07800893679877,
+  "spark_reported_processed_rows_per_second": 221.174,
+  "microbatch_count": 7,
+  "microbatch_mean_duration_ms": 30661.285714285714,
+  "microbatch_max_duration_ms": 62494.0,
+  "mean_processing_latency_ms": 113054.83940321194,
+  "median_processing_latency_ms": 112631.0,
+  "p95_processing_latency_ms": 206979.0,
+  "p99_processing_latency_ms": 207057.0,
+  "late_events": 0,
+  "watermark_dropped_events": 0,
+  "analytical_windows": {
+    "15 minutes": {
+      "sector": 1668,
+      "symbol": 3336
+    },
+    "30 minutes": {
+      "sector": 834,
+      "symbol": 1668
+    },
+    "5 minutes": {
+      "sector": 5001,
+      "symbol": 10002
+    }
+  },
+  "events_produced": 50001,
+  "producer_duration_seconds": 1.3958326000720263,
+  "producer_throughput_events_per_second": 35821.630758172505,
+  "cpu_mean_percent": 437.37016,
+  "cpu_peak_percent": 837.35,
+  "memory_peak_mb": 2375.116914688
+}

@@ -1,0 +1,29 @@
+{
+  "architecture": "batch",
+  "status": "completed",
+  "input_rows": 100000,
+  "input_bytes": 12169744,
+  "valid_rows": 100000,
+  "invalid_rows": 0,
+  "duplicate_rows": 0,
+  "output_rows": 45018,
+  "output_bytes": 869115,
+  "startup_time_seconds": 14.695292900083587,
+  "processing_time_seconds": 50.87127309991047,
+  "total_duration_seconds": 97.55800740001723,
+  "throughput_rows_per_second": 1965.7459683307197,
+  "analytical_windows": {
+    "5 minutes": {
+      "symbol": 20004,
+      "sector": 10002
+    },
+    "15 minutes": {
+      "symbol": 6672,
+      "sector": 3336
+    },
+    "30 minutes": {
+      "symbol": 3336,
+      "sector": 1668
+    }
+  }
+}

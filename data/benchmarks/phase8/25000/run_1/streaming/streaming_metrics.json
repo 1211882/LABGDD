@@ -1,0 +1,3028 @@
+{
+  "active_symbols": [
+    "AAPL",
+    "BAC",
+    "JNJ",
+    "JPM",
+    "MSFT",
+    "PFE"
+  ],
+  "analytical_windows_emitted": {
+    "sector_analytics_15_minutes": 834,
+    "sector_analytics_30_minutes": 417,
+    "sector_analytics_5_minutes": 2502,
+    "symbol_analytics_15_minutes": 1668,
+    "symbol_analytics_30_minutes": 834,
+    "symbol_analytics_5_minutes": 5004
+  },
+  "analytical_windows_per_duration": {
+    "15 minutes": {
+      "sector": 834,
+      "symbol": 1668
+    },
+    "30 minutes": {
+      "sector": 417,
+      "symbol": 834
+    },
+    "5 minutes": {
+      "sector": 2502,
+      "symbol": 5004
+    }
+  },
+  "analytics_coverage_by_query": {
+    "sector_analytics_15_minutes": {
+      "average_coverage_ratio": 0.996101,
+      "average_event_count": 29.883041,
+      "complete_windows": 168,
+      "incomplete_windows": 3,
+      "median_coverage_ratio": 1.0,
+      "median_event_count": 30,
+      "minimum_coverage_ratio": 0.733333,
+      "total_windows": 171,
+      "valid_volatility_ratio": 1.0,
+      "valid_volatility_windows": 171
+    },
+    "sector_analytics_30_minutes": {
+      "average_coverage_ratio": 0.996169,
+      "average_event_count": 59.770115,
+      "complete_windows": 84,
+      "incomplete_windows": 3,
+      "median_coverage_ratio": 1.0,
+      "median_event_count": 60,
+      "minimum_coverage_ratio": 0.866667,
+      "total_windows": 87,
+      "valid_volatility_ratio": 1.0,
+      "valid_volatility_windows": 87
+    },
+    "sector_analytics_5_minutes": {
+      "average_coverage_ratio": 0.996078,
+      "average_event_count": 9.960784,
+      "complete_windows": 507,
+      "incomplete_windows": 3,
+      "median_coverage_ratio": 1.0,
+      "median_event_count": 10,
+      "minimum_coverage_ratio": 0.2,
+      "total_windows": 510,
+      "valid_volatility_ratio": 1.0,
+      "valid_volatility_windows": 510
+    },
+    "symbol_analytics_15_minutes": {
+      "average_coverage_ratio": 0.996101,
+      "average_event_count": 14.94152,
+      "complete_windows": 336,
+      "incomplete_windows": 6,
+      "median_coverage_ratio": 1.0,
+      "median_event_count": 15,
+      "minimum_coverage_ratio": 0.733333,
+      "total_windows": 342,
+      "valid_volatility_ratio": 1.0,
+      "valid_volatility_windows": 342
+    },
+    "symbol_analytics_30_minutes": {
+      "average_coverage_ratio": 0.996169,
+      "average_event_count": 29.885057,
+      "complete_windows": 168,
+      "incomplete_windows": 6,
+      "median_coverage_ratio": 1.0,
+      "median_event_count": 30,
+      "minimum_coverage_ratio": 0.866667,
+      "total_windows": 174,
+      "valid_volatility_ratio": 1.0,
+      "valid_volatility_windows": 174
+    },
+    "symbol_analytics_5_minutes": {
+      "average_coverage_ratio": 0.996078,
+      "average_event_count": 4.980392,
+      "complete_windows": 1014,
+      "incomplete_windows": 6,
+      "median_coverage_ratio": 1.0,
+      "median_event_count": 5,
+      "minimum_coverage_ratio": 0.2,
+      "total_windows": 1020,
+      "valid_volatility_ratio": 0.998039,
+      "valid_volatility_windows": 1018
+    }
+  },
+  "analytics_output_size_bytes": 1214430,
+  "analytics_sector_output_path": "data/benchmarks/phase8/25000/run_1/streaming/analytics/sector",
+  "analytics_sectors": [
+    "Financial",
+    "Healthcare",
+    "Technology"
+  ],
+  "analytics_symbol_output_path": "data/benchmarks/phase8/25000/run_1/streaming/analytics/symbol",
+  "analytics_symbols": [
+    "AAPL",
+    "BAC",
+    "JNJ",
+    "JPM",
+    "MSFT",
+    "PFE"
+  ],
+  "average_input_rows_per_second": 78.791,
+  "average_processed_rows_per_second": 172.994,
+  "benchmark": "Spark Structured Streaming Kafka processing",
+  "checkpoint_path": "data/benchmarks/phase8/25000/run_1/streaming/checkpoints/core",
+  "connector_package": "org.apache.spark:spark-sql-kafka-0-10_2.13:4.0.1",
+  "dataset_version": "phase8_25000",
+  "dropped_watermark_events": 0,
+  "duplicate_events": 0,
+  "duration_seconds": 132.897846,
+  "environment": {
+    "os": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+    "python": "3.10.12",
+    "spark": "4.0.1"
+  },
+  "error": null,
+  "finished_at_utc": "2026-10-13T20:22:32.849153Z",
+  "input_events": 25001,
+  "invalid_events": 0,
+  "invalid_output_path": "data/benchmarks/phase8/25000/run_1/streaming/invalid",
+  "kafka_partitions_observed": [
+    0,
+    1,
+    2,
+    3,
+    5
+  ],
+  "kafka_topic": "phase8-25000-run-1",
+  "late_events": 0,
+  "micro_batches": [
+    {
+      "batch_id": 0,
+      "kafka_partitions": [],
+      "output_rows": 0,
+      "query": "invalid",
+      "symbols": []
+    },
+    {
+      "batch_id": 0,
+      "coverage": null,
+      "output_rows": 0,
+      "query": "sector_analytics_5_minutes",
+      "sectors": [],
+      "symbols": [],
+      "window_durations": []
+    },
+    {
+      "batch_id": 0,
+      "coverage": null,
+      "output_rows": 0,
+      "query": "sector_analytics_15_minutes",
+      "sectors": [],
+      "symbols": [],
+      "window_durations": []
+    },
+    {
+      "batch_id": 0,
+      "coverage": null,
+      "output_rows": 0,
+      "query": "symbol_analytics_5_minutes",
+      "sectors": [],
+      "symbols": [],
+      "window_durations": []
+    },
+    {
+      "batch_id": 0,
+      "coverage": null,
+      "output_rows": 0,
+      "query": "symbol_analytics_15_minutes",
+      "sectors": [],
+      "symbols": [],
+      "window_durations": []
+    },
+    {
+      "batch_id": 0,
+      "coverage": null,
+      "output_rows": 0,
+      "query": "symbol_analytics_30_minutes",
+      "sectors": [],
+      "symbols": [],
+      "window_durations": []
+    },
+    {
+      "batch_id": 0,
+      "coverage": null,
+      "output_rows": 0,
+      "query": "sector_analytics_30_minutes",
+      "sectors": [],
+      "symbols": [],
+      "window_durations": []
+    },
+    {
+      "batch_id": 1,
+      "kafka_partitions": [],
+      "output_rows": 0,
+      "query": "invalid",
+      "symbols": []
+    },
+    {
+      "batch_id": 0,
+      "kafka_partitions": [
+        0,
+        1,
+        2,
+        3,
+        5
+      ],
+      "output_rows": 9997,
+      "query": "valid",
+      "symbols": [
+        "AAPL",
+        "BAC",
+        "JNJ",
+        "JPM",
+        "MSFT",
+        "PFE"
+      ]
+    },
+    {
+      "batch_id": 1,
+      "coverage": {
+        "average_coverage_ratio": 1.0,
+        "average_event_count": 10.0,
+        "complete_windows": 993,
+        "incomplete_windows": 0,
+        "median_coverage_ratio": 1.0,
+        "median_event_count": 10,
+        "minimum_coverage_ratio": 1.0,
+        "total_windows": 993,
+        "valid_volatility_ratio": 1.0,
+        "valid_volatility_windows": 993
+      },
+      "output_rows": 993,
+      "query": "sector_analytics_5_minutes",
+      "sectors": [
+        "Financial",
+        "Healthcare",
+        "Technology"
+      ],
+      "symbols": [],
+      "window_durations": [
+        "5 minutes"
+      ]
+    },
+    {
+      "batch_id": 2,
+      "kafka_partitions": [],
+      "output_rows": 0,
+      "query": "invalid",
+      "symbols": []
+    },
+    {
+      "batch_id": 1,
+      "coverage": {
+        "average_coverage_ratio": 1.0,
+        "average_event_count": 30.0,
+        "complete_windows": 330,
+        "incomplete_windows": 0,
+        "median_coverage_ratio": 1.0,
+        "median_event_count": 30,
+        "minimum_coverage_ratio": 1.0,
+        "total_windows": 330,
+        "valid_volatility_ratio": 1.0,
+        "valid_volatility_windows": 330
+      },
+      "output_rows": 330,
+      "query": "sector_analytics_15_minutes",
+      "sectors": [
+        "Financial",
+        "Healthcare",
+        "Technology"
+      ],
+      "symbols": [],
+      "window_durations": [
+        "15 minutes"
+      ]
+    },
+    {
+      "batch_id": 1,
+      "coverage": {
+        "average_coverage_ratio": 1.0,
+        "average_event_count": 5.0,
+        "complete_windows": 1986,
+        "incomplete_windows": 0,
+        "median_coverage_ratio": 1.0,
+        "median_event_count": 5,
+        "minimum_coverage_ratio": 1.0,
+        "total_windows": 1986,
+        "valid_volatility_ratio": 1.0,
+        "valid_volatility_windows": 1986
+      },
+      "output_rows": 1986,
+      "query": "symbol_analytics_5_minutes",
+      "sectors": [
+        "Financial",
+        "Healthcare",
+        "Technology"
+      ],
+      "symbols": [
+        "AAPL",
+        "BAC",
+        "JNJ",
+        "JPM",
+        "MSFT",
+        "PFE"
+      ],
+      "window_durations": [
+        "5 minutes"
+      ]
+    },
+    {
+      "batch_id": 1,
+      "coverage": {
+        "average_coverage_ratio": 1.0,
+        "average_event_count": 15.0,
+        "complete_windows": 660,
+        "incomplete_windows": 0,
+        "median_coverage_ratio": 1.0,
+        "median_event_count": 15,
+        "minimum_coverage_ratio": 1.0,
+        "total_windows": 660,
+        "valid_volatility_ratio": 1.0,
+        "valid_volatility_windows": 660
+      },
+      "output_rows": 660,
+      "query": "symbol_analytics_15_minutes",
+      "sectors": [
+        "Financial",
+        "Healthcare",
+        "Technology"
+      ],
+      "symbols": [
+        "AAPL",
+        "BAC",
+        "JNJ",
+        "JPM",
+        "MSFT",
+        "PFE"
+      ],
+      "window_durations": [
+        "15 minutes"
+      ]
+    },
+    {
+      "batch_id": 1,
+      "coverage": {
+        "average_coverage_ratio": 1.0,
+        "average_event_count": 30.0,
+        "complete_windows": 330,
+        "incomplete_windows": 0,
+        "median_coverage_ratio": 1.0,
+        "median_event_count": 30,
+        "minimum_coverage_ratio": 1.0,
+        "total_windows": 330,
+        "valid_volatility_ratio": 1.0,
+        "valid_volatility_windows": 330
+      },
+      "output_rows": 330,
+      "query": "symbol_analytics_30_minutes",
+      "sectors": [
+        "Financial",
+        "Healthcare",
+        "Technology"
+      ],
+      "symbols": [
+        "AAPL",
+        "BAC",
+        "JNJ",
+        "JPM",
+        "MSFT",
+        "PFE"
+      ],
+      "window_durations": [
+        "30 minutes"
+      ]
+    },
+    {
+      "batch_id": 1,
+      "coverage": {
+        "average_coverage_ratio": 1.0,
+        "average_event_count": 60.0,
+        "complete_windows": 165,
+        "incomplete_windows": 0,
+        "median_coverage_ratio": 1.0,
+        "median_event_count": 60,
+        "minimum_coverage_ratio": 1.0,
+        "total_windows": 165,
+        "valid_volatility_ratio": 1.0,
+        "valid_volatility_windows": 165
+      },
+      "output_rows": 165,
+      "query": "sector_analytics_30_minutes",
+      "sectors": [
+        "Financial",
+        "Healthcare",
+        "Technology"
+      ],
+      "symbols": [],
+      "window_durations": [
+        "30 minutes"
+      ]
+    },
+    {
+      "batch_id": 2,
+      "coverage": {
+        "average_coverage_ratio": 1.0,
+        "average_event_count": 10.0,
+        "complete_windows": 999,
+        "incomplete_windows": 0,
+        "median_coverage_ratio": 1.0,
+        "median_event_count": 10,
+        "minimum_coverage_ratio": 1.0,
+        "total_windows": 999,
+        "valid_volatility_ratio": 1.0,
+        "valid_volatility_windows": 999
+      },
+      "output_rows": 999,
+      "query": "sector_analytics_5_minutes",
+      "sectors": [
+        "Financial",
+        "Healthcare",
+        "Technology"
+      ],
+      "symbols": [],
+      "window_durations": [
+        "5 minutes"
+      ]
+    },
+    {
+      "batch_id": 2,
+      "coverage": {
+        "average_coverage_ratio": 1.0,
+        "average_event_count": 30.0,
+        "complete_windows": 333,
+        "incomplete_windows": 0,
+        "median_coverage_ratio": 1.0,
+        "median_event_count": 30,
+        "minimum_coverage_ratio": 1.0,
+        "total_windows": 333,
+        "valid_volatility_ratio": 1.0,
+        "valid_volatility_windows": 333
+      },
+      "output_rows": 333,
+      "query": "sector_analytics_15_minutes",
+      "sectors": [
+        "Financial",
+        "Healthcare",
+        "Technology"
+      ],
+      "symbols": [],
+      "window_durations": [
+        "15 minutes"
+      ]
+    },
+    {
+      "batch_id": 2,
+      "coverage": {
+        "average_coverage_ratio": 1.0,
+        "average_event_count": 5.0,
+        "complete_windows": 1998,
+        "incomplete_windows": 0,
+        "median_coverage_ratio": 1.0,
+        "median_event_count": 5,
+        "minimum_coverage_ratio": 1.0,
+        "total_windows": 1998,
+        "valid_volatility_ratio": 1.0,
+        "valid_volatility_windows": 1998
+      },
+      "output_rows": 1998,
+      "query": "symbol_analytics_5_minutes",
+      "sectors": [
+        "Financial",
+        "Healthcare",
+        "Technology"
+      ],
+      "symbols": [
+        "AAPL",
+        "BAC",
+        "JNJ",
+        "JPM",
+        "MSFT",
+        "PFE"
+      ],
+      "window_durations": [
+        "5 minutes"
+      ]
+    },
+    {
+      "batch_id": 1,
+      "kafka_partitions": [
+        0,
+        1,
+        2,
+        3,
+        5
+      ],
+      "output_rows": 9997,
+      "query": "valid",
+      "symbols": [
+        "AAPL",
+        "BAC",
+        "JNJ",
+        "JPM",
+        "MSFT",
+        "PFE"
+      ]
+    },
+    {
+      "batch_id": 2,
+      "coverage": {
+        "average_coverage_ratio": 1.0,
+        "average_event_count": 15.0,
+        "complete_windows": 666,
+        "incomplete_windows": 0,
+        "median_coverage_ratio": 1.0,
+        "median_event_count": 15,
+        "minimum_coverage_ratio": 1.0,
+        "total_windows": 666,
+        "valid_volatility_ratio": 1.0,
+        "valid_volatility_windows": 666
+      },
+      "output_rows": 666,
+      "query": "symbol_analytics_15_minutes",
+      "sectors": [
+        "Financial",
+        "Healthcare",
+        "Technology"
+      ],
+      "symbols": [
+        "AAPL",
+        "BAC",
+        "JNJ",
+        "JPM",
+        "MSFT",
+        "PFE"
+      ],
+      "window_durations": [
+        "15 minutes"
+      ]
+    },
+    {
+      "batch_id": 2,
+      "coverage": {
+        "average_coverage_ratio": 1.0,
+        "average_event_count": 30.0,
+        "complete_windows": 330,
+        "incomplete_windows": 0,
+        "median_coverage_ratio": 1.0,
+        "median_event_count": 30,
+        "minimum_coverage_ratio": 1.0,
+        "total_windows": 330,
+        "valid_volatility_ratio": 1.0,
+        "valid_volatility_windows": 330
+      },
+      "output_rows": 330,
+      "query": "symbol_analytics_30_minutes",
+      "sectors": [
+        "Financial",
+        "Healthcare",
+        "Technology"
+      ],
+      "symbols": [
+        "AAPL",
+        "BAC",
+        "JNJ",
+        "JPM",
+        "MSFT",
+        "PFE"
+      ],
+      "window_durations": [
+        "30 minutes"
+      ]
+    },
+    {
+      "batch_id": 2,
+      "coverage": {
+        "average_coverage_ratio": 1.0,
+        "average_event_count": 60.0,
+        "complete_windows": 165,
+        "incomplete_windows": 0,
+        "median_coverage_ratio": 1.0,
+        "median_event_count": 60,
+        "minimum_coverage_ratio": 1.0,
+        "total_windows": 165,
+        "valid_volatility_ratio": 1.0,
+        "valid_volatility_windows": 165
+      },
+      "output_rows": 165,
+      "query": "sector_analytics_30_minutes",
+      "sectors": [
+        "Financial",
+        "Healthcare",
+        "Technology"
+      ],
+      "symbols": [],
+      "window_durations": [
+        "30 minutes"
+      ]
+    },
+    {
+      "batch_id": 3,
+      "coverage": {
+        "average_coverage_ratio": 0.996078,
+        "average_event_count": 9.960784,
+        "complete_windows": 507,
+        "incomplete_windows": 3,
+        "median_coverage_ratio": 1.0,
+        "median_event_count": 10,
+        "minimum_coverage_ratio": 0.2,
+        "total_windows": 510,
+        "valid_volatility_ratio": 1.0,
+        "valid_volatility_windows": 510
+      },
+      "output_rows": 510,
+      "query": "sector_analytics_5_minutes",
+      "sectors": [
+        "Financial",
+        "Healthcare",
+        "Technology"
+      ],
+      "symbols": [],
+      "window_durations": [
+        "5 minutes"
+      ]
+    },
+    {
+      "batch_id": 3,
+      "coverage": {
+        "average_coverage_ratio": 0.996101,
+        "average_event_count": 29.883041,
+        "complete_windows": 168,
+        "incomplete_windows": 3,
+        "median_coverage_ratio": 1.0,
+        "median_event_count": 30,
+        "minimum_coverage_ratio": 0.733333,
+        "total_windows": 171,
+        "valid_volatility_ratio": 1.0,
+        "valid_volatility_windows": 171
+      },
+      "output_rows": 171,
+      "query": "sector_analytics_15_minutes",
+      "sectors": [
+        "Financial",
+        "Healthcare",
+        "Technology"
+      ],
+      "symbols": [],
+      "window_durations": [
+        "15 minutes"
+      ]
+    },
+    {
+      "batch_id": 3,
+      "coverage": {
+        "average_coverage_ratio": 0.996078,
+        "average_event_count": 4.980392,
+        "complete_windows": 1014,
+        "incomplete_windows": 6,
+        "median_coverage_ratio": 1.0,
+        "median_event_count": 5,
+        "minimum_coverage_ratio": 0.2,
+        "total_windows": 1020,
+        "valid_volatility_ratio": 0.998039,
+        "valid_volatility_windows": 1018
+      },
+      "output_rows": 1020,
+      "query": "symbol_analytics_5_minutes",
+      "sectors": [
+        "Financial",
+        "Healthcare",
+        "Technology"
+      ],
+      "symbols": [
+        "AAPL",
+        "BAC",
+        "JNJ",
+        "JPM",
+        "MSFT",
+        "PFE"
+      ],
+      "window_durations": [
+        "5 minutes"
+      ]
+    },
+    {
+      "batch_id": 3,
+      "coverage": {
+        "average_coverage_ratio": 0.996169,
+        "average_event_count": 59.770115,
+        "complete_windows": 84,
+        "incomplete_windows": 3,
+        "median_coverage_ratio": 1.0,
+        "median_event_count": 60,
+        "minimum_coverage_ratio": 0.866667,
+        "total_windows": 87,
+        "valid_volatility_ratio": 1.0,
+        "valid_volatility_windows": 87
+      },
+      "output_rows": 87,
+      "query": "sector_analytics_30_minutes",
+      "sectors": [
+        "Financial",
+        "Healthcare",
+        "Technology"
+      ],
+      "symbols": [],
+      "window_durations": [
+        "30 minutes"
+      ]
+    },
+    {
+      "batch_id": 3,
+      "coverage": {
+        "average_coverage_ratio": 0.996101,
+        "average_event_count": 14.94152,
+        "complete_windows": 336,
+        "incomplete_windows": 6,
+        "median_coverage_ratio": 1.0,
+        "median_event_count": 15,
+        "minimum_coverage_ratio": 0.733333,
+        "total_windows": 342,
+        "valid_volatility_ratio": 1.0,
+        "valid_volatility_windows": 342
+      },
+      "output_rows": 342,
+      "query": "symbol_analytics_15_minutes",
+      "sectors": [
+        "Financial",
+        "Healthcare",
+        "Technology"
+      ],
+      "symbols": [
+        "AAPL",
+        "BAC",
+        "JNJ",
+        "JPM",
+        "MSFT",
+        "PFE"
+      ],
+      "window_durations": [
+        "15 minutes"
+      ]
+    },
+    {
+      "batch_id": 3,
+      "coverage": {
+        "average_coverage_ratio": 0.996169,
+        "average_event_count": 29.885057,
+        "complete_windows": 168,
+        "incomplete_windows": 6,
+        "median_coverage_ratio": 1.0,
+        "median_event_count": 30,
+        "minimum_coverage_ratio": 0.866667,
+        "total_windows": 174,
+        "valid_volatility_ratio": 1.0,
+        "valid_volatility_windows": 174
+      },
+      "output_rows": 174,
+      "query": "symbol_analytics_30_minutes",
+      "sectors": [
+        "Financial",
+        "Healthcare",
+        "Technology"
+      ],
+      "symbols": [
+        "AAPL",
+        "BAC",
+        "JNJ",
+        "JPM",
+        "MSFT",
+        "PFE"
+      ],
+      "window_durations": [
+        "30 minutes"
+      ]
+    },
+    {
+      "batch_id": 2,
+      "kafka_partitions": [
+        0,
+        1,
+        2,
+        3,
+        5
+      ],
+      "output_rows": 5007,
+      "query": "valid",
+      "symbols": [
+        "AAPL",
+        "BAC",
+        "JNJ",
+        "JPM",
+        "MSFT",
+        "PFE"
+      ]
+    },
+    {
+      "batch_id": 3,
+      "kafka_partitions": [],
+      "output_rows": 0,
+      "query": "valid",
+      "symbols": []
+    },
+    {
+      "batch_id": 0,
+      "duration_ms": {
+        "addBatch": 60071,
+        "commitOffsets": 1015,
+        "getBatch": 96,
+        "latestOffset": 122,
+        "queryPlanning": 3460,
+        "triggerExecution": 65130,
+        "walCommit": 337
+      },
+      "event_time": {
+        "avg": "2026-01-06T04:22:35.002Z",
+        "max": "2026-01-06T18:16:00.000Z",
+        "min": "2026-01-05T14:30:00.000Z",
+        "watermark": "1970-01-01T00:00:00.000Z"
+      },
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 9997,
+      "processed_rows_per_second": 153.4930139720559,
+      "query": "valid",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":3333,\"1\":1666,\"2\":1666,\"3\":1666,\"4\":0,\"5\":1666}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "2500.6666666666665",
+            "maxOffsetsBehindLatest": "5002",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 9997,
+          "processedRowsPerSecond": 153.4930139720559,
+          "startOffset": "None"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 23,
+          "allUpdatesTimeMs": 2646,
+          "commitTimeMs": 3366,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 0,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 1835424
+          },
+          "memoryUsedBytes": 1836288,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 0,
+          "numRowsTotal": 9997,
+          "numRowsUpdated": 9997,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:20:25.844Z"
+    },
+    {
+      "batch_id": 1,
+      "duration_ms": {
+        "addBatch": 28773,
+        "commitOffsets": 1117,
+        "getBatch": 1,
+        "latestOffset": 5,
+        "queryPlanning": 173,
+        "triggerExecution": 30962,
+        "walCommit": 880
+      },
+      "event_time": {
+        "avg": "2026-01-07T08:08:45.001Z",
+        "max": "2026-01-07T22:02:00.000Z",
+        "min": "2026-01-06T18:16:00.000Z",
+        "watermark": "2026-01-06T18:06:00.000Z"
+      },
+      "input_rows_per_second": 153.47651872207808,
+      "num_input_rows": 9997,
+      "processed_rows_per_second": 322.8796589367612,
+      "query": "valid",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":6666,\"1\":3332,\"2\":3332,\"3\":3332,\"4\":0,\"5\":3332}}",
+          "inputRowsPerSecond": 153.47651872207808,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "834.5",
+            "maxOffsetsBehindLatest": "1669",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 9997,
+          "processedRowsPerSecond": 322.8796589367612,
+          "startOffset": "{\"phase8-25000-run-1\":{\"0\":3333,\"1\":1666,\"2\":1666,\"3\":1666,\"4\":0,\"5\":1666}}"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 127,
+          "allUpdatesTimeMs": 1307,
+          "commitTimeMs": 4250,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 6,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 1912800
+          },
+          "memoryUsedBytes": 3749472,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 9882,
+          "numRowsTotal": 10112,
+          "numRowsUpdated": 9997,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:21:30.981Z"
+    },
+    {
+      "batch_id": 2,
+      "duration_ms": {
+        "addBatch": 21454,
+        "commitOffsets": 597,
+        "getBatch": 1,
+        "latestOffset": 1,
+        "queryPlanning": 183,
+        "triggerExecution": 23223,
+        "walCommit": 985
+      },
+      "event_time": {
+        "avg": "2026-01-08T04:59:06.434Z",
+        "max": "2026-01-08T13:56:00.000Z",
+        "min": "2026-01-07T22:02:00.000Z",
+        "watermark": "2026-01-07T21:52:00.000Z"
+      },
+      "input_rows_per_second": 161.68824878096038,
+      "num_input_rows": 5007,
+      "processed_rows_per_second": 215.60521896395815,
+      "query": "valid",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "inputRowsPerSecond": 161.68824878096038,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 5007,
+          "processedRowsPerSecond": 215.60521896395815,
+          "startOffset": "{\"phase8-25000-run-1\":{\"0\":6666,\"1\":3332,\"2\":3332,\"3\":3332,\"4\":0,\"5\":3332}}"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 62,
+          "allUpdatesTimeMs": 998,
+          "commitTimeMs": 2692,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 12,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 1009440
+          },
+          "memoryUsedBytes": 2910368,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 9996,
+          "numRowsTotal": 5123,
+          "numRowsUpdated": 5007,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:22:01.948Z"
+    },
+    {
+      "batch_id": 3,
+      "duration_ms": {
+        "addBatch": 489,
+        "commitOffsets": 558,
+        "getBatch": 0,
+        "latestOffset": 0,
+        "queryPlanning": 8,
+        "triggerExecution": 1557,
+        "walCommit": 500
+      },
+      "event_time": {
+        "watermark": "2026-01-08T13:46:00.000Z"
+      },
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 0,
+      "processed_rows_per_second": 0.0,
+      "query": "valid",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 0,
+          "processedRowsPerSecond": 0.0,
+          "startOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 285,
+          "allUpdatesTimeMs": 0,
+          "commitTimeMs": 1284,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 18,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 98976
+          },
+          "memoryUsedBytes": 1109664,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 5122,
+          "numRowsTotal": 1,
+          "numRowsUpdated": 0,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:22:25.172Z"
+    },
+    {
+      "batch_id": 0,
+      "duration_ms": {
+        "addBatch": 34314,
+        "commitOffsets": 1782,
+        "getBatch": 100,
+        "latestOffset": 131,
+        "queryPlanning": 986,
+        "triggerExecution": 37685,
+        "walCommit": 337
+      },
+      "event_time": {},
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 9997,
+      "processed_rows_per_second": 264.84925555025694,
+      "query": "invalid",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":3333,\"1\":1666,\"2\":1666,\"3\":1666,\"4\":0,\"5\":1666}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "2500.6666666666665",
+            "maxOffsetsBehindLatest": "5002",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 9997,
+          "processedRowsPerSecond": 264.84925555025694,
+          "startOffset": "None"
+        }
+      ],
+      "state_operators": [],
+      "timestamp": "2026-10-13T20:20:25.830Z"
+    },
+    {
+      "batch_id": 1,
+      "duration_ms": {
+        "addBatch": 15374,
+        "commitOffsets": 955,
+        "getBatch": 2,
+        "latestOffset": 2,
+        "queryPlanning": 108,
+        "triggerExecution": 17546,
+        "walCommit": 1084
+      },
+      "event_time": {},
+      "input_rows_per_second": 264.19133192389006,
+      "num_input_rows": 9997,
+      "processed_rows_per_second": 569.7270188636234,
+      "query": "invalid",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":6666,\"1\":3332,\"2\":3332,\"3\":3332,\"4\":0,\"5\":3332}}",
+          "inputRowsPerSecond": 264.19133192389006,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "834.5",
+            "maxOffsetsBehindLatest": "1669",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 9997,
+          "processedRowsPerSecond": 569.7270188636234,
+          "startOffset": "{\"phase8-25000-run-1\":{\"0\":3333,\"1\":1666,\"2\":1666,\"3\":1666,\"4\":0,\"5\":1666}}"
+        }
+      ],
+      "state_operators": [],
+      "timestamp": "2026-10-13T20:21:03.670Z"
+    },
+    {
+      "batch_id": 2,
+      "duration_ms": {
+        "addBatch": 9005,
+        "commitOffsets": 649,
+        "getBatch": 5,
+        "latestOffset": 67,
+        "queryPlanning": 234,
+        "triggerExecution": 11129,
+        "walCommit": 1138
+      },
+      "event_time": {},
+      "input_rows_per_second": 285.0230545909945,
+      "num_input_rows": 5007,
+      "processed_rows_per_second": 449.82481358368517,
+      "query": "invalid",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "inputRowsPerSecond": 285.0230545909945,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 5007,
+          "processedRowsPerSecond": 449.82481358368517,
+          "startOffset": "{\"phase8-25000-run-1\":{\"0\":6666,\"1\":3332,\"2\":3332,\"3\":3332,\"4\":0,\"5\":3332}}"
+        }
+      ],
+      "state_operators": [],
+      "timestamp": "2026-10-13T20:21:21.237Z"
+    },
+    {
+      "batch_id": 0,
+      "duration_ms": {
+        "addBatch": 30254,
+        "commitOffsets": 910,
+        "getBatch": 117,
+        "latestOffset": 87,
+        "queryPlanning": 6442,
+        "triggerExecution": 38372,
+        "walCommit": 540
+      },
+      "event_time": {
+        "avg": "2026-01-06T04:22:35.002Z",
+        "max": "2026-01-06T18:16:00.000Z",
+        "min": "2026-01-05T14:30:00.000Z",
+        "watermark": "1970-01-01T00:00:00.000Z"
+      },
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 9997,
+      "processed_rows_per_second": 260.52851037214634,
+      "query": "symbol_analytics_5_minutes",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":3333,\"1\":1666,\"2\":1666,\"3\":1666,\"4\":0,\"5\":1666}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "2500.6666666666665",
+            "maxOffsetsBehindLatest": "5002",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 9997,
+          "processedRowsPerSecond": 260.52851037214634,
+          "startOffset": "None"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 861,
+          "allUpdatesTimeMs": 2087,
+          "commitTimeMs": 4527,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 0,
+            "loadedMapCacheMissCount": 0,
+            "stateOnCurrentVersionSizeBytes": 674816
+          },
+          "memoryUsedBytes": 675680,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 0,
+          "numRowsTotal": 2004,
+          "numRowsUpdated": 2004,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "stateStoreSave"
+        },
+        {
+          "allRemovalsTimeMs": 3,
+          "allUpdatesTimeMs": 1948,
+          "commitTimeMs": 3382,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 0,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 1835424
+          },
+          "memoryUsedBytes": 1836288,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 0,
+          "numRowsTotal": 9997,
+          "numRowsUpdated": 9997,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:20:27.641Z"
+    },
+    {
+      "batch_id": 1,
+      "duration_ms": {
+        "addBatch": 31359,
+        "commitOffsets": 1310,
+        "getBatch": 1,
+        "latestOffset": 1,
+        "queryPlanning": 296,
+        "triggerExecution": 33543,
+        "walCommit": 571
+      },
+      "event_time": {
+        "avg": "2026-01-07T08:08:45.001Z",
+        "max": "2026-01-07T22:02:00.000Z",
+        "min": "2026-01-06T18:16:00.000Z",
+        "watermark": "2026-01-06T18:06:00.000Z"
+      },
+      "input_rows_per_second": 260.5149319851983,
+      "num_input_rows": 9997,
+      "processed_rows_per_second": 298.03535760069167,
+      "query": "symbol_analytics_5_minutes",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":6666,\"1\":3332,\"2\":3332,\"3\":3332,\"4\":0,\"5\":3332}}",
+          "inputRowsPerSecond": 260.5149319851983,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "834.5",
+            "maxOffsetsBehindLatest": "1669",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 9997,
+          "processedRowsPerSecond": 298.03535760069167,
+          "startOffset": "{\"phase8-25000-run-1\":{\"0\":3333,\"1\":1666,\"2\":1666,\"3\":1666,\"4\":0,\"5\":1666}}"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 284,
+          "allUpdatesTimeMs": 1266,
+          "commitTimeMs": 3738,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 12,
+            "loadedMapCacheMissCount": 0,
+            "stateOnCurrentVersionSizeBytes": 684568
+          },
+          "memoryUsedBytes": 1360632,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 1986,
+          "numRowsTotal": 2016,
+          "numRowsUpdated": 2004,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "stateStoreSave"
+        },
+        {
+          "allRemovalsTimeMs": 117,
+          "allUpdatesTimeMs": 1625,
+          "commitTimeMs": 3793,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 6,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 1912800
+          },
+          "memoryUsedBytes": 3749472,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 9882,
+          "numRowsTotal": 10112,
+          "numRowsUpdated": 9997,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:21:06.015Z"
+    },
+    {
+      "batch_id": 2,
+      "duration_ms": {
+        "addBatch": 19808,
+        "commitOffsets": 1058,
+        "getBatch": 4,
+        "latestOffset": 1,
+        "queryPlanning": 316,
+        "triggerExecution": 22108,
+        "walCommit": 896
+      },
+      "event_time": {
+        "avg": "2026-01-08T04:59:06.434Z",
+        "max": "2026-01-08T13:56:00.000Z",
+        "min": "2026-01-07T22:02:00.000Z",
+        "watermark": "2026-01-07T21:52:00.000Z"
+      },
+      "input_rows_per_second": 149.24438880443532,
+      "num_input_rows": 5007,
+      "processed_rows_per_second": 226.46885883576823,
+      "query": "symbol_analytics_5_minutes",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "inputRowsPerSecond": 149.24438880443532,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 5007,
+          "processedRowsPerSecond": 226.46885883576823,
+          "startOffset": "{\"phase8-25000-run-1\":{\"0\":6666,\"1\":3332,\"2\":3332,\"3\":3332,\"4\":0,\"5\":3332}}"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 182,
+          "allUpdatesTimeMs": 1920,
+          "commitTimeMs": 2745,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 24,
+            "loadedMapCacheMissCount": 0,
+            "stateOnCurrentVersionSizeBytes": 367056
+          },
+          "memoryUsedBytes": 1046944,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 1998,
+          "numRowsTotal": 1021,
+          "numRowsUpdated": 1009,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "stateStoreSave"
+        },
+        {
+          "allRemovalsTimeMs": 57,
+          "allUpdatesTimeMs": 808,
+          "commitTimeMs": 2895,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 12,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 1009440
+          },
+          "memoryUsedBytes": 2910368,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 9996,
+          "numRowsTotal": 5123,
+          "numRowsUpdated": 5007,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:21:39.564Z"
+    },
+    {
+      "batch_id": 3,
+      "duration_ms": {
+        "addBatch": 14804,
+        "commitOffsets": 526,
+        "getBatch": 0,
+        "latestOffset": 1,
+        "queryPlanning": 105,
+        "triggerExecution": 15995,
+        "walCommit": 544
+      },
+      "event_time": {
+        "watermark": "2026-01-08T13:46:00.000Z"
+      },
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 0,
+      "processed_rows_per_second": 0.0,
+      "query": "symbol_analytics_5_minutes",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 0,
+          "processedRowsPerSecond": 0.0,
+          "startOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 1611,
+          "allUpdatesTimeMs": 33,
+          "commitTimeMs": 2287,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 36,
+            "loadedMapCacheMissCount": 0,
+            "stateOnCurrentVersionSizeBytes": 17056
+          },
+          "memoryUsedBytes": 385360,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 1020,
+          "numRowsTotal": 1,
+          "numRowsUpdated": 0,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "stateStoreSave"
+        },
+        {
+          "allRemovalsTimeMs": 1013,
+          "allUpdatesTimeMs": 220,
+          "commitTimeMs": 3047,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 18,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 98976
+          },
+          "memoryUsedBytes": 1109664,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 5122,
+          "numRowsTotal": 1,
+          "numRowsUpdated": 0,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:22:01.675Z"
+    },
+    {
+      "batch_id": 0,
+      "duration_ms": {
+        "addBatch": 26730,
+        "commitOffsets": 1119,
+        "getBatch": 159,
+        "latestOffset": 129,
+        "queryPlanning": 6339,
+        "triggerExecution": 35465,
+        "walCommit": 977
+      },
+      "event_time": {
+        "avg": "2026-01-06T04:22:35.002Z",
+        "max": "2026-01-06T18:16:00.000Z",
+        "min": "2026-01-05T14:30:00.000Z",
+        "watermark": "1970-01-01T00:00:00.000Z"
+      },
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 9997,
+      "processed_rows_per_second": 281.883547159171,
+      "query": "sector_analytics_5_minutes",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":3333,\"1\":1666,\"2\":1666,\"3\":1666,\"4\":0,\"5\":1666}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "2500.6666666666665",
+            "maxOffsetsBehindLatest": "5002",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 9997,
+          "processedRowsPerSecond": 281.883547159171,
+          "startOffset": "None"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 0,
+          "allUpdatesTimeMs": 1225,
+          "commitTimeMs": 3609,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 0,
+            "loadedMapCacheMissCount": 0,
+            "stateOnCurrentVersionSizeBytes": 720240
+          },
+          "memoryUsedBytes": 721104,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 0,
+          "numRowsTotal": 1002,
+          "numRowsUpdated": 1002,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "stateStoreSave"
+        },
+        {
+          "allRemovalsTimeMs": 2,
+          "allUpdatesTimeMs": 3702,
+          "commitTimeMs": 4757,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 0,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 1835424
+          },
+          "memoryUsedBytes": 1836288,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 0,
+          "numRowsTotal": 9997,
+          "numRowsUpdated": 9997,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:20:28.400Z"
+    },
+    {
+      "batch_id": 1,
+      "duration_ms": {
+        "addBatch": 26469,
+        "commitOffsets": 926,
+        "getBatch": 0,
+        "latestOffset": 2,
+        "queryPlanning": 381,
+        "triggerExecution": 28678,
+        "walCommit": 888
+      },
+      "event_time": {
+        "avg": "2026-01-07T08:08:45.001Z",
+        "max": "2026-01-07T22:02:00.000Z",
+        "min": "2026-01-06T18:16:00.000Z",
+        "watermark": "2026-01-06T18:06:00.000Z"
+      },
+      "input_rows_per_second": 281.73261188141134,
+      "num_input_rows": 9997,
+      "processed_rows_per_second": 348.59474161378057,
+      "query": "sector_analytics_5_minutes",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":6666,\"1\":3332,\"2\":3332,\"3\":3332,\"4\":0,\"5\":3332}}",
+          "inputRowsPerSecond": 281.73261188141134,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "834.5",
+            "maxOffsetsBehindLatest": "1669",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 9997,
+          "processedRowsPerSecond": 348.59474161378057,
+          "startOffset": "{\"phase8-25000-run-1\":{\"0\":3333,\"1\":1666,\"2\":1666,\"3\":1666,\"4\":0,\"5\":1666}}"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 564,
+          "allUpdatesTimeMs": 885,
+          "commitTimeMs": 3079,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 12,
+            "loadedMapCacheMissCount": 0,
+            "stateOnCurrentVersionSizeBytes": 541712
+          },
+          "memoryUsedBytes": 1260648,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 993,
+          "numRowsTotal": 1008,
+          "numRowsUpdated": 1002,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "stateStoreSave"
+        },
+        {
+          "allRemovalsTimeMs": 99,
+          "allUpdatesTimeMs": 2098,
+          "commitTimeMs": 3040,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 6,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 1912800
+          },
+          "memoryUsedBytes": 3749472,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 9882,
+          "numRowsTotal": 10112,
+          "numRowsUpdated": 9997,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:21:03.884Z"
+    },
+    {
+      "batch_id": 2,
+      "duration_ms": {
+        "addBatch": 23888,
+        "commitOffsets": 636,
+        "getBatch": 0,
+        "latestOffset": 5,
+        "queryPlanning": 710,
+        "triggerExecution": 26312,
+        "walCommit": 1032
+      },
+      "event_time": {
+        "avg": "2026-01-08T04:59:06.434Z",
+        "max": "2026-01-08T13:56:00.000Z",
+        "min": "2026-01-07T22:02:00.000Z",
+        "watermark": "2026-01-07T21:52:00.000Z"
+      },
+      "input_rows_per_second": 174.55724445684004,
+      "num_input_rows": 5007,
+      "processed_rows_per_second": 190.293402249924,
+      "query": "sector_analytics_5_minutes",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "inputRowsPerSecond": 174.55724445684004,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 5007,
+          "processedRowsPerSecond": 190.293402249924,
+          "startOffset": "{\"phase8-25000-run-1\":{\"0\":6666,\"1\":3332,\"2\":3332,\"3\":3332,\"4\":0,\"5\":3332}}"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 829,
+          "allUpdatesTimeMs": 1094,
+          "commitTimeMs": 4855,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 24,
+            "loadedMapCacheMissCount": 0,
+            "stateOnCurrentVersionSizeBytes": 303816
+          },
+          "memoryUsedBytes": 846096,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 999,
+          "numRowsTotal": 511,
+          "numRowsUpdated": 505,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "stateStoreSave"
+        },
+        {
+          "allRemovalsTimeMs": 107,
+          "allUpdatesTimeMs": 1668,
+          "commitTimeMs": 3751,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 12,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 1009440
+          },
+          "memoryUsedBytes": 2910368,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 9996,
+          "numRowsTotal": 5123,
+          "numRowsUpdated": 5007,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:21:32.568Z"
+    },
+    {
+      "batch_id": 3,
+      "duration_ms": {
+        "addBatch": 10273,
+        "commitOffsets": 516,
+        "getBatch": 0,
+        "latestOffset": 1,
+        "queryPlanning": 69,
+        "triggerExecution": 11368,
+        "walCommit": 499
+      },
+      "event_time": {
+        "watermark": "2026-01-08T13:46:00.000Z"
+      },
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 0,
+      "processed_rows_per_second": 0.0,
+      "query": "sector_analytics_5_minutes",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 0,
+          "processedRowsPerSecond": 0.0,
+          "startOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 1076,
+          "allUpdatesTimeMs": 0,
+          "commitTimeMs": 2978,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 36,
+            "loadedMapCacheMissCount": 0,
+            "stateOnCurrentVersionSizeBytes": 10600
+          },
+          "memoryUsedBytes": 314984,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 510,
+          "numRowsTotal": 1,
+          "numRowsUpdated": 0,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "stateStoreSave"
+        },
+        {
+          "allRemovalsTimeMs": 779,
+          "allUpdatesTimeMs": 111,
+          "commitTimeMs": 2762,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 18,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 98976
+          },
+          "memoryUsedBytes": 1109664,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 5122,
+          "numRowsTotal": 1,
+          "numRowsUpdated": 0,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:21:58.882Z"
+    },
+    {
+      "batch_id": 0,
+      "duration_ms": {
+        "addBatch": 36531,
+        "commitOffsets": 948,
+        "getBatch": 135,
+        "latestOffset": 250,
+        "queryPlanning": 6474,
+        "triggerExecution": 45075,
+        "walCommit": 724
+      },
+      "event_time": {
+        "avg": "2026-01-06T04:22:35.002Z",
+        "max": "2026-01-06T18:16:00.000Z",
+        "min": "2026-01-05T14:30:00.000Z",
+        "watermark": "1970-01-01T00:00:00.000Z"
+      },
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 9997,
+      "processed_rows_per_second": 221.78099210222734,
+      "query": "symbol_analytics_15_minutes",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":3333,\"1\":1666,\"2\":1666,\"3\":1666,\"4\":0,\"5\":1666}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "2500.6666666666665",
+            "maxOffsetsBehindLatest": "5002",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 9997,
+          "processedRowsPerSecond": 221.78099210222734,
+          "startOffset": "None"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 328,
+          "allUpdatesTimeMs": 988,
+          "commitTimeMs": 2961,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 0,
+            "loadedMapCacheMissCount": 0,
+            "stateOnCurrentVersionSizeBytes": 237472
+          },
+          "memoryUsedBytes": 238336,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 0,
+          "numRowsTotal": 672,
+          "numRowsUpdated": 672,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "stateStoreSave"
+        },
+        {
+          "allRemovalsTimeMs": 2,
+          "allUpdatesTimeMs": 1267,
+          "commitTimeMs": 4005,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 0,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 1835424
+          },
+          "memoryUsedBytes": 1836288,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 0,
+          "numRowsTotal": 9997,
+          "numRowsUpdated": 9997,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:20:30.254Z"
+    },
+    {
+      "batch_id": 1,
+      "duration_ms": {
+        "addBatch": 22645,
+        "commitOffsets": 1045,
+        "getBatch": 1,
+        "latestOffset": 2,
+        "queryPlanning": 478,
+        "triggerExecution": 25108,
+        "walCommit": 932
+      },
+      "event_time": {
+        "avg": "2026-01-07T08:08:45.001Z",
+        "max": "2026-01-07T22:02:00.000Z",
+        "min": "2026-01-06T18:16:00.000Z",
+        "watermark": "2026-01-06T18:06:00.000Z"
+      },
+      "input_rows_per_second": 221.75639404627225,
+      "num_input_rows": 9997,
+      "processed_rows_per_second": 398.12823576264435,
+      "query": "symbol_analytics_15_minutes",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":6666,\"1\":3332,\"2\":3332,\"3\":3332,\"4\":0,\"5\":3332}}",
+          "inputRowsPerSecond": 221.75639404627225,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "834.5",
+            "maxOffsetsBehindLatest": "1669",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 9997,
+          "processedRowsPerSecond": 398.12823576264435,
+          "startOffset": "{\"phase8-25000-run-1\":{\"0\":3333,\"1\":1666,\"2\":1666,\"3\":1666,\"4\":0,\"5\":1666}}"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 319,
+          "allUpdatesTimeMs": 1682,
+          "commitTimeMs": 3234,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 12,
+            "loadedMapCacheMissCount": 0,
+            "stateOnCurrentVersionSizeBytes": 218328
+          },
+          "memoryUsedBytes": 455560,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 660,
+          "numRowsTotal": 678,
+          "numRowsUpdated": 672,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "stateStoreSave"
+        },
+        {
+          "allRemovalsTimeMs": 97,
+          "allUpdatesTimeMs": 2275,
+          "commitTimeMs": 3519,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 6,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 1912800
+          },
+          "memoryUsedBytes": 3749472,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 9882,
+          "numRowsTotal": 10112,
+          "numRowsUpdated": 9997,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:21:15.335Z"
+    },
+    {
+      "batch_id": 2,
+      "duration_ms": {
+        "addBatch": 19625,
+        "commitOffsets": 944,
+        "getBatch": 1,
+        "latestOffset": 1,
+        "queryPlanning": 301,
+        "triggerExecution": 21490,
+        "walCommit": 614
+      },
+      "event_time": {
+        "avg": "2026-01-08T04:59:06.434Z",
+        "max": "2026-01-08T13:56:00.000Z",
+        "min": "2026-01-07T22:02:00.000Z",
+        "watermark": "2026-01-07T21:52:00.000Z"
+      },
+      "input_rows_per_second": 199.33118356622478,
+      "num_input_rows": 5007,
+      "processed_rows_per_second": 232.98124796426413,
+      "query": "symbol_analytics_15_minutes",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "inputRowsPerSecond": 199.33118356622478,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 5007,
+          "processedRowsPerSecond": 232.98124796426413,
+          "startOffset": "{\"phase8-25000-run-1\":{\"0\":6666,\"1\":3332,\"2\":3332,\"3\":3332,\"4\":0,\"5\":3332}}"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 217,
+          "allUpdatesTimeMs": 546,
+          "commitTimeMs": 2939,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 24,
+            "loadedMapCacheMissCount": 0,
+            "stateOnCurrentVersionSizeBytes": 117536
+          },
+          "memoryUsedBytes": 334616,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 666,
+          "numRowsTotal": 343,
+          "numRowsUpdated": 337,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "stateStoreSave"
+        },
+        {
+          "allRemovalsTimeMs": 79,
+          "allUpdatesTimeMs": 863,
+          "commitTimeMs": 3537,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 12,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 1009440
+          },
+          "memoryUsedBytes": 2910368,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 9996,
+          "numRowsTotal": 5123,
+          "numRowsUpdated": 5007,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:21:40.454Z"
+    },
+    {
+      "batch_id": 3,
+      "duration_ms": {
+        "addBatch": 14592,
+        "commitOffsets": 335,
+        "getBatch": 0,
+        "latestOffset": 0,
+        "queryPlanning": 193,
+        "triggerExecution": 15986,
+        "walCommit": 860
+      },
+      "event_time": {
+        "watermark": "2026-01-08T13:46:00.000Z"
+      },
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 0,
+      "processed_rows_per_second": 0.0,
+      "query": "symbol_analytics_15_minutes",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 0,
+          "processedRowsPerSecond": 0.0,
+          "startOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 926,
+          "allUpdatesTimeMs": 40,
+          "commitTimeMs": 2295,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 36,
+            "loadedMapCacheMissCount": 0,
+            "stateOnCurrentVersionSizeBytes": 7160
+          },
+          "memoryUsedBytes": 125632,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 342,
+          "numRowsTotal": 1,
+          "numRowsUpdated": 0,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "stateStoreSave"
+        },
+        {
+          "allRemovalsTimeMs": 643,
+          "allUpdatesTimeMs": 88,
+          "commitTimeMs": 2596,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 18,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 98976
+          },
+          "memoryUsedBytes": 1109664,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 5122,
+          "numRowsTotal": 1,
+          "numRowsUpdated": 0,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:22:01.946Z"
+    },
+    {
+      "batch_id": 0,
+      "duration_ms": {
+        "addBatch": 26160,
+        "commitOffsets": 886,
+        "getBatch": 131,
+        "latestOffset": 202,
+        "queryPlanning": 6111,
+        "triggerExecution": 34291,
+        "walCommit": 791
+      },
+      "event_time": {
+        "avg": "2026-01-06T04:22:35.002Z",
+        "max": "2026-01-06T18:16:00.000Z",
+        "min": "2026-01-05T14:30:00.000Z",
+        "watermark": "1970-01-01T00:00:00.000Z"
+      },
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 9997,
+      "processed_rows_per_second": 291.52572028461447,
+      "query": "sector_analytics_15_minutes",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":3333,\"1\":1666,\"2\":1666,\"3\":1666,\"4\":0,\"5\":1666}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "2500.6666666666665",
+            "maxOffsetsBehindLatest": "5002",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 9997,
+          "processedRowsPerSecond": 291.52572028461447,
+          "startOffset": "None"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 3,
+          "allUpdatesTimeMs": 1681,
+          "commitTimeMs": 2967,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 0,
+            "loadedMapCacheMissCount": 0,
+            "stateOnCurrentVersionSizeBytes": 242720
+          },
+          "memoryUsedBytes": 243584,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 0,
+          "numRowsTotal": 336,
+          "numRowsUpdated": 336,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "stateStoreSave"
+        },
+        {
+          "allRemovalsTimeMs": 10,
+          "allUpdatesTimeMs": 2677,
+          "commitTimeMs": 3369,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 0,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 1835424
+          },
+          "memoryUsedBytes": 1836288,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 0,
+          "numRowsTotal": 9997,
+          "numRowsUpdated": 9997,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:20:31.128Z"
+    },
+    {
+      "batch_id": 1,
+      "duration_ms": {
+        "addBatch": 28306,
+        "commitOffsets": 1524,
+        "getBatch": 1,
+        "latestOffset": 1,
+        "queryPlanning": 177,
+        "triggerExecution": 30604,
+        "walCommit": 588
+      },
+      "event_time": {
+        "avg": "2026-01-07T08:08:45.001Z",
+        "max": "2026-01-07T22:02:00.000Z",
+        "min": "2026-01-06T18:16:00.000Z",
+        "watermark": "2026-01-06T18:06:00.000Z"
+      },
+      "input_rows_per_second": 291.50871872630785,
+      "num_input_rows": 9997,
+      "processed_rows_per_second": 326.65664619004053,
+      "query": "sector_analytics_15_minutes",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":6666,\"1\":3332,\"2\":3332,\"3\":3332,\"4\":0,\"5\":3332}}",
+          "inputRowsPerSecond": 291.50871872630785,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "834.5",
+            "maxOffsetsBehindLatest": "1669",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 9997,
+          "processedRowsPerSecond": 326.65664619004053,
+          "startOffset": "{\"phase8-25000-run-1\":{\"0\":3333,\"1\":1666,\"2\":1666,\"3\":1666,\"4\":0,\"5\":1666}}"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 611,
+          "allUpdatesTimeMs": 1202,
+          "commitTimeMs": 4079,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 12,
+            "loadedMapCacheMissCount": 0,
+            "stateOnCurrentVersionSizeBytes": 248184
+          },
+          "memoryUsedBytes": 489728,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 330,
+          "numRowsTotal": 339,
+          "numRowsUpdated": 336,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "stateStoreSave"
+        },
+        {
+          "allRemovalsTimeMs": 65,
+          "allUpdatesTimeMs": 1995,
+          "commitTimeMs": 3071,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 6,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 1912800
+          },
+          "memoryUsedBytes": 3749472,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 9882,
+          "numRowsTotal": 10112,
+          "numRowsUpdated": 9997,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:21:05.422Z"
+    },
+    {
+      "batch_id": 2,
+      "duration_ms": {
+        "addBatch": 22754,
+        "commitOffsets": 619,
+        "getBatch": 1,
+        "latestOffset": 1,
+        "queryPlanning": 429,
+        "triggerExecution": 25103,
+        "walCommit": 1268
+      },
+      "event_time": {
+        "avg": "2026-01-08T04:59:06.434Z",
+        "max": "2026-01-08T13:56:00.000Z",
+        "min": "2026-01-07T22:02:00.000Z",
+        "watermark": "2026-01-07T21:52:00.000Z"
+      },
+      "input_rows_per_second": 163.58468374281233,
+      "num_input_rows": 5007,
+      "processed_rows_per_second": 199.45823208381466,
+      "query": "sector_analytics_15_minutes",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "inputRowsPerSecond": 163.58468374281233,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 5007,
+          "processedRowsPerSecond": 199.45823208381466,
+          "startOffset": "{\"phase8-25000-run-1\":{\"0\":6666,\"1\":3332,\"2\":3332,\"3\":3332,\"4\":0,\"5\":3332}}"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 470,
+          "allUpdatesTimeMs": 968,
+          "commitTimeMs": 2686,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 24,
+            "loadedMapCacheMissCount": 0,
+            "stateOnCurrentVersionSizeBytes": 129280
+          },
+          "memoryUsedBytes": 376288,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 333,
+          "numRowsTotal": 172,
+          "numRowsUpdated": 169,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "stateStoreSave"
+        },
+        {
+          "allRemovalsTimeMs": 116,
+          "allUpdatesTimeMs": 2046,
+          "commitTimeMs": 4912,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 12,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 1009440
+          },
+          "memoryUsedBytes": 2910368,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 9996,
+          "numRowsTotal": 5123,
+          "numRowsUpdated": 5007,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:21:36.030Z"
+    },
+    {
+      "batch_id": 3,
+      "duration_ms": {
+        "addBatch": 14979,
+        "commitOffsets": 692,
+        "getBatch": 1,
+        "latestOffset": 3,
+        "queryPlanning": 55,
+        "triggerExecution": 16429,
+        "walCommit": 696
+      },
+      "event_time": {
+        "watermark": "2026-01-08T13:46:00.000Z"
+      },
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 0,
+      "processed_rows_per_second": 0.0,
+      "query": "sector_analytics_15_minutes",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 0,
+          "processedRowsPerSecond": 0.0,
+          "startOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 1192,
+          "allUpdatesTimeMs": 0,
+          "commitTimeMs": 3916,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 36,
+            "loadedMapCacheMissCount": 0,
+            "stateOnCurrentVersionSizeBytes": 4456
+          },
+          "memoryUsedBytes": 134304,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 171,
+          "numRowsTotal": 1,
+          "numRowsUpdated": 0,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "stateStoreSave"
+        },
+        {
+          "allRemovalsTimeMs": 769,
+          "allUpdatesTimeMs": 131,
+          "commitTimeMs": 5403,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 18,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 98976
+          },
+          "memoryUsedBytes": 1109664,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 5122,
+          "numRowsTotal": 1,
+          "numRowsUpdated": 0,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:22:01.136Z"
+    },
+    {
+      "batch_id": 0,
+      "duration_ms": {
+        "addBatch": 36838,
+        "commitOffsets": 884,
+        "getBatch": 119,
+        "latestOffset": 138,
+        "queryPlanning": 6884,
+        "triggerExecution": 45408,
+        "walCommit": 527
+      },
+      "event_time": {
+        "avg": "2026-01-06T04:22:35.002Z",
+        "max": "2026-01-06T18:16:00.000Z",
+        "min": "2026-01-05T14:30:00.000Z",
+        "watermark": "1970-01-01T00:00:00.000Z"
+      },
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 9997,
+      "processed_rows_per_second": 220.1594432699084,
+      "query": "symbol_analytics_30_minutes",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":3333,\"1\":1666,\"2\":1666,\"3\":1666,\"4\":0,\"5\":1666}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "2500.6666666666665",
+            "maxOffsetsBehindLatest": "5002",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 9997,
+          "processedRowsPerSecond": 220.1594432699084,
+          "startOffset": "None"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 680,
+          "allUpdatesTimeMs": 1838,
+          "commitTimeMs": 4573,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 0,
+            "loadedMapCacheMissCount": 0,
+            "stateOnCurrentVersionSizeBytes": 119072
+          },
+          "memoryUsedBytes": 119936,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 0,
+          "numRowsTotal": 336,
+          "numRowsUpdated": 336,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "stateStoreSave"
+        },
+        {
+          "allRemovalsTimeMs": 2,
+          "allUpdatesTimeMs": 1371,
+          "commitTimeMs": 2532,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 0,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 1835424
+          },
+          "memoryUsedBytes": 1836288,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 0,
+          "numRowsTotal": 9997,
+          "numRowsUpdated": 9997,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:20:33.549Z"
+    },
+    {
+      "batch_id": 1,
+      "duration_ms": {
+        "addBatch": 20128,
+        "commitOffsets": 635,
+        "getBatch": 0,
+        "latestOffset": 10,
+        "queryPlanning": 312,
+        "triggerExecution": 21964,
+        "walCommit": 871
+      },
+      "event_time": {
+        "avg": "2026-01-07T08:08:45.001Z",
+        "max": "2026-01-07T22:02:00.000Z",
+        "min": "2026-01-06T18:16:00.000Z",
+        "watermark": "2026-01-06T18:06:00.000Z"
+      },
+      "input_rows_per_second": 220.1497467518168,
+      "num_input_rows": 9997,
+      "processed_rows_per_second": 455.1538881806593,
+      "query": "symbol_analytics_30_minutes",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":6666,\"1\":3332,\"2\":3332,\"3\":3332,\"4\":0,\"5\":3332}}",
+          "inputRowsPerSecond": 220.1497467518168,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "834.5",
+            "maxOffsetsBehindLatest": "1669",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 9997,
+          "processedRowsPerSecond": 455.1538881806593,
+          "startOffset": "{\"phase8-25000-run-1\":{\"0\":3333,\"1\":1666,\"2\":1666,\"3\":1666,\"4\":0,\"5\":1666}}"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 360,
+          "allUpdatesTimeMs": 1056,
+          "commitTimeMs": 2566,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 12,
+            "loadedMapCacheMissCount": 0,
+            "stateOnCurrentVersionSizeBytes": 124464
+          },
+          "memoryUsedBytes": 243920,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 330,
+          "numRowsTotal": 342,
+          "numRowsUpdated": 342,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "stateStoreSave"
+        },
+        {
+          "allRemovalsTimeMs": 81,
+          "allUpdatesTimeMs": 992,
+          "commitTimeMs": 2506,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 6,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 1912800
+          },
+          "memoryUsedBytes": 3749472,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 9882,
+          "numRowsTotal": 10112,
+          "numRowsUpdated": 9997,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:21:18.959Z"
+    },
+    {
+      "batch_id": 2,
+      "duration_ms": {
+        "addBatch": 19529,
+        "commitOffsets": 1093,
+        "getBatch": 0,
+        "latestOffset": 2,
+        "queryPlanning": 278,
+        "triggerExecution": 22210,
+        "walCommit": 1286
+      },
+      "event_time": {
+        "avg": "2026-01-08T04:59:06.434Z",
+        "max": "2026-01-08T13:56:00.000Z",
+        "min": "2026-01-07T22:02:00.000Z",
+        "watermark": "2026-01-07T21:52:00.000Z"
+      },
+      "input_rows_per_second": 227.86019841631017,
+      "num_input_rows": 5007,
+      "processed_rows_per_second": 225.4389914452949,
+      "query": "symbol_analytics_30_minutes",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "inputRowsPerSecond": 227.86019841631017,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 5007,
+          "processedRowsPerSecond": 225.4389914452949,
+          "startOffset": "{\"phase8-25000-run-1\":{\"0\":6666,\"1\":3332,\"2\":3332,\"3\":3332,\"4\":0,\"5\":3332}}"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 613,
+          "allUpdatesTimeMs": 1127,
+          "commitTimeMs": 4667,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 24,
+            "loadedMapCacheMissCount": 0,
+            "stateOnCurrentVersionSizeBytes": 66504
+          },
+          "memoryUsedBytes": 189480,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 330,
+          "numRowsTotal": 175,
+          "numRowsUpdated": 169,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "stateStoreSave"
+        },
+        {
+          "allRemovalsTimeMs": 125,
+          "allUpdatesTimeMs": 1404,
+          "commitTimeMs": 3357,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 12,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 1009440
+          },
+          "memoryUsedBytes": 2910368,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 9996,
+          "numRowsTotal": 5123,
+          "numRowsUpdated": 5007,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:21:40.933Z"
+    },
+    {
+      "batch_id": 3,
+      "duration_ms": {
+        "addBatch": 13925,
+        "commitOffsets": 261,
+        "getBatch": 0,
+        "latestOffset": 41,
+        "queryPlanning": 86,
+        "triggerExecution": 15267,
+        "walCommit": 948
+      },
+      "event_time": {
+        "watermark": "2026-01-08T13:46:00.000Z"
+      },
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 0,
+      "processed_rows_per_second": 0.0,
+      "query": "symbol_analytics_30_minutes",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 0,
+          "processedRowsPerSecond": 0.0,
+          "startOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 634,
+          "allUpdatesTimeMs": 68,
+          "commitTimeMs": 2891,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 36,
+            "loadedMapCacheMissCount": 0,
+            "stateOnCurrentVersionSizeBytes": 4088
+          },
+          "memoryUsedBytes": 71528,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 174,
+          "numRowsTotal": 1,
+          "numRowsUpdated": 0,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "stateStoreSave"
+        },
+        {
+          "allRemovalsTimeMs": 1116,
+          "allUpdatesTimeMs": 115,
+          "commitTimeMs": 3688,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 18,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 98976
+          },
+          "memoryUsedBytes": 1109664,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 5122,
+          "numRowsTotal": 1,
+          "numRowsUpdated": 0,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:22:03.149Z"
+    },
+    {
+      "batch_id": 0,
+      "duration_ms": {
+        "addBatch": 34742,
+        "commitOffsets": 907,
+        "getBatch": 151,
+        "latestOffset": 142,
+        "queryPlanning": 8048,
+        "triggerExecution": 44879,
+        "walCommit": 824
+      },
+      "event_time": {
+        "avg": "2026-01-06T04:22:35.002Z",
+        "max": "2026-01-06T18:16:00.000Z",
+        "min": "2026-01-05T14:30:00.000Z",
+        "watermark": "1970-01-01T00:00:00.000Z"
+      },
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 9997,
+      "processed_rows_per_second": 222.75451770315738,
+      "query": "sector_analytics_30_minutes",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":3333,\"1\":1666,\"2\":1666,\"3\":1666,\"4\":0,\"5\":1666}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "2500.6666666666665",
+            "maxOffsetsBehindLatest": "5002",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 9997,
+          "processedRowsPerSecond": 222.75451770315738,
+          "startOffset": "None"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 3,
+          "allUpdatesTimeMs": 1066,
+          "commitTimeMs": 3752,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 0,
+            "loadedMapCacheMissCount": 0,
+            "stateOnCurrentVersionSizeBytes": 121696
+          },
+          "memoryUsedBytes": 122560,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 0,
+          "numRowsTotal": 168,
+          "numRowsUpdated": 168,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "stateStoreSave"
+        },
+        {
+          "allRemovalsTimeMs": 1,
+          "allUpdatesTimeMs": 2050,
+          "commitTimeMs": 3806,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 0,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 1835424
+          },
+          "memoryUsedBytes": 1836288,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 0,
+          "numRowsTotal": 9997,
+          "numRowsUpdated": 9997,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:20:34.199Z"
+    },
+    {
+      "batch_id": 1,
+      "duration_ms": {
+        "addBatch": 20212,
+        "commitOffsets": 760,
+        "getBatch": 2,
+        "latestOffset": 1,
+        "queryPlanning": 383,
+        "triggerExecution": 22307,
+        "walCommit": 894
+      },
+      "event_time": {
+        "avg": "2026-01-07T08:08:45.001Z",
+        "max": "2026-01-07T22:02:00.000Z",
+        "min": "2026-01-06T18:16:00.000Z",
+        "watermark": "2026-01-06T18:06:00.000Z"
+      },
+      "input_rows_per_second": 222.7297032350058,
+      "num_input_rows": 9997,
+      "processed_rows_per_second": 448.15528757789036,
+      "query": "sector_analytics_30_minutes",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":6666,\"1\":3332,\"2\":3332,\"3\":3332,\"4\":0,\"5\":3332}}",
+          "inputRowsPerSecond": 222.7297032350058,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "834.5",
+            "maxOffsetsBehindLatest": "1669",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 9997,
+          "processedRowsPerSecond": 448.15528757789036,
+          "startOffset": "{\"phase8-25000-run-1\":{\"0\":3333,\"1\":1666,\"2\":1666,\"3\":1666,\"4\":0,\"5\":1666}}"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 640,
+          "allUpdatesTimeMs": 901,
+          "commitTimeMs": 3192,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 12,
+            "loadedMapCacheMissCount": 0,
+            "stateOnCurrentVersionSizeBytes": 125496
+          },
+          "memoryUsedBytes": 248056,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 165,
+          "numRowsTotal": 171,
+          "numRowsUpdated": 171,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "stateStoreSave"
+        },
+        {
+          "allRemovalsTimeMs": 70,
+          "allUpdatesTimeMs": 1312,
+          "commitTimeMs": 2310,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 6,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 1912800
+          },
+          "memoryUsedBytes": 3749472,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 9882,
+          "numRowsTotal": 10112,
+          "numRowsUpdated": 9997,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:21:19.083Z"
+    },
+    {
+      "batch_id": 2,
+      "duration_ms": {
+        "addBatch": 19100,
+        "commitOffsets": 1060,
+        "getBatch": 1,
+        "latestOffset": 1,
+        "queryPlanning": 780,
+        "triggerExecution": 22160,
+        "walCommit": 1205
+      },
+      "event_time": {
+        "avg": "2026-01-08T04:59:06.434Z",
+        "max": "2026-01-08T13:56:00.000Z",
+        "min": "2026-01-07T22:02:00.000Z",
+        "watermark": "2026-01-07T21:52:00.000Z"
+      },
+      "input_rows_per_second": 224.39833281046924,
+      "num_input_rows": 5007,
+      "processed_rows_per_second": 225.93745769595233,
+      "query": "sector_analytics_30_minutes",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "inputRowsPerSecond": 224.39833281046924,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 5007,
+          "processedRowsPerSecond": 225.93745769595233,
+          "startOffset": "{\"phase8-25000-run-1\":{\"0\":6666,\"1\":3332,\"2\":3332,\"3\":3332,\"4\":0,\"5\":3332}}"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 534,
+          "allUpdatesTimeMs": 833,
+          "commitTimeMs": 2425,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 24,
+            "loadedMapCacheMissCount": 0,
+            "stateOnCurrentVersionSizeBytes": 66400
+          },
+          "memoryUsedBytes": 190720,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 165,
+          "numRowsTotal": 88,
+          "numRowsUpdated": 85,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "stateStoreSave"
+        },
+        {
+          "allRemovalsTimeMs": 138,
+          "allUpdatesTimeMs": 2273,
+          "commitTimeMs": 3208,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 12,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 1009440
+          },
+          "memoryUsedBytes": 2910368,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 9996,
+          "numRowsTotal": 5123,
+          "numRowsUpdated": 5007,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:21:41.396Z"
+    },
+    {
+      "batch_id": 3,
+      "duration_ms": {
+        "addBatch": 13154,
+        "commitOffsets": 384,
+        "getBatch": 0,
+        "latestOffset": 0,
+        "queryPlanning": 92,
+        "triggerExecution": 14324,
+        "walCommit": 691
+      },
+      "event_time": {
+        "watermark": "2026-01-08T13:46:00.000Z"
+      },
+      "input_rows_per_second": 0.0,
+      "num_input_rows": 0,
+      "processed_rows_per_second": 0.0,
+      "query": "sector_analytics_30_minutes",
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[phase8-25000-run-1]]",
+          "endOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}",
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 0,
+          "processedRowsPerSecond": 0.0,
+          "startOffset": "{\"phase8-25000-run-1\":{\"0\":8335,\"1\":4167,\"2\":4166,\"3\":4166,\"4\":0,\"5\":4167}}"
+        }
+      ],
+      "state_operators": [
+        {
+          "allRemovalsTimeMs": 1313,
+          "allUpdatesTimeMs": 0,
+          "commitTimeMs": 3588,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 36,
+            "loadedMapCacheMissCount": 0,
+            "stateOnCurrentVersionSizeBytes": 3048
+          },
+          "memoryUsedBytes": 70016,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 87,
+          "numRowsTotal": 1,
+          "numRowsUpdated": 0,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "stateStoreSave"
+        },
+        {
+          "allRemovalsTimeMs": 644,
+          "allUpdatesTimeMs": 18,
+          "commitTimeMs": 3277,
+          "customMetrics": {
+            "loadedMapCacheHitCount": 18,
+            "loadedMapCacheMissCount": 0,
+            "numDroppedDuplicateRows": 0,
+            "stateOnCurrentVersionSizeBytes": 98976
+          },
+          "memoryUsedBytes": 1109664,
+          "numRowsDroppedByWatermark": 0,
+          "numRowsRemoved": 5122,
+          "numRowsTotal": 1,
+          "numRowsUpdated": 0,
+          "numShufflePartitions": 6,
+          "numStateStoreInstances": 6,
+          "operatorName": "dedupeWithinWatermark"
+        }
+      ],
+      "timestamp": "2026-10-13T20:22:03.558Z"
+    }
+  ],
+  "number_of_active_symbols": 6,
+  "output_path": "data/benchmarks/phase8/25000/run_1/streaming/valid",
+  "regular_session_only": false,
+  "started_at_utc": "2026-10-13T20:20:19.966307Z",
+  "status": "completed",
+  "valid_events": 25001,
+  "watermark_delay": "10 minutes"
+}

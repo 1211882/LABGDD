@@ -1,0 +1,57 @@
+{
+  "architecture": "streaming",
+  "status": "completed",
+  "run_id": "run_3_retry",
+  "workload_rows": 50000,
+  "input_rows": 50001,
+  "valid_rows": 50001,
+  "invalid_rows": 0,
+  "duplicate_rows": 0,
+  "output_rows": 22509,
+  "output_bytes": 2335028,
+  "total_duration_seconds": 402.74610319989733,
+  "spark_duration_seconds": 362.847758,
+  "spark_throughput_events_per_second": 137.80159556614927,
+  "spark_reported_processed_rows_per_second": 225.634,
+  "microbatch_count": 7,
+  "microbatch_mean_duration_ms": 47688.71428571428,
+  "microbatch_max_duration_ms": 113793.0,
+  "mean_processing_latency_ms": 223787.63650726987,
+  "median_processing_latency_ms": 257329.0,
+  "p95_processing_latency_ms": 342466.0,
+  "p99_processing_latency_ms": 342565.0,
+  "late_events": 0,
+  "watermark_dropped_events": 0,
+  "analytical_windows": {
+    "15 minutes": {
+      "sector": 1668,
+      "symbol": 3336
+    },
+    "30 minutes": {
+      "sector": 834,
+      "symbol": 1668
+    },
+    "5 minutes": {
+      "sector": 5001,
+      "symbol": 10002
+    }
+  },
+  "events_produced": 50001,
+  "producer_duration_seconds": 2.418866300024092,
+  "producer_throughput_events_per_second": 20671.254132360264,
+  "cpu_mean_percent": 387.30805128205134,
+  "cpu_peak_percent": 890.76,
+  "memory_peak_mb": 2353.642078208,
+  "kafka_topic": "phase8-50000-run-3-retry-0fe5c8f3",
+  "kafka_final_lag_events": 0,
+  "watermark_progression": [
+    "1970-01-01T00:00:00.000Z",
+    "2026-01-06T18:06:00.000Z",
+    "2026-01-07T21:52:00.000Z",
+    "2026-01-09T01:39:00.000Z",
+    "2026-01-10T05:25:00.000Z",
+    "2026-01-11T09:11:00.000Z",
+    "2026-01-11T11:13:00.000Z"
+  ],
+  "state_store_peak_rows": 10113
+}
