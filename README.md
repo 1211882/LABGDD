@@ -1,189 +1,432 @@
 # Big Data Pipeline for Financial Market Analysis
 
-## Project Objective
+This university project implements historical **Batch** and near-real-time
+**Streaming** financial analytics over a shared OHLCV market domain. It combines
+Alpaca ingestion, Kafka transport, Apache Spark processing, local Parquet storage,
+controlled processing comparisons, offline machine learning, operational monitoring
+and a Power BI research data mart.
 
-This university Big Data project studies financial market analysis through two
-first-class processing paths: historical **Batch Analytics** and near-real-time
-**Streaming Analytics**. Both paths use the same market domain, centralized symbol and
-sector metadata, compatible OHLCV schemas, and equivalent mathematical definitions
-wherever a metric exists in both modes.
+This README documents the **whole system**, rather than one experiment. The
+architecture below describes implemented modules and their boundaries; the later
+sections retain configuration, commands and historical verification evidence.
+Architecture documentation reviewed: **2026-10-29**. Implemented services need not all
+be running at once. Updating this document does not start, stop or retrain anything.
 
-The batch path is implemented through historical feature generation and versioned
-1, 5, 15, 30, and 60-minute event-time analytics. The streaming
-path is implemented through validated, deduplicated, sector-enriched event persistence:
-Alpaca WebSocket, Kafka, and Spark Structured Streaming are runtime verified. Windowed
-streaming analytics are implemented and runtime verified for 1, 5, 15, 30, and 60-minute
-symbol and sector windows.
+## Reading the Architecture for an IEEE Report
 
-Phase 10 adds a frozen one-year ML dataset, leakage-safe financial features, exact
-5/15/30-minute direction targets, chronological evaluation, three transparent baselines,
-and CPU-trained LSTM/GRU models. Results are persisted for later Power BI integration;
-regression remains a separate planned phase.
+| Report topic | Start here |
+|---|---|
+| Problem and contribution | [Research objective](#research-objective-and-scope) |
+| Complete system and component responsibilities | [Architecture overview](#architecture-overview) |
+| Source, event schema and data quality | [Data contracts](#data-contracts-and-time-semantics) |
+| Historical versus incremental processing | [Processing paths](#batch-and-streaming-processing-paths) |
+| State, replay and delivery assumptions | [Recovery](#recovery-state-and-failure-boundaries) |
+| Storage, offline ML, monitoring and BI | [Storage](#storage-and-artifact-lifecycle), [ML](#machine-learning-architecture), [presentation](#observability-and-research-presentation) |
+| Hardware, containers and trust boundaries | [Deployment](#deployment-configuration-and-security) |
+| Measurements and limitations | [Evaluation](#evaluation-evidence-and-current-boundaries) |
+| Literature and architectural alternatives | [State-of-the-art map](#state-of-the-art-map-and-design-rationale) |
+| Source-code navigation | [Project structure](#project-structure) |
+| Run commands and detailed historical evidence | [Setup](#setup) and subsequent operational sections |
 
-## Academic Context
+For the manuscript, describe prior published work in **Related Work**, this
+implementation in **Architecture/Methodology**, and project measurements in
+**Results**. A chosen technology is not evidence of a new algorithm or superior
+performance. The literature map below connects each architectural choice to its
+source and identifies what the project actually evaluates.
 
-The scientific objective is to compare batch and streaming processing for correctness,
-throughput, latency, completeness, resource use, and operational behavior. Phase 7
-established analytical equivalence through controlled replay, and Phase 8 measured
-performance over four equivalent workload sizes with repeated isolated runs. Existing
-historical benchmarks remain preserved as baselines and are not mixed with the
-controlled comparison results.
+## Research Objective and Scope
+
+The systems question is whether independently operated Batch and Streaming paths
+produce equivalent financial analytics, and how they differ in completeness,
+throughput, latency, resource consumption and recovery under controlled workloads.
+The application question is whether historical features support useful multi-horizon
+financial prediction, especially company and sector volatility monitoring.
+
+The universe contains **30 configured symbols across six project-defined sectors**:
+Technology, Healthcare, Defense, Aerospace, Energy and Financial. Central configuration
+assigns five symbols to each sector. Alpaca's IEX feed is the configured source;
+results describe that feed and universe rather than the entire US market.
+
+The contribution is a reproducible integration and empirical comparison: shared
+contracts, auditable analytical definitions, versioned data, controlled replay,
+chronological ML evaluation and separate operational/research presentation. The
+project does not introduce Kafka, Spark, a new recurrent architecture or an automated
+trading agent. There is no implemented order-execution path.
 
 ## Architecture Overview
 
-Solid nodes describe implemented components. Dashed nodes describe planned work.
-
-### Overall Architecture
+Solid arrows below connect implemented ingestion, processing, analytics and export
+modules. Dashed arrows identify integration that remains future work. Stored outputs
+allow ingestion, processing, research and presentation to run independently.
 
 ```mermaid
 flowchart TD
+    CFG[Central YAML configuration and environment credentials]
     A[Alpaca Market Data]
-    A --> HR[Historical REST API]
-    A --> WS[Real-Time WebSocket]
-    HR --> PI[Python Historical Ingestion]
-    PI --> RAW[Raw Parquet and CSV]
-    RAW --> SB[Spark Batch]
-    SB --> BA[Batch Analytics and Historical Features]
-    WS --> KP[Live Kafka Producer]
-    KP --> K[Kafka market-bars-raw]
-    K --> SS[Spark Structured Streaming]
-    SS --> SV[Validation, Deduplication, Sector Enrichment]
-    SV --> SP[Processed Streaming Parquet]
-    SS --> SA[Streaming Analytics]
-    BA --> CA[Comparative Analysis]
-    SA --> CA
-    K --> PROM[Prometheus]
-    SS --> PROM
-    BA --> PROM
-    PROM --> GRAF[Grafana Operations]
-    CA --> FE[Unified Feature Engineering]
-    FE --> CL[Classification]
-    CL --> EVAL[Statistical and Financial Evaluation]
-    CL -.-> REG[Regression]
-    CA -.-> PBI[Power BI]
-    CL -.-> PBI
-    REG -.-> PBI
+    A --> REST[Historical REST ingestion]
+    A --> WS[WebSocket minute-bar ingestion]
+    REST --> RAW[Raw Parquet and CSV]
+    RAW --> BATCH[Spark Batch validation and features]
+    BATCH --> BP[Processed Batch Parquet and quarantine]
+    BP --> BA[Batch symbol and sector window analytics]
+    WS --> CODEC[MarketBar validation and JSON codec]
+    CODEC --> KAFKA[Kafka symbol-keyed event log]
+    KAFKA --> STREAM[Spark Structured Streaming]
+    STREAM --> SP[Processed Streaming Parquet and quarantine]
+    STREAM --> SA[Streaming symbol and sector window analytics]
+    STREAM --> CKPT[Offsets, state and query checkpoints]
+    REPLAY[Controlled equivalent workloads] --> BATCH
+    REPLAY --> KAFKA
+    BA --> COMP[Correctness and performance comparison]
+    SA --> COMP
+    REST --> DATA[Frozen historical ML dataset]
+    DATA --> FE[Backward-looking features and future targets]
+    FE --> ML[Offline classification, regression and volatility research]
+    ML --> EVAL[Statistical, monitoring and financial evaluation]
+    BA --> MART[Validated research data mart]
+    COMP --> MART
+    EVAL --> MART
+    MART --> PBI[Power BI Desktop import and report assembly]
+    KAFKA --> EXP[Kafka, pipeline and container exporters]
+    STREAM --> EXP
+    BATCH --> EXP
+    EXP --> PROM[Prometheus]
+    PROM --> GRAF[Grafana operational dashboard]
+    SA -.-> LIVE[Future equivalent live ML feature and inference path]
+    ML -.-> LIVE
+    CFG --> REST
+    CFG --> WS
+    CFG --> BATCH
+    CFG --> STREAM
 ```
 
-### Batch Architecture
+The historical ML dataset is built by a dedicated acquisition/preparation module; it
+is not automatically the same dataset as any earlier Batch benchmark. Shared market
+data does not make benchmark populations or analytical definitions interchangeable.
+The Power BI export is implemented; a finished PBIX is not claimed. The new volatility
+research is implemented and running, but its final audited results remain pending.
 
-```mermaid
-flowchart LR
-    REST[Alpaca Historical REST] --> ING[Python Ingestion]
-    ING --> RAW[Raw Parquet and CSV]
-    RAW --> SPARK[Spark Batch]
-    SPARK --> VALID[Validation and Deduplication]
-    VALID --> QUAR[Invalid Quarantine]
-    VALID --> ENRICH[Sector Enrichment]
-    ENRICH --> FEATURES[Returns, Moving Averages, Volatility]
-    FEATURES --> OUT[Partitioned Processed Parquet]
-    FEATURES --> METRICS[Batch Metrics]
-    OUT --> WINDOWS[1m, 5m, 15m, 30m, 60m Time Windows]
-    WINDOWS --> ANALYTICS[Versioned Symbol and Sector Analytics]
-```
+### Component Responsibilities
 
-### Streaming Architecture
+| Layer | Components / source | Responsibility | Persistent boundary |
+|---|---|---|---|
+| Configuration | [`config/config.yaml`](config/config.yaml), [`src/config/settings.py`](src/config/settings.py) | Symbols/sectors, paths, source settings, broker and Spark settings; validation | Versioned configuration; credentials supplied separately |
+| Market domain | [`src/models/market_bar.py`](src/models/market_bar.py), [`src/processing/normalization.py`](src/processing/normalization.py) | Normalize OHLCV bars and shared validity rules | Common logical bar schema |
+| Historical ingestion | [`src/ingestion/alpaca_client.py`](src/ingestion/alpaca_client.py), [`market_data_ingestion.py`](src/ingestion/market_data_ingestion.py) | REST pagination, symbol-level acquisition and failure isolation | Raw files through [`ParquetStorage`](src/storage/parquet_storage.py) |
+| Live ingestion | [`src/streaming/alpaca_websocket.py`](src/streaming/alpaca_websocket.py), [`realtime_ingestion.py`](src/streaming/realtime_ingestion.py) | Authenticate, subscribe, decode minute bars, reconnect and publish | Kafka acknowledgements and ingestion metrics |
+| Transport | [`src/kafka/event_codec.py`](src/kafka/event_codec.py), [`producer.py`](src/kafka/producer.py), [`create_topics.py`](src/kafka/create_topics.py) | Versioned serialization, symbol keys, producer delivery and topic administration | Kafka partitions, offsets and broker volume |
+| Batch processing | [`src/spark/batch_processor.py`](src/spark/batch_processor.py), [`transformations.py`](src/spark/transformations.py) | Validate, deduplicate, enrich sectors and calculate historical features | Processed Batch Parquet and rejected rows |
+| Streaming processing | [`src/spark/structured_streaming_processor.py`](src/spark/structured_streaming_processor.py), [`streaming_transformations.py`](src/spark/streaming_transformations.py) | Parse explicit schema, validate metadata/payload, watermark deduplication and persist outputs | Per-query checkpoints and immutable micro-batches |
+| Window analytics | [`src/spark/batch_analytics.py`](src/spark/batch_analytics.py), [`streaming_analytics.py`](src/spark/streaming_analytics.py) | Comparable symbol/sector windows and coverage | Separate versioned Batch and Streaming analytical outputs |
+| Experimental comparison | [`src/equivalence/phase7.py`](src/equivalence/phase7.py), [`src/performance/benchmark.py`](src/performance/benchmark.py) | Equal workloads, key/value comparison, isolated repeated measurements | Benchmark JSON/CSV and reports |
+| Offline ML | [`src/ml/`](src/ml/) | Versioned datasets, features, temporal splits, independent models and evaluation | Frozen experiments, predictions, checkpoints and manifests |
+| Observability | [`src/metrics/`](src/metrics/), [`src/monitoring/exporter.py`](src/monitoring/exporter.py), [`monitoring/`](monitoring/) | Pipeline snapshots, metric exposition, broker/container monitoring and dashboards | JSON snapshots, Prometheus series and Grafana configuration |
+| Research presentation | [`src/powerbi/export.py`](src/powerbi/export.py) | Normalize frozen financial, experimental and ML evidence for BI | Validated `data/powerbi/` tables and manifest |
 
-```mermaid
-flowchart LR
-    DEMO[Demo Producer] --> K[Kafka market-bars-raw]
-    K --> CONS[Demo Consumer]
-    WS[Alpaca WebSocket] --> LIVE[Live MarketBar Producer]
-    LIVE --> K
-    K --> SS[Spark Structured Streaming]
-    SS --> CHECK[Validation]
-    CHECK --> QUAR[Invalid Streaming Quarantine]
-    CHECK --> DEDUP[Watermark-Aware Deduplication]
-    DEDUP --> ENRICH[Sector Enrichment]
-    ENRICH --> STREAMOUT[Processed Streaming Parquet]
-    SS --> WINDOWS[1m, 5m, 15m, 30m, 60m Analytics]
-    WINDOWS --> ANALYTICS[Symbol and Sector Parquet]
-```
+## Data Contracts and Time Semantics
 
-### Future Batch vs Streaming Comparison
+The common event contains `timestamp`, `symbol`, `open`, `high`, `low`, `close` and
+`volume`. The normalized timestamp is timezone-aware UTC; symbols are uppercase;
+OHLC values must be finite, non-negative and consistent with high/low bounds; volume
+is a non-negative integer. Target construction that takes logarithms additionally
+requires strictly positive prices. Sector is enriched from central configuration,
+not duplicated in every Kafka payload.
 
-```mermaid
-flowchart TD
-    REPLAY[Controlled OHLCV Replay Dataset]
-    REPLAY --> BATCH[Batch Window Aggregation]
-    REPLAY --> KAFKA[Kafka Replay]
-    KAFKA --> STREAM[Structured Streaming Window Aggregation]
-    BATCH --> CHECK[Result Equivalence Validation]
-    STREAM --> CHECK
-    CHECK --> RESULTS[Correctness and Performance Report]
-```
+Kafka uses UTF-8 JSON, the symbol as record key, and headers
+`event_type=market_bar` and `schema_version=1`. The logical event identity is
+`(symbol, timestamp)`. Ordering is per partition, not global across the market.
+The local topics have six partitions and replication factor one. The DLQ topic is
+provisioned, while current rejected Spark records go to Parquet quarantine.
+
+Three clocks have different meanings:
+
+| Clock | Field / origin | Use |
+|---|---|---|
+| Market event time | Payload `timestamp` | Window assignment, ordering and deduplication |
+| Kafka record time | `kafka_timestamp` | Transport/queueing reference for measured processing latency |
+| Spark processing time | `processing_time` | Time the row is processed; not the market's observation time |
+
+Session-dependent processing converts UTC to `America/New_York`, including daylight
+saving time. The frozen ML experiment uses `09:30 <= time < 16:00`; general analytics
+session filtering is configurable. Missing bars remain missing. Coverage and valid
+window counts must accompany results; a missing minute is not a zero return.
+
+## Batch and Streaming Processing Paths
+
+### Historical Batch
+
+REST ingestion retrieves configured date ranges with pagination and per-symbol failure
+isolation. Raw Parquet/CSV storage merges and deduplicates logical identities. Spark
+Batch discovers bounded inputs, validates bars, quarantines invalid rows, deduplicates,
+adds sector metadata, and derives lagged/rolling features. The window-analytics job
+reads processed data and produces symbol and sector summaries.
+
+Raw and processed data are kept separately so analytical definitions can be rerun
+without another API download. The original rolling feature implementation uses
+observation-count windows; gaps mean those are not automatically elapsed-minute
+windows. Exact-minute future targets are validated separately in ML.
+
+### Continuous Streaming
+
+The WebSocket client subscribes to minute bars, validates and normalizes them, then
+publishes through the shared Kafka producer. Bounded receive queues and reconnect
+backoff address temporary source/network interruptions; authentication and entitlement
+errors are handled as terminal conditions. Minute-bar corrections and trade/quote
+streams are outside the implemented source contract.
+
+Spark reads Kafka with an explicit schema and preserves source metadata. It separates
+valid/rejected rows, assigns sectors and deduplicates identities within a configured
+**10-minute event-time watermark**. Default continuous execution uses a **5-second
+micro-batch trigger**, with at most **10,000 offsets per trigger**. These are
+configuration defaults, not guaranteed end-to-end latency or throughput.
+
+Processed and analytical outputs have separate checkpoint identities. Each analytical
+duration is operated with independent query state so watermark finalization does not
+depend on another duration's progress. A bounded replay may need a control event to
+advance event time; that event is excluded from the compared business population.
+
+### Shared Financial Analytics
+
+Both analytical paths support **1, 5, 15, 30 and 60-minute** event-time windows.
+Symbol summaries include first/last/min/max/mean close, total volume, event count,
+window return and volatility. Sector summaries pool constituent observations and
+retain active-symbol and coverage information.
+
+The historical analytical volatility is sample standard deviation of
+`(close - open) / open`. The newer ML RV target is
+`sqrt(sum of squared future close-to-close log returns)`. These estimate different
+quantities. Pooled sector dispersion is also different from a tradable portfolio's
+volatility. The README's shared-definition claim applies to paired Batch/Streaming
+analytics, not to every metric carrying the word volatility.
+
+## Recovery, State and Failure Boundaries
+
+Kafka decouples source arrival from Spark consumption and retains records for replay.
+An idempotent producer reduces duplicate publication on retried delivery; downstream
+logical deduplication handles repeated identities within its retained state. Neither
+mechanism makes an arbitrary whole-system exactly-once guarantee.
+
+Spark checkpoints hold source progress, commits and state. On a same-checkpoint
+restart, recorded offsets/state take precedence over `startingOffsets`; that setting
+applies when starting a new query identity. Sufficiently late records can be dropped
+after watermark advancement. A stopped producer or quiet feed does not by itself
+advance event time and finalize every open window.
+
+The local `foreachBatch` writers use temporary directories and rename-based commits,
+skipping previously committed batch IDs. This gives retry idempotency within the
+implemented local filesystem/query identity assumptions. It is not an atomic
+transaction across valid output, quarantine, all analytical queries and external
+systems. Checkpoints and output directories must be treated as a consistent pair.
+
+The deployment has one Kafka broker with replication factor one and local persistent
+files. Broker-level high availability, remote disaster recovery, cross-region
+replication, live ML failover and automated trading recovery are not demonstrated.
+
+## Storage and Artifact Lifecycle
+
+| Location | Meaning and lifecycle |
+|---|---|
+| `data/raw/` | Normalized historical acquisition, Parquet plus CSV |
+| `data/processed/batch/`, `data/processed/invalid/` | Batch output and rejected bars |
+| `data/processed/streaming/`, `data/processed/streaming_invalid/` | Separate valid/rejected Streaming outputs |
+| `data/analytics/batch/`, `data/analytics/streaming/` | Windowed financial analytics, separated by processing path/version |
+| `data/checkpoints/` | Query recovery state; not an analytical data mart |
+| `datasets/manifests/`, `datasets/ml/` | Dataset provenance and separately versioned ML input/features |
+| `models/classification/`, `models/regression/`, `models/tuning/`, `models/research/` | Experimental results, models, prediction evidence and frozen manifests |
+| `benchmarks/`, `reports/` | Machine-readable measurements, interpretations and figures |
+| `data/powerbi/` | Regenerable BI facts/dimensions from frozen validated evidence |
+| Docker named volumes | Kafka log, Prometheus time series and Grafana persistence |
+
+Storage is a local file-based research layout, not a deployed cloud lakehouse or a
+transactional feature store. Parquet is used for large analytical tables; JSON/CSV
+support compact contracts, metrics and inspection. Git tracks source/configuration
+and selected evidence while ignoring many large datasets, predictions and binaries.
+A Git clone alone does not recreate all experiment data. Frozen outputs are preserved;
+new experiments use new IDs rather than overwriting previous scientific evidence.
+
+## Machine Learning Architecture
+
+ML is an **offline consumer of historical data**, separate from Kafka/Spark's active
+streaming queries. Dedicated builders create the frozen dataset, backward-looking
+features and exact same-symbol, same-session future targets. Train-only preprocessing
+and chronological partitions keep later observations out of model fitting.
+
+| Task family | Implemented models / targets | Evaluation boundary |
+|---|---|---|
+| Direction classification | Majority/previous-direction baselines, Logistic Regression, Random Forest, LSTM and GRU; 5/15/30m DOWN/NEUTRAL/UP | Frozen full-population and identical-key test evidence |
+| Return regression | Zero/train-mean baselines, linear regression, forest, LSTM and GRU; 5/15/30m returns | Separate frozen experiment; statistical and cost-aware signal diagnostics |
+| Independent tuning | Model/task/horizon-specific searches and persisted trials | Historical tuning artifacts retained separately from later research |
+| Volatility research | Ridge/linear, logistic, forest, LSTM and GRU where applicable; company/sector RV, regimes and exploratory emergence | Implemented ongoing experiment; final audited evaluation pending |
+
+The frozen one-year ML dataset contains **2,276,418 bars**, 30 symbols and 252 trading
+dates. The original chronological split is 176 train / 38 validation / 38 test dates.
+The historical TEST has already been inspected in completed experiments; excluding it
+from a new selection procedure does not turn it into newly untouched evidence.
+
+Neural models use validation-based stopping and persisted checkpoints. Current
+volatility research tunes each horizon independently with a 75-epoch ceiling, large
+representative tuning samples and all eligible rows planned for final fitting and
+evaluation. Statistical prediction, event monitoring and financial signal diagnostics
+are separate outputs. There is no demonstrated profitable strategy or consistent
+universal neural advantage. HAR-RV/GARCH and foundation-model comparisons remain
+research gaps, not implemented results.
+
+Live equivalent ML feature calculation, a model-serving endpoint, online learning,
+automated retraining orchestration and model-driven order execution are future work.
+Observed historical analytics equivalence does not validate those future integrations.
+
+## Observability and Research Presentation
+
+The operational path is **exporters -> Prometheus -> Grafana**. A read-only pipeline
+exporter exposes persisted pipeline/progress snapshots; Kafka Exporter reports broker
+and consumer information, and cAdvisor reports container resource use. Prometheus
+collects metrics and Grafana presents health, activity, lag, latency, quality and state.
+Spark measurements here come from persisted snapshots rather than a native driver
+metrics integration. See [`monitoring/README.md`](monitoring/README.md).
+
+The research path is **validated frozen artifacts -> export -> Power BI**. The
+exporter normalizes financial facts, processing comparisons, predictions, metrics and
+model diagnostics into six dimensions and task-aware fact tables. Date, symbol,
+sector, task-scoped model, horizon and dataset version provide join/filter context.
+Refresh validates keys, references, counts and schemas without ingestion or retraining.
+See the [data model](reports/POWERBI_DATA_MODEL.md),
+[measures](reports/POWERBI_MEASURES.md) and
+[dashboard specification](reports/POWERBI_DASHBOARD_SPEC.md).
+
+Power BI preparation is implemented; a completed automated PBIX is not claimed.
+Grafana's operational dashboard and Power BI's research model answer different
+questions and do not substitute for each other.
+
+## Deployment, Configuration and Security
+
+[`docker-compose.yml`](docker-compose.yml) defines the local service topology.
+The Spark container is an execution environment operated through job commands, not
+a continuously running application scheduler or a distributed worker cluster.
+Python acquisition and offline ML can run on the host independently of those services.
+
+| Runtime | Endpoint / boundary | Persistence |
+|---|---|---|
+| Kafka 4.3.1, combined KRaft broker/controller | Host `localhost:9092`; containers `kafka:29092` | `kafka-data` volume |
+| Spark 4.0.1 / Java 21 | Local execution with repository mounted at `/workspace` | Mounted outputs/checkpoints |
+| Pipeline exporter | Host port 8000, repository mounted read-only | Reads persisted snapshots |
+| Kafka Exporter / cAdvisor | Host ports 9308 / 8080 | Broker/container observations |
+| Prometheus 3.5.0 | Host port 9090 | `prometheus-data` volume |
+| Grafana 12.1.1 | Host port 3000 | Provisioned dashboard and `grafana-data` volume |
+| Offline ML and BI exporter | Host Python; sklearn/TensorFlow CPU and local files | Versioned experiment/data-mart directories |
+
+[`config/config.yaml`](config/config.yaml) centralizes analytical/runtime settings;
+[`requirements.txt`](requirements.txt) declares Python dependencies. Runtime versions
+must be recorded per experiment because dependency ranges do not lock an environment.
+Docker Desktop/WSL2 supports the Windows container-based development path.
+
+Alpaca credentials are read from environment variables or an ignored `.env`; they
+must not be embedded in Kafka records, source or metrics. This is a local research
+topology: Kafka uses plaintext listeners, cAdvisor needs privileged host visibility,
+and default Grafana credentials must not be treated as production access control.
+TLS, broker authentication, hardened network isolation and high availability are
+outside the verified deployment. Monitoring does not receive Alpaca credentials.
+
+## Evaluation Evidence and Current Boundaries
+
+| Area | Evidence available | Supported conclusion / boundary |
+|---|---|---|
+| Contracts, ingestion and processing | Unit tests, validators, live/test-stream smoke runs and restart/late-event checks | Implemented path correctness on tested cases; smoke rates are not capacity measurements |
+| Analytical equivalence | [`phase7_controlled_v1_equivalence.json`](benchmarks/phase7_controlled_v1_equivalence.json) | Compare identical business events, analytical keys/counts and measured numerical outputs |
+| Local performance | [Phase 8 analysis](reports/PHASE8_PERFORMANCE_ANALYSIS.md), four workloads and three repeats per path | At 100k events: 99.90s Batch versus 650.70s Streaming mean total duration; replay includes startup and queueing |
+| Observability | [`phase9_runtime_validation.json`](reports/phase9_runtime_validation.json) | Historical scrape/dashboard/query activity validation; not proof services are currently active |
+| Classification | [Frozen analysis](reports/PHASE10_CLASSIFICATION_ANALYSIS.md) | Forest leads Macro F1 at 5/15/30m; no demonstrated profitable diagnostic signals |
+| Return regression | [Frozen analysis](reports/PHASE11_REGRESSION_ANALYSIS.md) | Generally fails zero return on common keys; recurrent full-population scores are not directly comparable |
+| BI | [Readiness audit](reports/POWERBI_READINESS_REPORT.md) and export validation | Export/model specifications implemented; manual Desktop report assembly remains |
+| Volatility research | Versioned trials under `models/research/` | Interim validation evidence only until final manifest and population/metric audits complete |
+
+The measured scale is one local machine and one broker. Report source population,
+logical event counts, output counts, elapsed/processing/startup definitions, resource
+sampling coverage and repetitions together. Streaming burst replay creates backlog
+by construction; its processing latency is not exchange-to-alert latency. The IEX
+feed, missing source minutes, fixed sector universe and one-year ML sample limit
+external validity. A streaming copy of a historical bar is not an additional unique
+training observation.
+
+## State-of-the-Art Map and Design Rationale
+
+The following map concerns the complete architecture. Papers provide conceptual and
+empirical context; official product documentation supports implementation details.
+These sources do not independently validate this repository's results. Literature
+links were checked on 2026-10-29; Kafka's linked 4.1 design chapter describes general
+log/partition concepts, while the local Compose image is 4.3.1.
+
+| Research theme | Relevant source | Project design and question for the report |
+|---|---|---|
+| Event-time correctness, latency and cost | Akidau et al., *The Dataflow Model*, PVLDB, 2015, [paper](https://research.google/pubs/the-dataflow-model-a-practical-approach-to-balancing-correctness-latency-and-cost-in-massive-scale-unbounded-out-of-order-data-processing/) | Explicit clocks, windows and watermarks; what completeness/freshness trade-off is measured? |
+| Declarative incremental processing | Armbrust et al., *Structured Streaming*, SIGMOD, 2018, [paper](https://cs.stanford.edu/~matei/papers/2018/sigmod_structured_streaming.pdf) | Spark Batch and micro-batch paths with comparable analytical definitions; which outputs actually match? |
+| Log-based decoupling and replay | Apache Kafka, [design documentation](https://kafka.apache.org/41/design/design/) | Symbol-keyed partitions and checkpointed readers; which ordering and recovery guarantees hold locally? |
+| Operational time-series monitoring | Prometheus, [overview](https://prometheus.io/docs/introduction/overview/) | Scraped operational metrics and Grafana; distinguish observed health from financial research conclusions |
+| Dimensional analytical presentation | Microsoft, [Power BI star-schema guidance](https://learn.microsoft.com/en-us/power-bi/guidance/star-schema) | Explicit fact/dimension boundaries and declared grain; avoid ambiguous model/task joins |
+| Volatility measurement | Andersen et al., *Modeling and Forecasting Realized Volatility*, 2003, [author-access record](https://www.nber.org/papers/w8160) | Distinguish future RV, bar-return dispersion and portfolio risk; justify target choice |
+| Parsimonious volatility forecasting | Corsi, *HAR-RV*, 2009, [author record](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1365738) | Strong multiscale/econometric baselines remain a comparison gap |
+| Trees versus neural models | Grinsztajn et al., 2022, [author paper](https://arxiv.org/abs/2207.08815) | Compare classical and recurrent models under explicit budgets; do not assume deep learning wins |
+| Temporal and rare-event evaluation | [Rolling-origin evaluation](https://otexts.com/fpp3/tscv.html); [Saito and Rehmsmeier, 2015](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0118432) | Chronological selection and precision/recall; separate overlapping windows from independent episodes |
+
+Conceptually this is a **dual-path Batch/Streaming architecture** with persisted
+research outputs. Calling it a complete Lambda architecture would imply a serving
+and reconciliation layer beyond the currently demonstrated file-based comparison.
+Calling it Kappa would obscure the independent REST/Batch path. These are architectural
+positioning statements, not additional benchmark findings.
+
+Useful report comparisons are: bounded recomputation versus incremental state;
+shared mathematical contracts versus duplicated implementation; synchronous files
+versus a retained event log; operational dashboards versus dimensional BI; and
+simple baselines versus expensive sequence models. Describe why each choice fits the
+measured research problem and what remains untested. A long product list alone is
+not a state-of-the-art analysis.
+
+An extended [literature synthesis](reports/IEEE_STATE_OF_THE_ART.md) and
+[BibTeX references](reports/ieee/references.bib) support the ML and streaming discussion.
+The three linked Kafka/Prometheus/Power BI product documents above are additional
+implementation references, not entries claimed to be in that paper bibliography.
+The [report guide](reports/IEEE_REPORT_GUIDE.md) provides a manuscript outline; this
+README is the primary whole-project architecture description.
 
 ## Technologies
 
-- Python 3.11+
-- Alpaca Market Data API v2
-- pandas and PyArrow
-- Apache Spark / PySpark 4.0.1
-- Eclipse Temurin Java 21 LTS
-- Apache Kafka 4.3.1 in KRaft mode
-- Confluent Python client for Apache Kafka
-- websockets 17.1 asynchronous client
-- Docker Compose for local Kafka and Windows Spark runtime infrastructure
-- Prometheus 3.5.0, Kafka Exporter, and cAdvisor for operational metrics
-- Grafana 12.1.1 with provisioned datasource and dashboard
-- YAML configuration and environment variables
-- pytest
-
-Classification and deep learning are implemented. Regression and Power BI remain future phases.
+Python, pandas/PyArrow, YAML, Alpaca REST/WebSocket, Apache Kafka/KRaft,
+`confluent-kafka`, Apache Spark/PySpark, Java, Docker Compose, local Parquet/CSV/JSON,
+scikit-learn, TensorFlow/Keras CPU, pytest, Prometheus, Kafka Exporter, cAdvisor,
+Grafana and a Power BI-compatible dimensional export. Container versions are declared
+in Compose and dependency constraints in `requirements.txt`; measured experiments
+record their own environment. Classification, regression and BI export are
+implemented. New volatility research and future live ML integration have different
+completion boundaries, as described above.
 
 ## Project Structure
 
 ```text
-.
-|-- config/
-|   `-- config.yaml
-|-- Dockerfile.spark
-|-- docker-compose.yml
-|-- data/
-|   |-- raw/
-|   |-- processed/
-|   `-- checkpoints/
-|-- notebooks/
-|   `-- 01_data_exploration.ipynb
-|-- src/
-|   |-- config/
-|   |-- ingestion/
-|   |-- kafka/
-|   |   |-- create_topics.py
-|   |   |-- demo_consumer.py
-|   |   |-- demo_producer.py
-|   |   |-- event_codec.py
-|   |   `-- producer.py
-|   |-- metrics/
-|   |   |-- pipeline_metrics.py
-|   |   `-- streaming_query_metrics.py
-|   |-- models/
-|   |-- processing/
-|   |-- spark/
-|   |   |-- batch_processor.py
-|   |   |-- streaming_transformations.py
-|   |   |-- structured_streaming_processor.py
-|   |   `-- transformations.py
-|   |-- storage/
-|   |-- streaming/
-|   |   |-- alpaca_websocket.py
-|   |   |-- metrics.py
-|   |   `-- realtime_ingestion.py
-|   `-- main.py
-|-- tests/
-|   |-- test_alpaca_client.py
-|   |-- test_kafka_event_codec.py
-|   |-- test_kafka_producer.py
-|   |-- test_normalization.py
-|   |-- test_parquet_storage.py
-|   |-- test_realtime_ingestion.py
-|   |-- test_settings.py
-|   |-- test_spark_batch.py
-|   `-- test_spark_streaming.py
-|-- scripts/
-|   `-- validate_streaming_output.py
-|-- README.md
-`-- requirements.txt
+config/                  Central validated settings and symbol/sector universe
+src/ingestion/           Historical REST acquisition
+src/streaming/           Alpaca WebSocket client and live ingestion
+src/models/              Shared MarketBar domain model
+src/kafka/               Codec, producer, topic administration and transport demos
+src/processing/          Shared normalization
+src/storage/             Historical local persistence
+src/spark/               Batch, Streaming and financial window analytics
+src/metrics/             Pipeline and query measurement
+src/monitoring/          Prometheus-compatible exporter
+src/equivalence/          Controlled replay correctness comparisons
+src/performance/          Repeated local performance experiments
+src/ml/                   Dataset, features, models, tuning and evaluation
+src/powerbi/              Validated research data-mart export
+monitoring/               Prometheus/Grafana provisioning
+scripts/                  Raw, Batch and Streaming output validators
+tests/                    Unit and integration-oriented checks
+data/                     Operational/raw/processed/analytical/exported files
+datasets/                 Versioned dataset manifests and ML tables
+models/                   Frozen and ongoing experiment artifacts
+benchmarks/                Machine-readable measurements
+reports/                   Scientific interpretations, evidence and figures
+docker-compose.yml        Local service topology
+Dockerfile.spark          Spark execution image
+Dockerfile.monitoring     Pipeline metrics-exporter image
+requirements.txt          Python dependency constraints
 ```
 
 ## Setup
@@ -301,16 +544,17 @@ Compose 5.5.1, Kafka 4.3.1, and `confluent-kafka` 2.15.1:
 - Five MSFT events remained ordered in partition 1.
 
 This ten-event smoke workload verifies transport correctness; it is not a throughput or
-latency benchmark and is not directly comparable with the batch benchmark files. A
-future Kafka benchmark will persist environment, workload, event-rate, and latency
-measurements under `benchmarks/` without replacing existing results.
+latency benchmark and is not directly comparable with the batch benchmark files.
+Later controlled pipeline measurements are recorded under `benchmarks/`; they do
+not replace this historical transport smoke evidence.
 
 ### Kafka Limitations and Future Integration
 
 The current broker is a local development topology with one broker and replication
-factor one, so it provides no broker-level fault tolerance. Authentication, TLS, dead
-letter publication, retention tuning, production monitoring, and load benchmarks are
-not yet implemented. `market-bars-dlq` is provisioned but no producer writes to it yet.
+factor one, so it provides no broker-level fault tolerance. Broker authentication,
+TLS, dead-letter publication and production hardening are not implemented. Local
+monitoring and controlled pipeline benchmarks were added later and are documented
+above. `market-bars-dlq` is provisioned but no producer writes to it yet.
 
 Phase 3 maps authenticated Alpaca WebSocket bar messages into the existing `MarketBar`
 model and producer. Phase 4 parses that unchanged JSON, uses `timestamp` for event-time
@@ -915,11 +1159,20 @@ Implemented and runtime verified:
 - Centrally configured 1/5/15/30/60-minute Batch and Streaming windows
 - Per-window expected event counts, coverage ratios, and completeness evidence
 
-Planned, not implemented:
+Later implemented extensions:
 
-- Batch vs streaming correctness and performance experiments
-- Advanced indicators and machine-learning models
-- Paper trading
+- Controlled Batch/Streaming equivalence and repeated performance comparisons
+- Prometheus/Grafana operational monitoring
+- Frozen classification and return-regression experiments with financial diagnostics
+- Power BI-compatible financial/research data mart and assembly specifications
+- Independent tuning and ongoing volatility research
+
+Not implemented end to end:
+
+- Equivalent live ML feature generation and continuous inference
+- Online learning or automatic model retraining/deployment
+- Paper-trading or live order execution
+- A high-availability production cluster
 
 ## Dataset Versions and Historical Refresh
 
@@ -1104,10 +1357,11 @@ Manual Dataset V1 checks used complete AAPL windows. The 30-minute window
 `0.0009561299`, and 100% coverage. Independent recalculation matched average,
 minimum, maximum, first and last close, volume, count, return, volatility, and coverage.
 
-## Next Steps Roadmap
+## Implementation History and Verification Evidence
 
-Recommended order is Phase 2 through Phase 12 because each phase establishes the
-contracts, data, or measurements required by the following phase.
+The following phase records describe implementation order and historical evidence,
+not a list of unimplemented next steps. The whole-system architecture above is the
+current overview; each record retains the scope of its original experiment.
 
 ### Phase 2 - Kafka Infrastructure
 
@@ -1294,7 +1548,30 @@ risk by using an isolated, immutable controlled input with its own checksum.
 - **Dependency:** Phases 10 and 11.
 - **Complexity:** High.
 
-## Final Architecture
+## Ongoing Volatility Research
+
+The research-alignment audit and protocol are in
+[`reports/PHASE14_RESEARCH_ALIGNMENT.md`](reports/PHASE14_RESEARCH_ALIGNMENT.md).
+Return prediction remains secondary to company/sector realized volatility and
+coordinated sector emergence. The V3 experiment is configured for large representative tuning
+samples followed by all eligible final training, validation and TEST observations;
+it retains chronological validation, best-checkpoint early stopping and no default
+time cutoff. It reports full and identical-key common populations separately.
+
+```powershell
+python -m src.ml.run_phase14 --prepared-data-from models/research/phase14_volatility_aligned_v2
+```
+
+New artifacts are written to `models/research/phase14_volatility_aligned_v3`.
+The referenced V2 target cache is shared read-only and must remain available.
+Previous experiments are preserved. Results are provisional until the new
+experiment completes its population and metric audits and writes its manifest.
+
+IEEE report preparation is indexed in [the report documentation guide](reports/IEEE_REPORT_GUIDE.md),
+including a sourced state-of-the-art review, a LaTeX related-work section,
+17 BibTeX references, project methods and limitations, and a timestamped
+interim source/environment snapshot. Training remains independent of these
+documentation snapshots; provisional validation findings are not final results.
 
 ```text
 Alpaca Historical REST -> Spark Batch -> Historical Analytics

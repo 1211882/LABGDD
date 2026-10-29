@@ -1,0 +1,18 @@
+% Related-work snippet, not a standalone manuscript. Verified 2026-10-29.
+% Review scope and source access limits: ../IEEE_STATE_OF_THE_ART.md.
+\section{Related Work}
+\label{sec:related-work}
+
+\subsection{Batch and Streaming Analytics}
+Event-time processing requires explicit choices about incomplete and unordered input. The Dataflow Model characterizes the associated correctness, latency and cost trade-offs~\cite{akidau2015dataflow}. Structured Streaming integrates incremental query execution with relational batch analysis~\cite{armbrust2018structured}. These approaches motivate evaluating equivalent logical outputs alongside completion semantics and resource consumption. In this project, controlled replay is used to examine those properties; its queueing-inclusive latency is distinguished from steady-state live latency.
+
+\subsection{Volatility Measurement and Forecasting}
+ARCH and GARCH establish conditional-variance forecasting as a task distinct from conditional-mean prediction~\cite{engle1982arch,bollerslev1986garch}. Realized-volatility research relates intraday return variation to measurable forecasting targets~\cite{andersen2003realized}. HAR-RV provides a parsimonious model using components at multiple time scales~\cite{corsi2009har}. These foundations motivate meaningful econometric comparators. The current experiment includes persistence, but dedicated HAR-RV and GARCH comparisons remain outside its evaluated scope.
+
+\subsection{Classical, Recurrent and Pretrained Models}
+Random Forest~\cite{breiman2001forest}, LSTM~\cite{hochreiter1997lstm} and gated recurrent networks~\cite{cho2014gru} provide complementary modeling families. Their architectural differences do not establish a ranking for financial forecasting. Tabular benchmark evidence supports retaining strong tree baselines~\cite{grinsztajn2022tabular}, while its setting should not be equated with financial sequences. Recent volatility studies report that more complex models do not uniformly improve statistical accuracy or economic outcomes~\cite{branco2024linear,diaz2024volatility}. Those results motivate horizon-specific comparisons rather than an assumed neural advantage.
+
+Pretrained forecasting methods such as Chronos broaden the available model families~\cite{ansari2024chronos}. A recent preprint comparing time-series foundation models with volatility benchmarks reports heterogeneous performance across assets and architectures~\cite{brini2026foundation}. These methods are relevant future comparators; no foundation-model result is claimed for this project.
+
+\subsection{Evaluation and Positioning}
+Random search offers a practical hyperparameter-search baseline~\cite{bergstra2012random}. Temporal validation preserves the forecasting order~\cite{hyndman2021forecasting}, and precision--recall analysis supports assessment of rare binary events~\cite{saito2015precision}. The present study applies chronological selection and independently configured horizons, while recognizing that repeated validation use can introduce selection optimism. Its contribution is the reproducible integration and evaluation of processing and forecasting components, rather than a new learning architecture. The sector-emergence label is an exploratory operational definition; independent economic-event validity and superior out-of-period detection remain to be demonstrated.

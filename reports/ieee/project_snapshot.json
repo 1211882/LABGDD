@@ -1,0 +1,5001 @@
+{
+  "snapshot_utc": "2026-10-29T00:20:37.585120+00:00",
+  "timezone_for_report": "Europe/Lisbon",
+  "status": "INTERIM_NOT_FINAL",
+  "training_process": {
+    "pid": 17976,
+    "running": true,
+    "command": [
+      "C:\\Users\\Deus\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+      "-u",
+      "-m",
+      "src.ml.run_phase14",
+      "--prepared-data-from",
+      "models/research/phase14_volatility_aligned_v2",
+      "--resume-training"
+    ],
+    "cpu_percent_sample": 100.0,
+    "created_utc": "2026-10-29T00:13:45.371982+00:00"
+  },
+  "completed_fit_count": 492,
+  "three_fold_reference_fit_count": 279,
+  "final_manifest_exists": false,
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "physical_cores": 4,
+  "logical_cores": 8,
+  "total_ram_bytes": 17086664704,
+  "packages": {
+    "numpy": "2.4.6",
+    "pandas": "3.0.6",
+    "pyarrow": "25.0.1",
+    "scikit-learn": "1.9.1",
+    "tensorflow": null,
+    "tensorflow-cpu": "2.21.0",
+    "keras": "3.15.1",
+    "joblib": "1.6.0",
+    "psutil": "7.2.2"
+  },
+  "git_head": "358821c882ea54b6dfed184aee1f803b167c523e",
+  "source_sha256": {
+    "src/ml/run_phase14.py": "0497d5eb8448191508976319bfe2451818e865af74922cea021481084a18f550",
+    "src/ml/volatility/__init__.py": "53cc54ba1d871dc591519f1cd24eb16946e6c332f2d01b6b1322bd500c62eb59",
+    "src/ml/volatility/data.py": "e6ea4b4c2df119ea6b17d1c03c44789798c4eafea7e9db4d0a3b925ba2cbe994",
+    "src/ml/volatility/experiment.py": "6082e8bd81c692d7518f55d90990591571e77831ba22bbbf785d717467c83020",
+    "src/ml/volatility/metrics.py": "209ab5b18661fbdea6774d7c1d37eb52115646ee2cb1b289d288c8c80ef798f6",
+    "src/ml/volatility/models.py": "03a475d4a49298a9065860b9697d3f3f7c870a5e02055922745bebaadfd13e3b",
+    "src/ml/volatility/reporting.py": "5066081faaffcbac15e2835319f0d4d026f58d2a6b443a9bae317c6bacfc7d91",
+    "src/ml/volatility/targets.py": "93d2a5bb1ea8f8b8d35030d1f50664fe7283fd0c1944b3e44cd2462b971d8bee",
+    "tests/test_ml_volatility.py": "5d8e98f00472815e44b31d11f33403971b93ec685dd6cfe7610a839015df3eee",
+    "requirements.txt": "297c82c8fdb7dc85866437fa0e1ed98bbe71aed025ff80f83e87ede5768b025f"
+  },
+  "settings": {
+    "processed": "C:\\Users\\Deus\\Documents\\LABGDD\\datasets\\ml\\ml_dataset_v1\\processed\\market_bars.parquet",
+    "features": "C:\\Users\\Deus\\Documents\\LABGDD\\datasets\\ml\\ml_dataset_v1\\features_v1\\features_targets.parquet",
+    "metadata": "C:\\Users\\Deus\\Documents\\LABGDD\\datasets\\ml\\ml_dataset_v1\\features_v1\\metadata.json",
+    "config": "C:\\Users\\Deus\\Documents\\LABGDD\\config\\config.yaml",
+    "budget_minutes": null,
+    "prepared_data_from": "C:\\Users\\Deus\\Documents\\LABGDD\\models\\research\\phase14_volatility_aligned_v2",
+    "prepared_data_mode": "reference",
+    "max_epochs": 75,
+    "search_candidates": 8,
+    "tabular_train_cap": 240000,
+    "neural_train_cap": 60000,
+    "validation_cap": 20000,
+    "retain_tuning_checkpoints": false,
+    "input_checksums": {
+      "processed": "38470b27e710cc231fb90ad29d59d6823db20b9e2e6f6768ab4c09a3832c90ac",
+      "features": "ca1e9e7b4b908bdc2872234b77b63fe65dfc658aa67a4e4e70dc4ce324add633",
+      "metadata": "ca4f1ac72fbfd40ff733daf345a9d712f7587488a37497039f088c807046a559",
+      "config": "663cf91488b6e6292226fca5b16b0b12651ca6d5583b37b274151c4375ea0955"
+    },
+    "stopping_policy": "validation_primary_with_best_checkpoint",
+    "time_cutoff_enabled": false,
+    "full_final_population": true,
+    "holdout_cap": null,
+    "population_policy": "large_sample_tuning_full_eligible_final_training_validation_test"
+  },
+  "completed_result_inventory": [
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/15m/forest/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "a4fb5f63d8ee5956d3cdaf4c5948f722e76c2ead0ea4cbe3bf0d66d00bb0231f",
+      "task": "company_regime",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/15m/forest/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "45030d0f37bc472b7fbbab4c5b9703f526bce26b2134787ab10def5239254aac",
+      "task": "company_regime",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/15m/forest/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "3811a4937c571505e31e21abccee6f506fb5450c1419a83fb91d7dfd1818d09c",
+      "task": "company_regime",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/15m/forest/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "2e2beff257600c630b67a9239a2387d0b6b32515fa20e8c49aabbdc7f8d856ab",
+      "task": "company_regime",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/15m/forest/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "e44900cc7555fb81c8ac674bdaa8961f3f8f53345541d44aa05d9132b0771094",
+      "task": "company_regime",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/15m/forest/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "5c35959e32547fac00714969fd744e580db152b4a4a0df40309c034d0352e39a",
+      "task": "company_regime",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/15m/gru/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "f2c6b9bce0498b69581dda0378fbde6c2e961a9e3e0b3eebeae6fd93a6cea505",
+      "task": "company_regime",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/15m/gru/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "2251221eb17250095860d223fdd4376dc98eee7f0570c1fb9f3f148e6c9ff1ff",
+      "task": "company_regime",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/15m/gru/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "2ec6d3190fa78b1fe9621cf44f05038e68ddaecb269041b0430a87c29d2e0ee7",
+      "task": "company_regime",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/15m/gru/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "2bacb943d024dc4fee919fde699522d6da95f75edd95af3a5fd0916b84ad1de3",
+      "task": "company_regime",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/15m/gru/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "23534a1b95d2c32103d006922fdf8e733e919b1fa2f6d4617299a56725cd8a88",
+      "task": "company_regime",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/15m/logistic/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "5e6c0ab537666535a66829918c7030c26511967baf6a9bfd9762b0166addb57a",
+      "task": "company_regime",
+      "horizon": 15,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/15m/logistic/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "7d5324e9e0b5a02e10473302ce22096d304ed16882b112f6ac43c9c990a67dea",
+      "task": "company_regime",
+      "horizon": 15,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/15m/logistic/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "96133e4fd1ad8868d3bc9430b646b42b660162630f1d45770248d6a6d1276956",
+      "task": "company_regime",
+      "horizon": 15,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/15m/logistic/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "e7e1fc086a3c5ee2f2ff98b75b9bc4b9093fe7ea81fb1b196bde5c6b323cca6a",
+      "task": "company_regime",
+      "horizon": 15,
+      "model": "logistic",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/15m/logistic/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "aeed51cc0f7c2eef05b69a7a8cd976ec6de4baac5f2881a179abfc77c70e5f20",
+      "task": "company_regime",
+      "horizon": 15,
+      "model": "logistic",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/15m/logistic/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "8c7b68e90dcbfb3cf73205f0fae8094cc698d792195fff867c8bed3cdf8f1b34",
+      "task": "company_regime",
+      "horizon": 15,
+      "model": "logistic",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/15m/lstm/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "b8897212cbcb7ffe62925b9e75bb6f7878b813ab22d4bbc7f80077a7c26decf5",
+      "task": "company_regime",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/15m/lstm/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "17635a63078c1a2c229da9d893e1904622c5f53a603ca69140f1be7ef13294cf",
+      "task": "company_regime",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/15m/lstm/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "3a8e0cea31d78bb52311a2ad381eb6502887bdd063d1cb7f52f2055ca4d73ebb",
+      "task": "company_regime",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/15m/lstm/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "5f6dfb266e8389c3332efa3caaa7c576c98376809c16a382a705ba119e787502",
+      "task": "company_regime",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/15m/lstm/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "7dca3f45d28b257f7eef1736e11dfcbccb0625a3a176054d0c2299934fa57b14",
+      "task": "company_regime",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/30m/forest/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "25351ecc3ffd0d503f1445e4dcf3151ba02cf6a1e16c4314880487de15a09463",
+      "task": "company_regime",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/30m/forest/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "4ab4f92210c33d8a0c1d5511bcf1aa5b645e8b3e8dea58b393ebd02e637b5f2a",
+      "task": "company_regime",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/30m/forest/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "7397e27f794cd1dc3261a43a224dec24a7e7dd67aaf252e75c810bdf5eff0e66",
+      "task": "company_regime",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/30m/forest/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "90a65926863e18c8d62dfaed2d79e11e60a638df7a57c3efccb6bce8de8f4697",
+      "task": "company_regime",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/30m/forest/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "3cf627471a9d5a64b6f0f7f4a7176143655b39d93cb2f5e6e611030a7c949f42",
+      "task": "company_regime",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/30m/forest/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "9367bcda668d14f8efbfe2e6124309e92e709f10cbdf44ab4293cb165bf32ade",
+      "task": "company_regime",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/30m/gru/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "a5f07f94c8f73397297e555ba3023973ec9ce19686915d9f90bd54ae695d9fc3",
+      "task": "company_regime",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/30m/gru/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "b1184aa3c4ac2a70db47c310e3b4927aa6a8f625a9f21165b468cda7a546a4c7",
+      "task": "company_regime",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/30m/gru/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "1f910ddef4fcf1d443366b99825d6bda200e17459180d9be568a86e29c725195",
+      "task": "company_regime",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/30m/gru/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "dd6f6debcaa0b80779e09ca01ed108276acb22d73b712e48e55187d23361c3a0",
+      "task": "company_regime",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/30m/gru/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "47a8ab05844d0278d6e3f8743b3fc05931d0790340bd05123758b34d2e3e2015",
+      "task": "company_regime",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/30m/logistic/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "5525d2223cf52a89eda51657c132efcc8839d6c72d08d1af4acaab4ecc204fcc",
+      "task": "company_regime",
+      "horizon": 30,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/30m/logistic/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "83c287837bdb87f4600d10a93a27643842c380a24d554640afdff9293243824b",
+      "task": "company_regime",
+      "horizon": 30,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/30m/logistic/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "ff7ec66f25bf2bf486a98f576add1ec8f584d85d8b07abbab07e19a77271631f",
+      "task": "company_regime",
+      "horizon": 30,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/30m/logistic/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "30592cd15d9d01727468201ebfabe37f63127b90807a239cda07d3c2b5f01428",
+      "task": "company_regime",
+      "horizon": 30,
+      "model": "logistic",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/30m/logistic/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "048d994490ee99d5a6fd366acce117543a09d2eaf488c2f048c9aed2867319cb",
+      "task": "company_regime",
+      "horizon": 30,
+      "model": "logistic",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/30m/logistic/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "3ce156ca837f8e0f22f430ff1204b80dd1927a4491fc041573ef73b4c9b84595",
+      "task": "company_regime",
+      "horizon": 30,
+      "model": "logistic",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/30m/lstm/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "f3eddc10e6d1e68254bb732a3066dfc192982ce639a5789361a9f7fe035e356d",
+      "task": "company_regime",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/30m/lstm/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "68bb44dafc63de1aa16337d4f7d001276c1d9f4b2e3df511e717cab4a94cd009",
+      "task": "company_regime",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/30m/lstm/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "7df1fa239eae8585a99c6bb1db389446081359281ff34a75a0042ff7ac221b0d",
+      "task": "company_regime",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/30m/lstm/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "c0bd0cc7bdbcdecb27b57bf94d836d7ffb6a82fd126414d9f09c2842b491b951",
+      "task": "company_regime",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/30m/lstm/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "66b262ae32450e6c08fd964d947fd496d1d467ec75cec0f85a3e15b9f23d59ba",
+      "task": "company_regime",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/5m/forest/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "6ac55590c80473fc1b95a1627fc8d43056ccb39c0f6aeb7697db9110083e078e",
+      "task": "company_regime",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/5m/forest/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "39ab3e3b2bc1c1c01c8b28b8265aca8910f88f12aa229fa889244559a86fca94",
+      "task": "company_regime",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/5m/forest/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "51e001f8ab80790eacf150b440c5d1fa107ce1ebc1660e7e66fd1ae05e39f7a7",
+      "task": "company_regime",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/5m/forest/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "6ed7389dbf6f2d7c21c476d9d6ea975e4c78cf2c4b74c63cdd2471a9e21e01c2",
+      "task": "company_regime",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/5m/forest/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "bd2b2f9dbb0b8aca9f6a893522b569c2c75ca1726601a8c675a85f6d00874e36",
+      "task": "company_regime",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/5m/forest/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "41e2474ac4d2690614cd46c6638c64489d7a70669d234ded641ce1d67298e8ce",
+      "task": "company_regime",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/5m/gru/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "786b671dacf489af6cd0814fa631f7423408650ba3489e7fe38e1d90662d14f5",
+      "task": "company_regime",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/5m/gru/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "1150a6755caabe4bf30fdf23e9aa17f328eee012cfeadd0bd9726a53f5bbbb47",
+      "task": "company_regime",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/5m/gru/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "d757785d4bad7ad0fb5a58c7725967093d2f65ace8978dd3dbf7faa72f61ec35",
+      "task": "company_regime",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/5m/gru/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "756ef6470b060eb10d85eaf9ae96d7aca88d3345db3bb25abb0d2a897419958d",
+      "task": "company_regime",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/5m/gru/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "b7b0c20158177fd735ab6e79f2fb93d984531e45beb08beb13fc77afcfe0bd40",
+      "task": "company_regime",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/5m/logistic/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "2d4d149a1633365a6808b2bf1db2d9328e1489b530541967e5f6276f1b497435",
+      "task": "company_regime",
+      "horizon": 5,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/5m/logistic/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "4e09bb5d352b0467bad034fdbbc9234a2da0fd8afd45f97b9b27408fa2fa8519",
+      "task": "company_regime",
+      "horizon": 5,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/5m/logistic/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "7fb13a02bbeb9c18355efd804b33a25a83e2a2ea3a0de6d4e9341dfecc07c577",
+      "task": "company_regime",
+      "horizon": 5,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/5m/logistic/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "7d8ccf3c5acb8a76ce5eb2cc15a0cf87632f2898080af14f54fa16d8ddea6952",
+      "task": "company_regime",
+      "horizon": 5,
+      "model": "logistic",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/5m/logistic/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "6c9bab155ab4b3d5d0a9458358c1a5b8d07d9dbfa4c436d785f564dca0f7dad2",
+      "task": "company_regime",
+      "horizon": 5,
+      "model": "logistic",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/5m/logistic/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "99467dbc35f18fe415dbc03a5027fd29396a1deeea7ccf954570a686ad6a6901",
+      "task": "company_regime",
+      "horizon": 5,
+      "model": "logistic",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/5m/lstm/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "bfd8a0a7e22078d39d00b2a6910f68bcf6896a55ee62d43eb0340c38aef1d5fa",
+      "task": "company_regime",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/5m/lstm/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "08e034544629b8b21e0a06bf178c7dd47285f7d6c8b4e416a0c924aca3d6f531",
+      "task": "company_regime",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/5m/lstm/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "b906ee767aaca4b5cc83feb66eccff5ee831d5cfce526cdb347a53eecbffb246",
+      "task": "company_regime",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/5m/lstm/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "a4016ef572c68cc4cd1c8a794e845cfce165b14163f01d17f08e9589ce0c998a",
+      "task": "company_regime",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_regime/5m/lstm/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "09fcffc142d4370565f1b5b78ee71d56a49f6916c394834f404b8f72358ac034",
+      "task": "company_regime",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/15m/forest/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "f5f47692f494b70c828a399af660509f03349a4aff819ab0a942adffe67f76f8",
+      "task": "company_rv",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/15m/forest/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "7580a4b3d6dc3b23194b73c1590db790924f39e4abec5ee01c02c9d2c7a7d74f",
+      "task": "company_rv",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/15m/forest/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "be4762e79e017f34a2a85782ab3531a27dec186d02ee14878541d60c7b6129a5",
+      "task": "company_rv",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/15m/forest/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "b8daabbdfc9a92efe1c3b98f29189ec930ee20233dd3238a4c0812dd7ef344b0",
+      "task": "company_rv",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/15m/forest/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "2ba55fdc43e512c6ae91819581ce08847c99d1e91a17c3567153c2b722d4d1bd",
+      "task": "company_rv",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/15m/gru/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "3bac92bd98eb821286da90e9a97b27bdbcd4e45a68e616370f9fdf363848d0d9",
+      "task": "company_rv",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/15m/gru/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "d31af2c90430381f18d1ddf0c0da822a27ee1f14d72197e58f6268ea10cd7303",
+      "task": "company_rv",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/15m/gru/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "92b3c7bf8244f02e9154d87299f57a0874ba1d2bcc740375ff5f3eeac929527f",
+      "task": "company_rv",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/15m/gru/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "ba801941396259849548c0fe967d34a6c0a15c09c401dec584ec34e5b3913c22",
+      "task": "company_rv",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/15m/gru/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "baa105ebd8941a1026bbb68ec4f8ba175dd8d62e06214f1df428154ff70a3805",
+      "task": "company_rv",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/15m/linear/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "7352af9acc92a0a24779cb519fab414619c80650db36f227f56bd29bb49d41c5",
+      "task": "company_rv",
+      "horizon": 15,
+      "model": "linear",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/15m/linear/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "24eed1a7b3e40497a91059d3fd0fbbd5b9dc374976c48f4584004fdb00069208",
+      "task": "company_rv",
+      "horizon": 15,
+      "model": "linear",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/15m/linear/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "fbb3eadb37a161c2a4d910afdd37f11e352b282aa2ac3d451ef1a4d51ede4728",
+      "task": "company_rv",
+      "horizon": 15,
+      "model": "linear",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/15m/lstm/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "c3bac4a41ba0744f331621180eeacfaeaa12c190da8be16566eb2e73b31cdd65",
+      "task": "company_rv",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/15m/lstm/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "d4b2f62fa25bda68d09d30093f17a6a2b536a4816350295797384947056cc967",
+      "task": "company_rv",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/15m/lstm/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "9eed502380400adc8023e02721a143f41fbbb451825fb251bbd2546fc7b92d28",
+      "task": "company_rv",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/15m/lstm/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "bd003734add06a268c268c3ec75d88022cec4ee045769e0a111401997a1a1b54",
+      "task": "company_rv",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/15m/lstm/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "51488192d7763d972e436e2655fda57f70157f360667759d704dec0f84db0394",
+      "task": "company_rv",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/15m/ridge/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "3b21418cec7d643b4463466badd62244104be618712e23c75f94282cffebefe0",
+      "task": "company_rv",
+      "horizon": 15,
+      "model": "ridge",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/15m/ridge/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "53b77f5441ca7481d7580eb8259922277957af2d2c8aa65a250bd0ab958ad44a",
+      "task": "company_rv",
+      "horizon": 15,
+      "model": "ridge",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/15m/ridge/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "09c6d0077e11860c6f7e40b4324b1eb7471d7104a56e2eac1d47323c853b6307",
+      "task": "company_rv",
+      "horizon": 15,
+      "model": "ridge",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/15m/ridge/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "18b50bf1c86bd167d043e7e1868046caac0a8d39da797b476da97d4c4d34e375",
+      "task": "company_rv",
+      "horizon": 15,
+      "model": "ridge",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/15m/ridge/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "26cd6f94654ed6cd60f63c801a65d9762731e84bd8f304503733bf55f799f3fa",
+      "task": "company_rv",
+      "horizon": 15,
+      "model": "ridge",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/15m/ridge/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "cb40e9ef8ba0b4d33c39e408cb9745de97756e00081cfeca33460718ab502b1e",
+      "task": "company_rv",
+      "horizon": 15,
+      "model": "ridge",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/30m/forest/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "024a57a8a1afe8d05a8e0d4a6811e58c529d927562b3ba324b77af0ad6677334",
+      "task": "company_rv",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/30m/forest/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "fa27bdf5ec2bc358963d59948183cc77ad76aec564ac907eb23d3287504c218f",
+      "task": "company_rv",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/30m/forest/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "6a187505326dc704b5593a29ec634261ff4f033c91e8199baf453106706be0ef",
+      "task": "company_rv",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/30m/forest/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "f66166fc59fa193075aff01ca4fc2fab7859df3e151311a0c9c8d7d55d04db58",
+      "task": "company_rv",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/30m/forest/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "7182967d950a339c4806ee40889818d06a2c7241cd23965d74c13bb833e82f2f",
+      "task": "company_rv",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/30m/gru/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "19410abc32fdd4516c6412a4d3a703db365f5672f4a71d32f4d2df18d5301483",
+      "task": "company_rv",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/30m/gru/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "f538019abc442fdd7b8700d74bb16fdf8c0195cfa9b6902607ec44f6c75c7f17",
+      "task": "company_rv",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/30m/gru/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "c3c99edf4732459c8b8585a69d65cf247b2b16f14a6712c6c84b05f078fd3cc0",
+      "task": "company_rv",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/30m/gru/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "432443f97593e235bd2832d631d3511b128a781ee3132e10f3068c49050d011f",
+      "task": "company_rv",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/30m/gru/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "eda26bbe2681ffc9fe50374f203c66a2bf61aabc5760161c7a226c8816841920",
+      "task": "company_rv",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/30m/linear/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "92649008a3849b2c6f7db231186786af6198cb4bdaed2f4fbb6cda66bc6d4ce5",
+      "task": "company_rv",
+      "horizon": 30,
+      "model": "linear",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/30m/linear/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "73d2211eab4fedc8a5e32fa86b308e23eab6e39ece72525b624ab252fff4fb38",
+      "task": "company_rv",
+      "horizon": 30,
+      "model": "linear",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/30m/linear/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "f43a9b19e33fed3d84ab7223a5a3be20b6ba8ac1baca91a047b0d15b59a25e17",
+      "task": "company_rv",
+      "horizon": 30,
+      "model": "linear",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/30m/lstm/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "6901a795af2a17b965d9044231d79e1fde0c40bb1f57d3365ae2a109b87dd903",
+      "task": "company_rv",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/30m/lstm/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "46580db74e5e1f16cb13ef0a32a3ac16966efcd1d7031cd9a29c8d13dd808420",
+      "task": "company_rv",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/30m/lstm/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "01d16d34de1138e26206b9ff76963a4ef6c40dd249e8446990744bb97dcfb353",
+      "task": "company_rv",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/30m/lstm/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "38e91e2f160f4070552a6dfb55447f06cb3be5f6d0403fb822b0a9a3e3afc2a5",
+      "task": "company_rv",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/30m/lstm/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "d1e39d2f7e3e48bcd03e50593984b85cb3f1a6214bf283abb8c856cc9791c682",
+      "task": "company_rv",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/30m/ridge/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "8a046797dfd4868e62193688f27cdb1256c01d7baaccf9e8e959db0b8a0db79b",
+      "task": "company_rv",
+      "horizon": 30,
+      "model": "ridge",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/30m/ridge/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "f9ad2aa5e1a68a42613a66f6101761a746850ab557f22fa7a6fa01ce3d414300",
+      "task": "company_rv",
+      "horizon": 30,
+      "model": "ridge",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/30m/ridge/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "ec50e3ba44f64e8880c891a87632e6b7601cdceeaa132903eae834ed72f4088b",
+      "task": "company_rv",
+      "horizon": 30,
+      "model": "ridge",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/30m/ridge/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "55afe68a5ee8b6a6742051b7ecebf910526665f38017bcff5fcca11fb458865a",
+      "task": "company_rv",
+      "horizon": 30,
+      "model": "ridge",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/30m/ridge/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "fb5f1baea24ef087836210a1f7b9f009c5e4061ff973a91f77c06b62c794094d",
+      "task": "company_rv",
+      "horizon": 30,
+      "model": "ridge",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/30m/ridge/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "4ca7aa996a61bb8ba4a9d5ef05746dee452bbd9a49c3004830e8d212d3b4c52f",
+      "task": "company_rv",
+      "horizon": 30,
+      "model": "ridge",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/5m/forest/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "ba07a3e64b0695630fe9ff1669be6b5c4c250ee89e9190fb0d931ccf64d7055c",
+      "task": "company_rv",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/5m/forest/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "40925635f3d4d04a84323880985724cf686c4ca351ba2d99ff15045d96dd6e21",
+      "task": "company_rv",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/5m/forest/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "c4232b029a38d4ea429f9bf9e353baf6dd287c83a721e63a4a6b0c72126fb9c5",
+      "task": "company_rv",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/5m/forest/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "ce0ae174e9e1deadd717afdb38b0cf2cff395d692914c68f79f0eda0fd4d9148",
+      "task": "company_rv",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/5m/forest/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "94317f8ef21b8f4cadc24eccb3539fdda557771d0b0f084b2ff5af23026ccd35",
+      "task": "company_rv",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/5m/forest/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "7c491de1d13cbb89a0ad0db35adb3c5a3fb6909a1873d6313b83f88bd9429e48",
+      "task": "company_rv",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/5m/gru/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "a02fe39d5271663ad91e6eb5b4be6e5070466bc197f9837983d114fd45c50590",
+      "task": "company_rv",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/5m/gru/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "01942393fabec6c1fa7d6a2ac5ab3290a19d1d0f5e83171b0b0c8b03c466458f",
+      "task": "company_rv",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/5m/gru/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "8da6e9ef3ffb05375e720429dec182a788586b7fc6eecaf8680b3c258387e42e",
+      "task": "company_rv",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/5m/gru/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "0ff4f8b15eabee00fc9ab53a504ecc38b05ae8382cda89c83a1d61e4a63f113c",
+      "task": "company_rv",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/5m/gru/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "9b2920c7668e94c03789da802fd56fa9d524cdb68c90f39b61c898c623c99bdd",
+      "task": "company_rv",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/5m/linear/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "a139584b4b2d3da3eef5e2f5dfea280f7097b58477290f2d7d6e5ff1fcae551a",
+      "task": "company_rv",
+      "horizon": 5,
+      "model": "linear",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/5m/linear/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "481d4c30f22e0f4e53c549941f00c3aedbd319add260fc5663556b9edf584f7c",
+      "task": "company_rv",
+      "horizon": 5,
+      "model": "linear",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/5m/linear/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "c77437ae618d4b42cc9e27702affd459bd7abd252fbbe3b0e5ac2c822c718d4f",
+      "task": "company_rv",
+      "horizon": 5,
+      "model": "linear",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/5m/lstm/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "e615355657f1a2f1ae2ed19005e0f9d397e67b8fc8aa96c3ba9ff2b8daebd390",
+      "task": "company_rv",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/5m/lstm/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "f389ff95e610e9f70d00755d9f8232faf09058a5d6a0f8f43b64b9c96826fdc9",
+      "task": "company_rv",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/5m/lstm/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "d36c74b24d1c9b0f192a49655b5df0a1ea825dd1413792ad5e8a1c8e7859d285",
+      "task": "company_rv",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/5m/lstm/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "5f9b4f497d13cad37a32f430b8867615b9d224fa3b657a007337ec9e827999ce",
+      "task": "company_rv",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/5m/lstm/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "45e3ccdf41f9bc44c8320aa111b9e80fb02244d73a4153bb355ea247d6886e88",
+      "task": "company_rv",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/5m/ridge/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "f3676fa46af5d397bedf1ff4ce9a7e63fca0835ee4439157eb16db2110b1ec26",
+      "task": "company_rv",
+      "horizon": 5,
+      "model": "ridge",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/5m/ridge/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "dab882d6ccc84407d04091b53a6856a705f92f79e426c05e33f451af54c58705",
+      "task": "company_rv",
+      "horizon": 5,
+      "model": "ridge",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/5m/ridge/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "17699dc13db2af42c69c66bf8cfdaad46a147a988b68e03f422820378c4608a3",
+      "task": "company_rv",
+      "horizon": 5,
+      "model": "ridge",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/5m/ridge/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "e75b1368b481eaa3d895b4a40dcf98c1c04bf3af1ad603129b2c946978e3da99",
+      "task": "company_rv",
+      "horizon": 5,
+      "model": "ridge",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/5m/ridge/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "7fd5eaebb9f6d841c757ec4005d913e234261843487bdae5ca9646a7e6eb392e",
+      "task": "company_rv",
+      "horizon": 5,
+      "model": "ridge",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/company_rv/5m/ridge/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "58d835beac84fe62673faa643c8168776fb6c811126d144b5c9b6dbe51dbd019",
+      "task": "company_rv",
+      "horizon": 5,
+      "model": "ridge",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/15m/forest/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "d7401e11be2cb0dc2b290bcd317be4213e861bcbbafce174bd81d85670803865",
+      "task": "emergence",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/15m/forest/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "deb706a3d486d5dafb53ee1299e8276ea23b23ffb9a0ab6098a10e4f54c36e85",
+      "task": "emergence",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/15m/forest/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "9d78f0d414f3772310b744eea871a707bf41e159e5b46ef9a345f2cac8def274",
+      "task": "emergence",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/15m/forest/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "a38567f1a87124f3b8870b2a625c4fb554442b30d099a8d99b0b6756f323aefc",
+      "task": "emergence",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/15m/forest/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "96c99734b801aa59692a5ca8010fe0f8789d32a8bf095f002613e2da84e1f725",
+      "task": "emergence",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/15m/gru/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "afedc91a98cbd91760ba04cbeb43fa102e1789df92b318c702d97ef90160f972",
+      "task": "emergence",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/15m/gru/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "ac907d461ac499d123678459d71c945e18cb1a709465648a7ea6d076e551fd45",
+      "task": "emergence",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/15m/gru/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "ef56d1f3294bc5704e79287d71d31667e26d492df96f5ab4e6c9053d37b9b933",
+      "task": "emergence",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/15m/gru/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "5019743928b981ed16518cc92ba0229e2826c217f37d67df1c71d432bd0e1fd7",
+      "task": "emergence",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/15m/gru/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "2e7b9a6b15dc0a27de8bec6fc3883fb4ad8cd76f67dee1c91818d84d7eb730df",
+      "task": "emergence",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/15m/gru/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "ec0cf603b0e1a76ea1176fd5bbdb8bf8c5ebb7d284a8bb0e6cf3ad427926bddb",
+      "task": "emergence",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/15m/logistic/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "8d4e80f28a8ebf3cfedc624bbc1fe56d64169366a91a803b0a6f9f249c1f328f",
+      "task": "emergence",
+      "horizon": 15,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/15m/logistic/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "cc75bd21e671c6ac79e91d97f319c7a1318cc9ee6e5e9bed6f67a80fac08f225",
+      "task": "emergence",
+      "horizon": 15,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/15m/logistic/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "4afe14baaa676c7ed4b011b03620511392a745eed0271581cd82e2230ea0dbbb",
+      "task": "emergence",
+      "horizon": 15,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/15m/logistic/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "7f69321185d3fdb3eb248735c10b1608b53ab46e2e94f8a1da6fcc744e48608d",
+      "task": "emergence",
+      "horizon": 15,
+      "model": "logistic",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/15m/logistic/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "c7f337ca2a7b4280bef747c9a3183fabea69586f96e7626999e9c6a49ddecc64",
+      "task": "emergence",
+      "horizon": 15,
+      "model": "logistic",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/15m/logistic/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "609f16ebdf3a4d7a149e0c442776e29d798e453ca1f71410524d0f27c33009ee",
+      "task": "emergence",
+      "horizon": 15,
+      "model": "logistic",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/15m/lstm/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "dd2de14590cadeef2b231c91979b424d5d3a34028d71665caf4fc8dcd56a993a",
+      "task": "emergence",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/15m/lstm/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "e91a653741259836360c035424df15f565a7278f5ed89c4a3c7b8a13497a8683",
+      "task": "emergence",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/15m/lstm/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "4252ea1374dbd861b93f88613e876b0dc23261b37ae9bcb0c7bf8f43fdd54d37",
+      "task": "emergence",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/15m/lstm/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "fea965f8f4dd575543f9719a0b1bed9ccba4dfcc690661c9e45092e16105bd09",
+      "task": "emergence",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/15m/lstm/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "b11081a3de2a1e014749edf93d79da93c83ca9757224c957e4b40e5e394baf62",
+      "task": "emergence",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/15m/lstm/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "0285532db646bda5a59a2735121b2886959f3c464facea7f5886f7fdd2f1e40a",
+      "task": "emergence",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/30m/forest/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "586e08ea6986b87fd444f127bd4f13887e5e1aac60f9e0f80cefe0efda8ff606",
+      "task": "emergence",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/30m/forest/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "6bad83aa6456ff4af8e9276b7ec740a7906817ac78556301e4d0201959ba1aa1",
+      "task": "emergence",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/30m/forest/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "fe3d06dc4f9a9ec3076b9cc36197c93f00b9fcd7a11055b2ee766ccf4c2609a8",
+      "task": "emergence",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/30m/forest/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "54d40f626036fbf9130a7a8f1e24b82884795a072e258a40943f6da95101cbb2",
+      "task": "emergence",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/30m/forest/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "a1b0f6dea6d19b427d7b9812ea7e036f766b935b4631a0f4f7f48e165afccd81",
+      "task": "emergence",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/30m/forest/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "54521c7283f9bfadd51fc7047a3e0f0c0a9386c214451dcfc7d654ceaac9c180",
+      "task": "emergence",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/30m/gru/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "2d30321dba06ca83035f3bb3595bed56cc192834fc190f6ff976de95a34d79a1",
+      "task": "emergence",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/30m/gru/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "e0e29ea2280406abf6f801804afc8d238134f0962b99750ffaeaac6daacd9081",
+      "task": "emergence",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/30m/gru/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "41f8756141580babaf29c5b188c40372a71f75a7e52c7826a1c264cb65ba087d",
+      "task": "emergence",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/30m/gru/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "78e0fd0f0e72acfc777aa603638e588608588dc0d5f3970224b39c4ad6d07c6b",
+      "task": "emergence",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/30m/gru/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "33e3398b380ff0ff85745916492349d1e55467aea9638bd29411e7392ac74373",
+      "task": "emergence",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/30m/gru/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "c43e4e7b11d1451ed179ea4bb5365a44c50c40cad8c9f3ad1960656d13f2cb04",
+      "task": "emergence",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/30m/logistic/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "c2a6c275b7bc94182b4e2c27810aa7a01b09e7b10f354513fda8df8f3fa1f157",
+      "task": "emergence",
+      "horizon": 30,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/30m/logistic/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "b225e46cf35727ec2969dc8708def92e487df08d815bdb6e6576e0475f00e88e",
+      "task": "emergence",
+      "horizon": 30,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/30m/logistic/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "18817112d232b9a1c98d652995fb6411e249efe60b4cb0ca0b7ff013c7556f59",
+      "task": "emergence",
+      "horizon": 30,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/30m/logistic/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "7ad3b5771988226f6695c8507266dcf63cdf1182147c827e3abdfe3464bfc6eb",
+      "task": "emergence",
+      "horizon": 30,
+      "model": "logistic",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/30m/logistic/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "c983bf7ae94a84ec63c09c6f3ca1e93e1b8b9e10988a5df42f82b0ad31322c5f",
+      "task": "emergence",
+      "horizon": 30,
+      "model": "logistic",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/30m/logistic/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "37c6c5196622be9f3f225633f2f3b0a62fe0a3579a6e6e769de3e465500be05d",
+      "task": "emergence",
+      "horizon": 30,
+      "model": "logistic",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/30m/lstm/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "2debc3069c7f9315ac33b5ddcdce5c40869293af9c4525fe458789da1bbf0dc3",
+      "task": "emergence",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/30m/lstm/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "d99978b461363065d6d3750b677198f9f86d53a69c76fa5b2cb13e9df4a2a95b",
+      "task": "emergence",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/30m/lstm/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "88c9243eb7f421e60574eabcb982dad75d32ddeb29cb5cc5a28eac3473da9fd1",
+      "task": "emergence",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/30m/lstm/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "c787d455bd294cc8a81b423475fcb8047bd7766202a22e22e9cb0f6a5c695e35",
+      "task": "emergence",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/30m/lstm/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "54a31d75f56843d9e22c09698122ac38559a6743a3a399b005d62f72e1bd9161",
+      "task": "emergence",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/30m/lstm/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "95a0297bf8a57f520e6c45e89d6f27c8dabdfda19b5c01337ba2688d9a33f31c",
+      "task": "emergence",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/5m/forest/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "84c5c10eaca0efe12921703458ac44aae8ef61ed76888ff4e9f08df1d493965a",
+      "task": "emergence",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/5m/forest/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "e61ecb4b65d6bc66ddd5101e012c422beb97404e60451f15fb7cff5b064b1935",
+      "task": "emergence",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/5m/forest/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "c4f8b80a09a938b1333e3990c5ac3147ed3b291446d60c79f9fe5739a5b4b637",
+      "task": "emergence",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/5m/forest/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "eadb1c75ed8e71bfc6f1e19ad35f4bb509bd9df501acccdaa98c89bf7f2897a5",
+      "task": "emergence",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/5m/forest/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "0e999fe0d475271ac4b89ccdfd8cd898562a7824c7ed016072171e8bfcbf2df8",
+      "task": "emergence",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/5m/gru/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "c3c4edac3e05e259b710dea7137b8dfb4ea19ac6bf38a1b891939bc40fa11a5b",
+      "task": "emergence",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/5m/gru/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "a40c3548b0261a4f5e2af12195161cacb8a4bcf46936e699a0c2d0e49a1309e4",
+      "task": "emergence",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/5m/gru/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "58e5b51d9f1d060f5e9ebd55e0c02e36ba93e1b0ae578343c43d4196bd133377",
+      "task": "emergence",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/5m/gru/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "f7452af54832d58e42ecc1ae3fee25ecd9dc72598cdac44a42a27f4cd07f511e",
+      "task": "emergence",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/5m/gru/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "09395696ff9c062b336ab7089838ef072389e779000131f60f67ae38e06311d1",
+      "task": "emergence",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/5m/gru/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "c87d0ac72407fd0108fa249725946ee6692ad0625f66c985d7d43cda5bc379f4",
+      "task": "emergence",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/5m/logistic/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "a06f795cd3465681bf488343c13a48cb7bc0b1207f8f9fad5f33c0920307f018",
+      "task": "emergence",
+      "horizon": 5,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/5m/logistic/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "940097432b1968887c189c11c4f34001d0a7b4f9022088a7d35305ccd938ed6d",
+      "task": "emergence",
+      "horizon": 5,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/5m/logistic/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "cbd1867ad99f503708fa2afc2ba93a1d310be7b287a28baa1dd1d071cd479d2e",
+      "task": "emergence",
+      "horizon": 5,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/5m/logistic/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "9180e5e84aa0e709b123e68622d2acf8ed17aa55b2def13ba7ac4fbcb62a7685",
+      "task": "emergence",
+      "horizon": 5,
+      "model": "logistic",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/5m/logistic/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "5ae2eb507e40ef0163aabdc55eeaaeed9656eef49eda708fa3b6aa29ef459010",
+      "task": "emergence",
+      "horizon": 5,
+      "model": "logistic",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/5m/logistic/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "af0a9f3ebcfc6f7ed6919abd0e22a0a5bd7bc504b5359904538648e4241b53f5",
+      "task": "emergence",
+      "horizon": 5,
+      "model": "logistic",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/5m/lstm/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "2806e71a01f1dbb00f87616f4d18f325d017682321793165032a2cc0d97bc8ba",
+      "task": "emergence",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/5m/lstm/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "ac4edc327b4fc143c335fb1dd448f1c95139c2a7bff12e429f49d39ada298242",
+      "task": "emergence",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/5m/lstm/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "c14ec39f25238c391c2019c3943b54ddd6f9e16aff413f5e38994890f42b5eea",
+      "task": "emergence",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/5m/lstm/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "b999194167c77c20195f5045aa2e23deb45d6452608e03f0be226b9f77762045",
+      "task": "emergence",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/5m/lstm/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "db8fa557a1a0336d0e63fad6d820b462f9aa972a38eab047fd2b823830ad5ff7",
+      "task": "emergence",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/emergence/5m/lstm/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "725f8c7c79cfc6271e04d1cbdd2417a101ece42b4e8f38258f4782646a31eabc",
+      "task": "emergence",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/15m/forest/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "54a5f2b9aaafd96e817f3c6320095541770e759c1d127a2bdab40bbb836faa2b",
+      "task": "return_class",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/15m/forest/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "f2b90f8771ff9e6eae1c66cfd8d8f1cfbae52c0e1dfc82ebb31c191e400b6a18",
+      "task": "return_class",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/15m/forest/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "c84ba30d581c94ede024780dbbdaea6bb3d0fccc927042093e86d45e870e9ffb",
+      "task": "return_class",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/15m/forest/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "a904cdb7473ec98c8b4591093d3d7e35e0919d4ffa4c2cf8e2bd6bcfd5315cc5",
+      "task": "return_class",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/15m/forest/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "658386313eac1d5ad991d5bcdd7a77106abdda1501a33a19860f8d55b8643952",
+      "task": "return_class",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/15m/gru/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "466d915052ff194cb1a1a7c30e6859f47c71d7446fa27ec92a9ba96dba7194cc",
+      "task": "return_class",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/15m/gru/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "b4d047c8d67f7034a864443641e605f9a79b2ac81c528d3971e02a967a283115",
+      "task": "return_class",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/15m/gru/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "08bc2587ba558c5db779c38c693e3fdb61f3c5c25dd12562b690d624212ddb7e",
+      "task": "return_class",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/15m/gru/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "602f061e32f92e75a1999b1a6b2dc8994aea10c79bcf5b87623d00d656214147",
+      "task": "return_class",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/15m/gru/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "b4db554650fc3072cd2892bf9421681ceaf87a1774ef8b01ecf59a82fc2d30a1",
+      "task": "return_class",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/15m/logistic/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "f4df41f414326bec7becc9f17ac661ea3039bd9041490a58bd652ec8e92b5e15",
+      "task": "return_class",
+      "horizon": 15,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/15m/logistic/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "9b0cd0f894575adcaed49dafc6c3ca120b7e993a2fd711982513cb4ca3baafa2",
+      "task": "return_class",
+      "horizon": 15,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/15m/logistic/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "4bca1b50342659f82667d1b8976e80510d08119d481283d7dfdb79b6083b8370",
+      "task": "return_class",
+      "horizon": 15,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/15m/logistic/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "e22b7b41320921a90124405c2745f7e74226a65aaeec1b4eb33b35ca08af393e",
+      "task": "return_class",
+      "horizon": 15,
+      "model": "logistic",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/15m/logistic/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "994910fcfd62df1c7140f6e847292d96a8b9ed488ea4b6010b3e39f2053159e2",
+      "task": "return_class",
+      "horizon": 15,
+      "model": "logistic",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/15m/logistic/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "d2d2837f0d7b8a3e76bb5a492acb1c52cc59f488cc34c95f98ac20c1b3aa99f7",
+      "task": "return_class",
+      "horizon": 15,
+      "model": "logistic",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/15m/lstm/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "b9bf99c45ced0f1e29419ab7f90b05fd699eae3a353bda01ba8fe3b2bd533bbc",
+      "task": "return_class",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/15m/lstm/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "4f9de9a58fb231fa71a025c15cb796e0f73afd02fb1c44d650352a82690464e4",
+      "task": "return_class",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/15m/lstm/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "c7c791187c7368f812a3fe0cdf3b3393a0caa68fc9ac7db89816fa9edc5b66a5",
+      "task": "return_class",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/15m/lstm/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "d695d7f4d002d6aee2dc80a1adbf0d8999c7245ed2c9cfcd2d67d27e42f138c8",
+      "task": "return_class",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/15m/lstm/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "89073c450948f2d8fb2cc98f2e445dffc6d5ad7168fc2af0a202356dd490320f",
+      "task": "return_class",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/30m/forest/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "60cc1adf6c72515bdcefe66e52f6c63c5cb6f44a773dbe64b54c4eadabcdd81c",
+      "task": "return_class",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/30m/forest/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "1d79c2cffa75f6bd45bd3d748a3ff8e68afbff18f45537a9466ce3b56b2a5b53",
+      "task": "return_class",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/30m/forest/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "11e93b12317d339b84d0dcd3bc4463037cbcda2561e009253661c5b86d3dc51a",
+      "task": "return_class",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/30m/forest/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "9f02fbdbf1b911587208711c29a12c2181e9965ca8a292aa81af523d92677f61",
+      "task": "return_class",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/30m/forest/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "62306d24affceb9092a65fe13b9d8cccf3592e6b85b70f26774ed6ae54580b7b",
+      "task": "return_class",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/30m/gru/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "528e37681a8e95c286183b98631d4e5dd6254c5df6b2225c3695119a87355ec8",
+      "task": "return_class",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/30m/gru/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "5415636cc9c017d51ebb75e29092df9bb1e8badeff57d1b02a7d0ca08edd8073",
+      "task": "return_class",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/30m/gru/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "11775a90c9a77ac1d53997f0adeb418ba0c06f351106c7175c83ba5325a3ffc0",
+      "task": "return_class",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/30m/gru/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "01d71d3c24a0e072f547f06c8a763d1a209978d3f2737292f7df7179d233e63b",
+      "task": "return_class",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/30m/gru/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "f056ec9a57714f8ed1a40b8ef387ab9b2411fe776694581a9a4aa0057db1c089",
+      "task": "return_class",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/30m/logistic/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "9e871ef271d8be9feae3acb25fa99d5084d7deefee5bb634d3f13b7253c74c4f",
+      "task": "return_class",
+      "horizon": 30,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/30m/logistic/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "ddffae9d8f74a4fb99aa0b19d502447f6105022bddc72041b11cc0aba39ca5db",
+      "task": "return_class",
+      "horizon": 30,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/30m/logistic/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "7a552d9f5e98c19d9efe2fea47be478c35a5dff4cbc9b28ee4880ad20c098f23",
+      "task": "return_class",
+      "horizon": 30,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/30m/logistic/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "d9493d05237c62113f18f12d165001f1ad8c71ade4bf5dd2b65a2bde4bbacdd5",
+      "task": "return_class",
+      "horizon": 30,
+      "model": "logistic",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/30m/logistic/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "6c9794769edc7b89693c77b13f4ee0529fabe95c1cf2a340f041f241ccb8d3e4",
+      "task": "return_class",
+      "horizon": 30,
+      "model": "logistic",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/30m/logistic/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "abe94642d612f08f2e47b4b59e22e5e68573f7481073a404c0ee248ca1a5e956",
+      "task": "return_class",
+      "horizon": 30,
+      "model": "logistic",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/30m/lstm/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "b2f0851266b2ac52d7738d0e9f46048bad5cf4008b8d2d0495c9588c99446a23",
+      "task": "return_class",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/30m/lstm/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "d26353c51f77163bcbcf18133d1a3e7a3a5328305d42ac10071632b0db7d0458",
+      "task": "return_class",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/30m/lstm/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "593fd4ece82e400533236758e8f762d31655976888a4be27138c67618224ee9e",
+      "task": "return_class",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/30m/lstm/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "41bc821c6c1cc3d1997fc23aeafc6b5656844d2ffc2d50f9ba22b429173bcf46",
+      "task": "return_class",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/30m/lstm/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "8b231cfc22fa880c29d54a23c74d74061ae70deeab34c1818cb6e4d110402e9c",
+      "task": "return_class",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/5m/forest/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "b467bd133b2d096732516fd9f85cec9ab6406ba98049fa966e9042e694b2cf35",
+      "task": "return_class",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/5m/forest/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "56c9debc0880b0d6533fef9cce6bd534e7a20b305eeea3dfc5aef7fcbea26b08",
+      "task": "return_class",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/5m/forest/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "266850601a232a1cfd2fec7c6197b79ca2f823811f4365b84cabd6ab479dce79",
+      "task": "return_class",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/5m/forest/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "80c1523819e1c9d651b167d343993754829812f7b3521a73661b556df116cc88",
+      "task": "return_class",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/5m/forest/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "5cf7618f541931aec89bb483d424a0071520b5c9506fdf9f6b404a9a14dfb2cd",
+      "task": "return_class",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/5m/gru/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "179af552bb2c6b81236df2a2aac37ca794e1aa5b0cc3417eaca357c3fb4ed38e",
+      "task": "return_class",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/5m/gru/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "71f897e727b44815d25e97cba47ef98dec5682a6844a9ec5f3966dfe45d2048a",
+      "task": "return_class",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/5m/gru/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "748411c8ce39a4b6c5e174e83d4d96e4befe39151db7fec9ffa6d5f8c89a5a7a",
+      "task": "return_class",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/5m/gru/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "0775289b3b0249ba97e781386f391cb5839d4a19ffef58d70b3bc1cc2f49ca93",
+      "task": "return_class",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/5m/gru/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "17e7c5066cb9a1f5257bea0e8d8a2a83e6fe1084147a10543d420f3dad1f35e6",
+      "task": "return_class",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/5m/logistic/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "a485b0f74b4bde335f9db223279c1f0673ecc140b6cdb56d26689e0dd7cbab4f",
+      "task": "return_class",
+      "horizon": 5,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/5m/logistic/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "fc177dfa7f682089ff0da8ed5b7256dda47af4d3418417cc56f8a53bcf5abac1",
+      "task": "return_class",
+      "horizon": 5,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/5m/logistic/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "30faa7910ca6d4bced28aedd3db14fe4d3b9484d1d1bf92df6f198fd3d929417",
+      "task": "return_class",
+      "horizon": 5,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/5m/logistic/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "6fe018957cd3b66cc7fc67314142bcd12c70e4f45ee4d36d00466e8f6568d0f0",
+      "task": "return_class",
+      "horizon": 5,
+      "model": "logistic",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/5m/logistic/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "6b8707b723a38a5ad781fbe00e9a107bd7e442188e49b2ccdb2f3475f6ec30d5",
+      "task": "return_class",
+      "horizon": 5,
+      "model": "logistic",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/5m/logistic/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "d95de46ebe9162ae6431eed5002df2bb87a602349f893e19200ba471f6a33df3",
+      "task": "return_class",
+      "horizon": 5,
+      "model": "logistic",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/5m/lstm/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "65ff6ca7276d5dad92ec214831bad3ca72832fa5679b69be3eb38e72a5b03927",
+      "task": "return_class",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/5m/lstm/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "f10fe90c0ab4a2ebcd34984b9a5ffab94175d6682766b593a88bc8b2c1bb1b16",
+      "task": "return_class",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/5m/lstm/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "4a0e429f0e720cac772a292f9dd0d8020c7d3e863e7c3e5e0fa2279019c2b67b",
+      "task": "return_class",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/5m/lstm/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "28dea4a91d202db5a8feb1522263bb3f47cf433bd39f0a92fcf911c24e76a9a3",
+      "task": "return_class",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_class/5m/lstm/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "54cab1fcda1d476f7539a4aee41d65a2ac7229d5b6498c2f1ab140d3642e528c",
+      "task": "return_class",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/15m/forest/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "a88c8cada9801094767d13ca61e4b80f672ba5f4affaf1ae53f599689a1de9e3",
+      "task": "return_reg",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/15m/forest/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "72bc8f45abbb8e1481f9caa6540c406a39e42cc752f79e552b3036980b87d2d6",
+      "task": "return_reg",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/15m/forest/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "01c3f924b85a936734f1cf6bf3a247bd64fd57a1f1ee70179255b2d0b77a8ae7",
+      "task": "return_reg",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/15m/forest/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "b9b9abd8b774d1b67f2884233f470165fe3e2e0a35fda850749a2a9e0a8948ba",
+      "task": "return_reg",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/15m/forest/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "6b8bb6738061105c025b2f1bebbbc50daebcdf3be0db2ff83f54f508618d1ab1",
+      "task": "return_reg",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/15m/gru/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "dbade5a6180fc62304a81a52d8efdadb150f58be11de8c49a862a9cc95daf991",
+      "task": "return_reg",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/15m/gru/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "7cc7fee4451dd2800f1eb0e027cb54552496f2b98636e989b759026565c10833",
+      "task": "return_reg",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/15m/gru/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "c41b628aec91a7015fa90d43d87c47ad62a2d5654bf40a087b0c7d2733788a10",
+      "task": "return_reg",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/15m/gru/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "cb996379506f20b2b3456e73d11d8ba515cc3fb9d578da66d750b4d0d135130a",
+      "task": "return_reg",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/15m/gru/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "9f4f90f3dcc386b64441b91f20c53da05cdeee47085bfd8ad2a617d5e41db14b",
+      "task": "return_reg",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/15m/linear/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "8158bb43ee91f1aa5a47ea58a6f1033e1058f20539e03a70ebc5ad9ba65ddd64",
+      "task": "return_reg",
+      "horizon": 15,
+      "model": "linear",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/15m/linear/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "eeb181980746caed2a11fc34f3d1cc12c2f04bcb526547c7f7b855241c9c7bb1",
+      "task": "return_reg",
+      "horizon": 15,
+      "model": "linear",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/15m/linear/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "c226985fa6329b98e09037e5a2a2d7fe6b49094e22d9c80bddcd6c57b7adc29d",
+      "task": "return_reg",
+      "horizon": 15,
+      "model": "linear",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/15m/lstm/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "95b8ae67d22cdcf618b053179614fe44f350bb68d50e7b12867a18a7f58f3d3f",
+      "task": "return_reg",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/15m/lstm/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "ab88ddcaeaada9ecc250d8e74b1ad5ceb680edd3d540ad7ee3309cc5f5d2a37f",
+      "task": "return_reg",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/15m/lstm/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "69727e41b8d7cffe0fc1d29781fe1093d1c7db721c22018688425f2931091009",
+      "task": "return_reg",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/15m/lstm/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "b222cf610c2feda244e8a22928b4c76cf57d80cb3ff560e42ca86b3f73d57cd2",
+      "task": "return_reg",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/15m/lstm/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "ed955360a166210ee82041669267cfb09947249f937b20ac6e235024c97132e1",
+      "task": "return_reg",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/15m/ridge/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "af6c2942fb7729ab4507c3632eb7bbc8558ff822f064ae423568e9f65e54be51",
+      "task": "return_reg",
+      "horizon": 15,
+      "model": "ridge",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/15m/ridge/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "334f3eaf87d135c87a0ef2fbfa675b9667795c02281ecc4503a8f4ea399e3211",
+      "task": "return_reg",
+      "horizon": 15,
+      "model": "ridge",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/15m/ridge/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "bb0b2492874d5c1b02c7b89c8ce8019619967607fc6443d57aefd50b5d201297",
+      "task": "return_reg",
+      "horizon": 15,
+      "model": "ridge",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/15m/ridge/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "338849627860af40ea8a8d2c07789a8600e0dbe73aa4cfd49dd2be053ad9f320",
+      "task": "return_reg",
+      "horizon": 15,
+      "model": "ridge",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/15m/ridge/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "a42bc064c3e966f22aad2e545b322da9da3fb50b406d2214e72e7f5a4552b4c7",
+      "task": "return_reg",
+      "horizon": 15,
+      "model": "ridge",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/15m/ridge/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "40b3c28a517a26e6ea0b86739c9205716d1e95da24ebe24c52567632b25c60a5",
+      "task": "return_reg",
+      "horizon": 15,
+      "model": "ridge",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/30m/forest/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "1ba3fd148692c4cd7613000dfee9cca73a42dc3dbe0369f39affecd765b7368b",
+      "task": "return_reg",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/30m/forest/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "25db1c49efd8582b49ea03e896c04e769a398ded1a0f829354e739fecce71363",
+      "task": "return_reg",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/30m/forest/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "aead9783cbb368882206a3dc9ce3a38190488e1072cceabc1e9909fc6f400c8b",
+      "task": "return_reg",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/30m/forest/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "87b8913e6d70546c2d88c5b41e74bc19896d4480fc86c225c64095ae8510b946",
+      "task": "return_reg",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/30m/forest/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "e53287cab7daff2ef8957435e23a5cf4bcc8b6e39e894bb6a0252e5a6ab3114f",
+      "task": "return_reg",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/30m/gru/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "d1e3a53819816d72ca1dddeede3fd0e4e395de4efb29bd6e54f5225e2edc1a34",
+      "task": "return_reg",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/30m/gru/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "d6168c4c16fd9cf2ff65719d1f208540d63372195e8c88805ed30d0006121f5e",
+      "task": "return_reg",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/30m/gru/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "76aa62214cce1f0584265260d3c4bba845822912fc397871aad0a0fffdf79f8e",
+      "task": "return_reg",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/30m/gru/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "99821000407ed1cd0fdfd8928e2533080cda22c3207f2ac160acbd5d54fd6455",
+      "task": "return_reg",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/30m/gru/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "4aae26cbcae4041344d71e02933bcccafc37288b90f7b898c4ccb065a36ae667",
+      "task": "return_reg",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/30m/linear/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "7b40fdcb695d952df8306a5bf286b8e60c42b75b407043f8a464ca5c991869dc",
+      "task": "return_reg",
+      "horizon": 30,
+      "model": "linear",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/30m/linear/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "0a2b8cc008d1017f4671f4959acf7729a891d377969c765de95545b3ec2b6865",
+      "task": "return_reg",
+      "horizon": 30,
+      "model": "linear",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/30m/linear/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "9fb40101c6511efcb09850e28bad4583efe937706ea002594590e42de4b66f84",
+      "task": "return_reg",
+      "horizon": 30,
+      "model": "linear",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/30m/lstm/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "6d3a60692001baf37cd3982bd96b88900e058d84718782ad2740d7ed3cf04bf9",
+      "task": "return_reg",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/30m/lstm/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "1d61b68016b9fe850850d77a80e81bdb6b090c4f33723d0570a073147aa785b7",
+      "task": "return_reg",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/30m/lstm/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "c0a1d3b18765f27fbbc6647152cadf06c20ab89bc6c5f225a96a7632c63e1d47",
+      "task": "return_reg",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/30m/lstm/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "c397c4f798996511e8c88676d98a98975ff16c1b8ef9835ec21b32c71cd03b43",
+      "task": "return_reg",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/30m/lstm/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "29d90dfc6b7fd3b3b8721d28dc7901d8372243bb0d8e4470c029a77502e69226",
+      "task": "return_reg",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/30m/ridge/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "cd1a873bd283d7add2cdc13948a863d7b398dd28156e7346b648c939ddb1b961",
+      "task": "return_reg",
+      "horizon": 30,
+      "model": "ridge",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/30m/ridge/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "05379670a6a436cd4d924ace2649cfeb27c080fdaefbff1067570069f89475b4",
+      "task": "return_reg",
+      "horizon": 30,
+      "model": "ridge",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/30m/ridge/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "4e5624954541d4d939d095300e96ce84494ede93e009813498c3fc8c28dff2c9",
+      "task": "return_reg",
+      "horizon": 30,
+      "model": "ridge",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/30m/ridge/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "cdad7267f2ed0483059d1ffb5f6a5c337575ac62f198346a06de673817fbdab4",
+      "task": "return_reg",
+      "horizon": 30,
+      "model": "ridge",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/30m/ridge/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "d602c0592457c8754daddf81ee241f789fa8a6208f78e12e07179e8d04106f09",
+      "task": "return_reg",
+      "horizon": 30,
+      "model": "ridge",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/30m/ridge/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "4926a562292479fe92db7803092623e72bc5f0a31beabd2fb3172808fbc5dda9",
+      "task": "return_reg",
+      "horizon": 30,
+      "model": "ridge",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/5m/forest/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "d825bb2e720f7e65432b36d79f437309e2a1521cfca6ac30cffa7e52bb89debe",
+      "task": "return_reg",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/5m/forest/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "64dbe72f12d63982328f2dcc1cf1dd5f963061f921ed7a7a4810e19c5e331645",
+      "task": "return_reg",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/5m/forest/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "cc2dc356435d6de3e134a6a86eea08e644d265d639a302453bb905117c029f52",
+      "task": "return_reg",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/5m/forest/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "3e7332109a80da025e0a7671c29e5081a0c7dcbd3ff17ec5548942979f5e59c0",
+      "task": "return_reg",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/5m/forest/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "1dc7633b0a77363fc232a03a660590e40acbe753441051bb05978168808e67a3",
+      "task": "return_reg",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/5m/gru/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "7557c365587f0212daa4551ef9a15ae919fb876f8491e7dbb07c543c9f48b91a",
+      "task": "return_reg",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/5m/gru/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "714a1f277ba0214b5047427b39df908b196c5ed3ad4da65f79587c93cd6aa578",
+      "task": "return_reg",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/5m/gru/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "11e0042fb471cf59176e211688d103b88c18e72f4a72a9b481da0f6e98591128",
+      "task": "return_reg",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/5m/gru/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "6dde6378429bd1b33b47c6483c1e0138a70c97d7e0de4890fe10a025beefbfbc",
+      "task": "return_reg",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/5m/gru/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "6f86f098e25fc2c87ff767673679a6f921c8f622cef98ef45534ae6579fbdab7",
+      "task": "return_reg",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/5m/linear/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "9a44a980d3b35d89a88ea14a92109dfa5ad3584310ca3441dc229b6da9a23069",
+      "task": "return_reg",
+      "horizon": 5,
+      "model": "linear",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/5m/linear/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "a0c905e035b1ca2a04faa19ae818982b64662284d73309c0c46a79280228c334",
+      "task": "return_reg",
+      "horizon": 5,
+      "model": "linear",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/5m/linear/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "080e3b664d223b64b8a06c17226b709ea0935c0177961f2959025cbf925659aa",
+      "task": "return_reg",
+      "horizon": 5,
+      "model": "linear",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/5m/lstm/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "28508fba9b3bc6aa63f754183d102375283858f8cdb1c18c17357b0aecfb51c2",
+      "task": "return_reg",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/5m/lstm/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "8dc513335081649489f2b1f4c694fc33ff002720746491724ea53781054a6854",
+      "task": "return_reg",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/5m/lstm/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "7931ca64798acf75fedae478042708a3a0197c556269ac2cf670f13a0e41fa1a",
+      "task": "return_reg",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/5m/lstm/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "cc028279a35f1e23ea54109806b82a75721d6022deab3134d1fcb642d5bc3039",
+      "task": "return_reg",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/5m/lstm/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "135325c17b5416cde01e8e09b44485380a3838d4d0eca16599be419991d56ab7",
+      "task": "return_reg",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/5m/ridge/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "a2310bbbbf6ae6bd3326cc17362722ac257297099029cdcc37a1232c0775a7d0",
+      "task": "return_reg",
+      "horizon": 5,
+      "model": "ridge",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/5m/ridge/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "6523447510ccab2618ebe580402d3ac305f4a355144ce1bbffa018d3f543fa25",
+      "task": "return_reg",
+      "horizon": 5,
+      "model": "ridge",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/5m/ridge/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "30420c2bbfccede36497af353e8f07951ccc613a363e682631bb6c03ce69bc84",
+      "task": "return_reg",
+      "horizon": 5,
+      "model": "ridge",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/5m/ridge/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "e6d04f443b8bf200cfa7365710314ef5847c91ef1452f0b644558149fd4c4169",
+      "task": "return_reg",
+      "horizon": 5,
+      "model": "ridge",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/5m/ridge/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "d9e15fa36493c7ae4ba3fc7d4a9d29284cf7165ee18175ab9a4ae28623301576",
+      "task": "return_reg",
+      "horizon": 5,
+      "model": "ridge",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/return_reg/5m/ridge/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "cc734f4770521a8e17ca3348528b7f1fe5c5971914785136c44ba66e05dac5c4",
+      "task": "return_reg",
+      "horizon": 5,
+      "model": "ridge",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/15m/forest/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "16fb48bdff2ec8515908562b0853991513ce5f9888a3e3339032ea4154708c5a",
+      "task": "sector_regime",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/15m/forest/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "2a243d26bbe393e7267f7560cbf9f52e1b12da68ce452b7ac7e4afef62a5e98a",
+      "task": "sector_regime",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/15m/forest/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "aa37c2c5dc9abdbf94b9ff9e12a1ba3177f447a91081d3221b27a8030cd5185f",
+      "task": "sector_regime",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/15m/forest/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "29c65578fe714530020ee941763fd5776800573fc8730c025786706bf3357084",
+      "task": "sector_regime",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/15m/forest/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "bea842d3d7fe27a2002c64a30ab837fd6ee7bc504414a0e0da9938de6a45cdb0",
+      "task": "sector_regime",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/15m/forest/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "1b8589ca54e5bb4b6714a969b4ef6db547250062dc87cf91d566baddbe29a669",
+      "task": "sector_regime",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/15m/gru/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "5c01d53105a3fc812ffb24832d2279063af43195b667812bd126bdd1dd78abb1",
+      "task": "sector_regime",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/15m/gru/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "0510818eb987570afb52c0c8e80a0b09dc1801454e7161f0a6073fc55e8b4f05",
+      "task": "sector_regime",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/15m/gru/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "3f78e5e9eb21d1a33a050532cd41c254b8da8d86bfceac4e41ea78488522a41c",
+      "task": "sector_regime",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/15m/gru/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "4e1229bf4e68cfd6a4df90b3c2e99df5d6bd9ef24cab18ad9e199c81516940d0",
+      "task": "sector_regime",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/15m/gru/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "dd4be2c38b6b13058d9936f6a554bf768781b8e4a3ee04b32abe85b5fcb6dd19",
+      "task": "sector_regime",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/15m/logistic/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "0736bf307a97418667c9dcc285957b19d99f08a669355c5542b5ce3ae921dd6a",
+      "task": "sector_regime",
+      "horizon": 15,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/15m/logistic/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "124261794d1484037176917afb854a971491e9069b521819a71fae4b92fe08b2",
+      "task": "sector_regime",
+      "horizon": 15,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/15m/logistic/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "9dedf366eabde1b054aa353e4a9f51f42968d4d5f505b8fa53b92701d9e515c1",
+      "task": "sector_regime",
+      "horizon": 15,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/15m/logistic/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "404226c33c1f920017d6be8626c01b8ce82ced96fcd1c68727de96e5c14b290c",
+      "task": "sector_regime",
+      "horizon": 15,
+      "model": "logistic",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/15m/logistic/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "6f3154131d23a3aafcb0f23fffe29ed07e9a8033229b2465829159f1106d370d",
+      "task": "sector_regime",
+      "horizon": 15,
+      "model": "logistic",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/15m/logistic/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "8e59716e5c354b8173646730c74378b4569186657349fae5c7a31cd0a0e068b4",
+      "task": "sector_regime",
+      "horizon": 15,
+      "model": "logistic",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/15m/lstm/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "d17a94e9e0a88dbf60f55bd9541fe714cc314b11e6683811e58b35c937882194",
+      "task": "sector_regime",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/15m/lstm/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "842eaadc3a278560307001d5b3a4a38f1c5fd74e5d91644f8ee36fc4b7ceb74c",
+      "task": "sector_regime",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/15m/lstm/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "010f3c7b12cf636315f06c53fb9c1149c2c531a6296a5944854daa7e09cd4d95",
+      "task": "sector_regime",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/15m/lstm/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "1ef126a70e480a13a3e8caad4c57712caedd7a9160a4cc3f440abc6b9460f63a",
+      "task": "sector_regime",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/15m/lstm/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "b3c373b6f0ee13912b7ffe8f1f87753b3874917df8efbb0610070f2f4d072ea2",
+      "task": "sector_regime",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/30m/forest/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "2b410d6fdb5e6ab979b293648350aa16d6735580a8cff589197b0c081b2aaa4c",
+      "task": "sector_regime",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/30m/forest/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "139ee654225c2a47c52b03667dd5ca8074d2bea624de58983696c5b2f465112f",
+      "task": "sector_regime",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/30m/forest/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "36b6e6cdf1d34b128b3d9284378b174501590403db749323035e46996b65c70b",
+      "task": "sector_regime",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/30m/forest/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "44c0f216939b1e9e6dc3bbb93230b010059c19e6010c7a80409bb681d0ad658b",
+      "task": "sector_regime",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/30m/forest/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "e0b3ecec3a916df328afc0620151665d0a0cc24e8cdf54ee39d1199aaa572c56",
+      "task": "sector_regime",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/30m/forest/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "5d39de471dd9932e4fddb3de774fe70915576db0386705019124975d8649ebef",
+      "task": "sector_regime",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/30m/gru/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "ad28cb03b052bf615ac02c0bf1d40d15f2f99aaa209fc1230bb1dd8e704f8e81",
+      "task": "sector_regime",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/30m/gru/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "bebfc386a1e2f33085bca6d2bdc54147c9fdb18281617d1e5adac61307dcb7f5",
+      "task": "sector_regime",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/30m/gru/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "8416e15ed06420c165c06d9b3676fa06cadde9fdfc69e7613f9f0333560fcbbb",
+      "task": "sector_regime",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/30m/gru/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "5f471f315571dd915409ff6b27dfe236e826d89f6a4068ddc74d6b3ccac342fe",
+      "task": "sector_regime",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/30m/gru/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "53fd18650d7a01a2df3e60f2dcad6a53ef3606bf6e7e6b7fc7cbef6a18c3df34",
+      "task": "sector_regime",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/30m/logistic/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "548ff2b558d77c391a76a0dfd1ada5834a2a965ad944229219c260d31f4fbd1f",
+      "task": "sector_regime",
+      "horizon": 30,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/30m/logistic/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "b2ef66d5a6fa5626a7a90a277f54373011bf93eb1de34229a7a73035f70c1f72",
+      "task": "sector_regime",
+      "horizon": 30,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/30m/logistic/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "79f3f6fb67174b38a83dad8f84a5dfb9900e7b7e8032379acee3c08c73d7c91a",
+      "task": "sector_regime",
+      "horizon": 30,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/30m/logistic/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "bebc3df8b87a3d8c9165989559e4de5a3cf10f5469b9610886b0de13244d9bf4",
+      "task": "sector_regime",
+      "horizon": 30,
+      "model": "logistic",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/30m/logistic/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "b52957f80f8147d53b0d0d3e34f906e66eb14ace13c2cc77a858bbefbeb04bab",
+      "task": "sector_regime",
+      "horizon": 30,
+      "model": "logistic",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/30m/logistic/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "af0f311aa8e52531ef6b08793fb005c450e19beefd57d9c2e14bfba43554c165",
+      "task": "sector_regime",
+      "horizon": 30,
+      "model": "logistic",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/30m/lstm/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "008b6928452b8dece8df9694ebf0d496d88497ea2c920e32a5636003d12c6760",
+      "task": "sector_regime",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/30m/lstm/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "a8f9757451244b4107827fc751795d4b2e55f1a6ce456f29263f1a2f7fc531eb",
+      "task": "sector_regime",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/30m/lstm/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "7405aa73693234d81b8f84c20cde5a9bc31d7724eba8f35d0ae8cb27e5481d0b",
+      "task": "sector_regime",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/30m/lstm/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "ebd8e274eff8342e609f0710a0064d90da7ad77d37e8d74e3ada7edeb9d6453c",
+      "task": "sector_regime",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/30m/lstm/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "697d81d4594844ab580d86aac0f71fdebb86c2474bfbf52c63dc8dea9d83bd11",
+      "task": "sector_regime",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/5m/forest/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "cc86f0994f8068a2637d4d1b31b8cd1168f5cf590bf5af5ac8085a5fb7a870c6",
+      "task": "sector_regime",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/5m/forest/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "b5be541874bebb1ffb307e8678a43a1dde3dcf5891ba0dac6658e7f4a82f1781",
+      "task": "sector_regime",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/5m/forest/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "e65e20e12a978da41f2fe18456caa762a394917ab0406b996c01114c291c260f",
+      "task": "sector_regime",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/5m/forest/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "979dfd49a720e1469b07cb8fd2f8de90aedfa1b723326e3b3c3505f9a421eb34",
+      "task": "sector_regime",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/5m/forest/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "d0dd44e07636afd9ab60f80aa0cd529ac23e1021691097a7ec028b6a175ef958",
+      "task": "sector_regime",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/5m/forest/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "8f394f18f321f001c11b0e467631abe0474902da85fda458828b95ccb599abbc",
+      "task": "sector_regime",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/5m/gru/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "91cf157bcf71c43570fdec31a84e6cd7852c6719b26e53c580f91f9364ea77d7",
+      "task": "sector_regime",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/5m/gru/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "73ee518f0b7f7db301fe134cb43c618bb848e73b9eea92d83392446d3ef1e633",
+      "task": "sector_regime",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/5m/gru/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "285b377068ff795becf3a8350d82a7707c73d7a81bbb23dc5d776c73edea226e",
+      "task": "sector_regime",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/5m/gru/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "bc5979b0cad4bfd630800b088cafd9c1b571038f5fc19d2528f80663dd0b9e10",
+      "task": "sector_regime",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/5m/gru/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "600eb3c265030073a85d3684c5a51c9c624d465da190c829b14a052b9d62e55f",
+      "task": "sector_regime",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/5m/logistic/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "b7d9da50b3660ed33315328eaeb98bcb198bc951ddb767b4764d740502eae5f1",
+      "task": "sector_regime",
+      "horizon": 5,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/5m/logistic/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "e31b5b6e30d7ff2df7ee1591d38e2cf94ef979e4c15b7f49890ada1d97f173e0",
+      "task": "sector_regime",
+      "horizon": 5,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/5m/logistic/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "56ceeae13b464aa4d7830a5fa8ab2abde96d7a4278a767661875a7f7a765a523",
+      "task": "sector_regime",
+      "horizon": 5,
+      "model": "logistic",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/5m/logistic/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "175c07f30318fdc823ff3fda830ef1e416c16af2f9a95d5d4847282a1af6db89",
+      "task": "sector_regime",
+      "horizon": 5,
+      "model": "logistic",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/5m/logistic/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "64d63275605951e35d779a2d740254f3c8d292e50100741bffff159ffcf4d7d5",
+      "task": "sector_regime",
+      "horizon": 5,
+      "model": "logistic",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/5m/logistic/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "2caf48d8d01f12334a37d15677736c4c2f442db96ba4de75ea97142f6a70dda7",
+      "task": "sector_regime",
+      "horizon": 5,
+      "model": "logistic",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/5m/lstm/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "b673326685eeba0f71c5cba4befdd579be1a9df49393ba3046ba2be760152b77",
+      "task": "sector_regime",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/5m/lstm/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "f4b5ec2d7e4064548055eb198455c2e6d991300462738f58d97059ce986f77e4",
+      "task": "sector_regime",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/5m/lstm/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "0d2a984afb99060c81313797def9878b1eb645ed5a283e05bc1d45219ba566e8",
+      "task": "sector_regime",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/5m/lstm/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "bb20941fb245d098dd68c29a29d5241b36f82f7fe1e380b12dc85664fa49e003",
+      "task": "sector_regime",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/5m/lstm/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "4a90969f2b69cc5f0fcba8dc58b50d2a55b112ca833e8a17d137ad2abde968f5",
+      "task": "sector_regime",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_regime/5m/lstm/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "a762e234370b90071c398816ee0fe3f8a8e04eb8605e2e9b07d04a00f6648f15",
+      "task": "sector_regime",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/15m/forest/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "cb75f5f0df7caf157fdefde14d96956d56ab00770caae16abc0fb4dd89f0b17b",
+      "task": "sector_rv",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/15m/forest/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "3e3b358747e0162c708dbb5651b82f0acba89bf856ed81b2f976fe1e48bb1d55",
+      "task": "sector_rv",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/15m/forest/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "2481d7f56371e0d47903892771442d4d449f00d5ddf2c0f4cdcb1ff918e7a0c4",
+      "task": "sector_rv",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/15m/forest/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "13ddc7af4408bec43e756f8e83cb05b205b04ee57686b5c2a52660e32b3ca87c",
+      "task": "sector_rv",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/15m/forest/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "476faf8b987b1ab52ddb43cba0b9bb78bf671b1070190f560aafa0c7cf44cfeb",
+      "task": "sector_rv",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/15m/forest/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "354bf8f608d02f890bbf621f5e23d4eb556e6821fd510f39120a7daed84a1815",
+      "task": "sector_rv",
+      "horizon": 15,
+      "model": "forest",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/15m/gru/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "0faf880d12d8629b838586125c3e997b13e5f2d7b9002497f57e2253200d18c4",
+      "task": "sector_rv",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/15m/gru/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "411f93738a9456512756b4e8fccfa2ef349d6f4082768efcd05f7775e24d11a5",
+      "task": "sector_rv",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/15m/gru/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "8cb9a3c32c674f956bd2320082754bcc017c3c9d1c831cd193a8cb60beb7faf4",
+      "task": "sector_rv",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/15m/gru/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "e86645f4a9846bb27a438dc6c6d31860e57ca323875932ef6a12255505fd34b9",
+      "task": "sector_rv",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/15m/gru/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "d80439b4097ab23c4783c098e53d878760fce1b8dc6d1d9f1c0367d1ae98dab2",
+      "task": "sector_rv",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/15m/gru/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "3ce081e9007c1c05f62731743539ed60c737991c375d945af5066f7312eebb3b",
+      "task": "sector_rv",
+      "horizon": 15,
+      "model": "gru",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/15m/linear/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "5d3f8527da0709b18bbf5eb5e84aadbd5612da5bf3b824b028cb7f5107fc36b4",
+      "task": "sector_rv",
+      "horizon": 15,
+      "model": "linear",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/15m/linear/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "c78ef890c6199b82f25113f19daba4eb8ce102ced8793f710598f10556dddebf",
+      "task": "sector_rv",
+      "horizon": 15,
+      "model": "linear",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/15m/linear/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "2112448fbba063a147f5382d1f061ab54c3a617d2542cc7ec554ada3ae3520b2",
+      "task": "sector_rv",
+      "horizon": 15,
+      "model": "linear",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/15m/lstm/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "c7efe6ee6bd9036375fd248b9eae0f8b73fff46ee21563aff863960b8291130d",
+      "task": "sector_rv",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/15m/lstm/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "18449de3622d3da5b8f62eb00dcf111ac10f8e0582472fb2e86ec38742b3cd83",
+      "task": "sector_rv",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/15m/lstm/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "64545a92028ca068cce6253288da93483e8ca7ec0c4f6d568f6edb1519e4e751",
+      "task": "sector_rv",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/15m/lstm/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "79ee0adb61fb96655d3ff8a77be749645d1fa160532dfcf290b28390f11e955e",
+      "task": "sector_rv",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/15m/lstm/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "f8cd7a2d6b52a562ac6b62c1313257d264b9874659361597e1393922121b9565",
+      "task": "sector_rv",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/15m/lstm/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "ce1416d7ed31ebb7081b21acab2568726331378730aa575fc833bf5c49db8591",
+      "task": "sector_rv",
+      "horizon": 15,
+      "model": "lstm",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/15m/ridge/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "4dd1754c405cd2eba93c2a440e94803ee20d4c9caea5574b8bdd55adabc170c1",
+      "task": "sector_rv",
+      "horizon": 15,
+      "model": "ridge",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/15m/ridge/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "07f8c1464e2d6ff5e8c728b652b811ac9eabb87d1feb12339b4f723daa5a1935",
+      "task": "sector_rv",
+      "horizon": 15,
+      "model": "ridge",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/15m/ridge/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "a00d7e970766db2d7f6b5a06cb5849730befa264a945e6fb702289008c3f4f08",
+      "task": "sector_rv",
+      "horizon": 15,
+      "model": "ridge",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/15m/ridge/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "ba130a3550d4a9df3239e23c8a167986ce9398e2e4447cd3e68d73fedfa2a18e",
+      "task": "sector_rv",
+      "horizon": 15,
+      "model": "ridge",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/15m/ridge/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "f58568ba77aaf4f29d26fdf2a9a444826561d6efc2c7110bb7bae72349f83e7c",
+      "task": "sector_rv",
+      "horizon": 15,
+      "model": "ridge",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/15m/ridge/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "ccf9ac9c160187ff917ea5849ef0a442f0d7b885bcb9911b7e270e1dadfb580e",
+      "task": "sector_rv",
+      "horizon": 15,
+      "model": "ridge",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/30m/forest/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "e55de3624fa4d39b0a7787ba9802b5c3fdca3609eb19383b3db9430b62b9b63c",
+      "task": "sector_rv",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/30m/forest/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "20b6a4657fb1a7990b27a0301feca93ccdefe4b37ea6739876d22e73a9c41792",
+      "task": "sector_rv",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/30m/forest/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "d6f7610c4c442820dc4b42f60b2b2bb20fa806527fd56c5549c3998fbf7a1bee",
+      "task": "sector_rv",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/30m/forest/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "066cdf9fae92a72a3504d5e0f7cba4e2779a9ccae066b593865ce41f72190cc3",
+      "task": "sector_rv",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/30m/forest/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "03cec9ba9fcd20bf642d2cc27623a7ed0c81e964b96ad4dda6c03c93d4d267c8",
+      "task": "sector_rv",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/30m/forest/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "7a24f15ee532e2f6d4dcea5ef35c1b0250c7a6783bb15d7e8a13b47bffbabedc",
+      "task": "sector_rv",
+      "horizon": 30,
+      "model": "forest",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/30m/gru/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "c181392653cfd49c680ea682ae9aeba087b32989f9a0860511283227c418d404",
+      "task": "sector_rv",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/30m/gru/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "c34c694158589a5e75a526d3386ad3f8158d2c0bcbd4d10aa4a109d547c43005",
+      "task": "sector_rv",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/30m/gru/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "16e12419d1d3f0acb6197edf5db4ba28aed0a8064c9fa73e1ce281617133bd63",
+      "task": "sector_rv",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/30m/gru/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "628f8177cd6bf0d25a37cec8aab89412c1529d0f8d9fee441715d4f29b698309",
+      "task": "sector_rv",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/30m/gru/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "3737ef6f684384aae0be5375d95446dbe79d543c5754045a96be521fcf6495de",
+      "task": "sector_rv",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/30m/gru/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "325de3fb9c0e0179c2afe90ca57b2a05dfa40274caa2343a82f04babbbccf5d2",
+      "task": "sector_rv",
+      "horizon": 30,
+      "model": "gru",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/30m/linear/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "3ecc2da0dd2677dfd08fa8fcfe066b5953180f0a00d0b7d5535eb66771baaaed",
+      "task": "sector_rv",
+      "horizon": 30,
+      "model": "linear",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/30m/linear/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "ae515abdd9ed2bb54fc9d99ab1a05358136a184575d1908582008a72b31e8bd5",
+      "task": "sector_rv",
+      "horizon": 30,
+      "model": "linear",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/30m/linear/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "4584c971bc6ce1d7438679f74e1ed65a601061e7b659de87a73e367e231550f1",
+      "task": "sector_rv",
+      "horizon": 30,
+      "model": "linear",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/30m/lstm/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "958da2f19c2c0a00b6c58fe90551ac8bc2ec058abf4f7770700646752d4c3233",
+      "task": "sector_rv",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/30m/lstm/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "efe26ad703cbb6c1efb2c86dee4d8493ba7239f72b97bc5617eedfd64d43a897",
+      "task": "sector_rv",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/30m/lstm/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "1769591b868df5b2d524e0393b6a3cb3eac33a505f473dfb59a4a75ddfaec679",
+      "task": "sector_rv",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/30m/lstm/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "987d1900593a337eaa4820ae85bc28004a91e189aa3b89f3f1db0bcb834a7c5c",
+      "task": "sector_rv",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/30m/lstm/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "c07f5f0de040111d91f24fdecabb6f0e9c364e37cbb6098f8d1c1e7656048f9d",
+      "task": "sector_rv",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/30m/lstm/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "cddad682dd6f21467e558cdda17a8e9747cfde802969d6ee5b9cd738972eb3a1",
+      "task": "sector_rv",
+      "horizon": 30,
+      "model": "lstm",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/30m/ridge/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "156a3d3d4ed665bddca8721ddfa45b495ed607df9a04dda2b80fcac5c8ef6a44",
+      "task": "sector_rv",
+      "horizon": 30,
+      "model": "ridge",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/30m/ridge/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "1284a4a3dd7dd770c9ed1c440d9b6b1df108057edd53f036cb86b82ae22bc9bc",
+      "task": "sector_rv",
+      "horizon": 30,
+      "model": "ridge",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/30m/ridge/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "04327100fcfd71a489d8204569924a04b243ae74d56695877f01f2d5acb7e2a0",
+      "task": "sector_rv",
+      "horizon": 30,
+      "model": "ridge",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/30m/ridge/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "1e835dd9766eb3f0765d67f28b6c63626404923283a674dfaf3a31068f86c7ac",
+      "task": "sector_rv",
+      "horizon": 30,
+      "model": "ridge",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/30m/ridge/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "7341292c4ee8914880f9f859e461948dd4443256119980a08e05ebcdd56d42b2",
+      "task": "sector_rv",
+      "horizon": 30,
+      "model": "ridge",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/30m/ridge/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "40e9f193e8cc1c67b3b7cd754394442221650fd30cd96338ad5157275a0320bf",
+      "task": "sector_rv",
+      "horizon": 30,
+      "model": "ridge",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/5m/forest/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "22f1b8c76db99825f60c76bc570a1425492512ccd2d4e660d460dadd700b9c9e",
+      "task": "sector_rv",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/5m/forest/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "c9fcb3e7ea82c203ceb2d6a9b406f4418cdf593d8306eea9cd47545277c6fdf0",
+      "task": "sector_rv",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/5m/forest/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "b9f5f532588dd4aebe2e713e5f3ac9538aba7ceb8f443f535787c397a6246400",
+      "task": "sector_rv",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/5m/forest/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "51f5ee530e5fb1c3712f72e8c66631776b8ec477f86fa5271aa5a9a18ad5726a",
+      "task": "sector_rv",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/5m/forest/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "a297ccb2d18f623e4e7db8f90cbe0d20b497f566758436997bb7cd118f086fcc",
+      "task": "sector_rv",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/5m/forest/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "4d0cf5d0bd6e5f3443643ad1bb5fafe575d800f1ed2365dcd9b7bd01e6ffcbd7",
+      "task": "sector_rv",
+      "horizon": 5,
+      "model": "forest",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/5m/gru/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "0a0204d53f0d3df53cbf7593eb410f9b8db7896a213fb61c53b6a52eb80d5722",
+      "task": "sector_rv",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/5m/gru/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "3eba2f5f38151f3be4aea0ae8d299914bdb89131ffd78f8812ac0e6fc1c544d0",
+      "task": "sector_rv",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/5m/gru/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "e20067b58337b0e027028a4dd3454804118b36ecef07ad4a244b4a0b7a0749ce",
+      "task": "sector_rv",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/5m/gru/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "b1d96566d3b37ea3a0a43ed184214d19d885667a59afe8bb4af7ab67a658b1c1",
+      "task": "sector_rv",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/5m/gru/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "4a3102c34f9cfbc6800cfbb0380178c88bcf38b001d03fd2de4cc9aa863674bd",
+      "task": "sector_rv",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/5m/gru/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "7e33fb8e51fbe79ee8069579097002b9e745565c9827bb8b010a6b344bbf5ad0",
+      "task": "sector_rv",
+      "horizon": 5,
+      "model": "gru",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/5m/linear/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "cb727d50809fe1f85a5dbec282d432b439fb4a72e17f150e10cab342568bcfa9",
+      "task": "sector_rv",
+      "horizon": 5,
+      "model": "linear",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/5m/linear/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "f33cd87840bf7d3a40402e5b8d6acd7270f36c47baf9a46990c8410c963dacf3",
+      "task": "sector_rv",
+      "horizon": 5,
+      "model": "linear",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/5m/linear/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "ce2f2b95864f61f3430696ee71db7371e6b210e5898731543be6b0570826965a",
+      "task": "sector_rv",
+      "horizon": 5,
+      "model": "linear",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/5m/lstm/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "b1a82957b4a1acd25111e9ee938bed35fc35c959dcd27d78c01aebeb18f4e58c",
+      "task": "sector_rv",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/5m/lstm/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "12782e1a656f5a64982afc14b768dd7e300c35dbe59ba4b9ec91232f3eb4c40b",
+      "task": "sector_rv",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/5m/lstm/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "cdcbf39dace2c042f2a9207b0530fea0d687b37e12f126de02653498b5f4559d",
+      "task": "sector_rv",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/5m/lstm/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "ceaa473e081ce6250eeecc6580893819721d3a34c24717442d9f3e1a06e4dca7",
+      "task": "sector_rv",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/5m/lstm/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "29c0e3da6af7726e3fc6fbfb0e70fdb69b99297120e3ce964eedf6a60ace676c",
+      "task": "sector_rv",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/5m/lstm/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "14a0d1f97e2f1f0d362dfec5a102940b6a28da62c86825825215c783172c5cba",
+      "task": "sector_rv",
+      "horizon": 5,
+      "model": "lstm",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/5m/ridge/candidate_00/fold_0/seed_42/result.json",
+      "sha256": "5502bfceeb6dd439d36c0f0a71aaf082972c0697f885203e6c3f96e4c5f4c75d",
+      "task": "sector_rv",
+      "horizon": 5,
+      "model": "ridge",
+      "candidate": 0,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/5m/ridge/candidate_00/fold_1/seed_42/result.json",
+      "sha256": "b9796bea828b5e5c6235980016cde3505f17b167a1b4f798c99316de2224ee41",
+      "task": "sector_rv",
+      "horizon": 5,
+      "model": "ridge",
+      "candidate": 0,
+      "fold": 1,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/5m/ridge/candidate_00/fold_2/seed_42/result.json",
+      "sha256": "c47a6345bb09859ab48cf053d580505e5808556cfc2758fd6d7f02c3c5e109b7",
+      "task": "sector_rv",
+      "horizon": 5,
+      "model": "ridge",
+      "candidate": 0,
+      "fold": 2,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/5m/ridge/candidate_01/fold_0/seed_42/result.json",
+      "sha256": "db2ecf0f7b335b1dd0a7201150ce4080293d82a8ac8769cb5a3ef90fba9d826e",
+      "task": "sector_rv",
+      "horizon": 5,
+      "model": "ridge",
+      "candidate": 1,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/5m/ridge/candidate_02/fold_0/seed_42/result.json",
+      "sha256": "89aea92db3904ac385fb3d9729cff03c0ce3b569c3dc2a74f40fb15f863c9830",
+      "task": "sector_rv",
+      "horizon": 5,
+      "model": "ridge",
+      "candidate": 2,
+      "fold": 0,
+      "seed": 42
+    },
+    {
+      "path": "models/research/phase14_volatility_aligned_v3/trials/sector_rv/5m/ridge/candidate_03/fold_0/seed_42/result.json",
+      "sha256": "745fb68d203b4e9d4ca0ffa7e4bbe8f9aceb1bb160e82d0e2a991854d88e3b30",
+      "task": "sector_rv",
+      "horizon": 5,
+      "model": "ridge",
+      "candidate": 3,
+      "fold": 0,
+      "seed": 42
+    }
+  ],
+  "note": "Documentation snapshot only. Source includes uncommitted files. No service or training mutation was performed while capturing this snapshot; package versions describe the inspection environment."
+}
