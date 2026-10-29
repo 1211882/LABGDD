@@ -35,6 +35,15 @@ models/classification/**/models/**
 models/classification/**/predictions/**
 models/regression/**/models/**
 models/regression/**/predictions/**
+models/research/**/data/**
+models/research/**/*.npy
+models/research/**/*.keras
+models/research/**/*.joblib
+models/research/**/holdout_predictions.parquet
+models/research/**/event_lead_times.parquet
+reports/phase14*_run.stdout.log
+reports/phase14*_run.stderr.log
+reports/phase14*_process_id.txt
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 
