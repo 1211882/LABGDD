@@ -1,0 +1,2 @@
+# Preserve historical evidence byte-for-byte, including its original line endings.
+docs/reference/PROJECT_AUDIT_AND_REBUILD_CONTEXT.md -text

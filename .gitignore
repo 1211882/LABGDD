@@ -1,59 +1,24 @@
-# Environment and secrets
+.env
 .env.*
 !.env.example
-
-# Python
+*.pem
+*.key
+.venv/
+.venv-*/
 __pycache__/
 *.py[cod]
-*.pyo
+*.egg-info/
 .pytest_cache/
-.mypy_cache/
 .ruff_cache/
+.mypy_cache/
 .coverage
 htmlcov/
-
-# Virtual environments
-.venv/
-venv/
-env/
-
-# Data outputs
-data/raw/**
-data/processed/**
-data/analytics/**
-data/checkpoints/**
-data/monitoring_validation*/**
-checkpoints/**
-datasets/ml/**/raw/**
-datasets/ml/**/processed/**
-datasets/ml/**/features_v*/features_targets.parquet
-
-# Reproducible Power BI export; regenerate with src.powerbi.export
-data/powerbi/
-datasets/ml/**/.features_v*.failed/**
-models/classification/**/models/**
-models/classification/**/predictions/**
-models/regression/**/models/**
-models/regression/**/predictions/**
-models/research/**/data/**
-models/research/**/*.npy
-models/research/**/*.keras
-models/research/**/*.joblib
-models/research/**/holdout_predictions.parquet
-models/research/**/event_lead_times.parquet
-reports/phase14*_run.stdout.log
-reports/phase14*_run.stderr.log
-reports/phase14*_process_id.txt
-!data/raw/.gitkeep
-!data/processed/.gitkeep
-
-# Jupyter
-.ipynb_checkpoints/
-
-# IDE and OS files
+build/
+dist/
+data/
+artifacts/
+checkpoints/
+*.log
+.DS_Store
 .idea/
 .vscode/
-*.swp
-*.swo
-.DS_Store
-Thumbs.db

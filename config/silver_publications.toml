@@ -1,0 +1,25 @@
+registry_version = "1.0.0"
+
+[authority]
+dataset_version = "silver-aapl-20260914-v1"
+run_id = "aecb53c1-d7a8-40c7-939b-a6901f435ff5"
+status = "approved"
+manifest = "../data/silver/dataset=silver-aapl-20260914-v1/run=aecb53c1-d7a8-40c7-939b-a6901f435ff5/manifest.json"
+manifest_sha256 = "33209b03a5f5f6d39efea922376e13f08c59756aa5a7cc01e3cae367711933d6"
+processing_source_sha256 = "200a9842dcd806581dae82b74abb452fee7bc00c4c75731cd1a8fbe7560a95fd"
+request = "silver.toml"
+request_sha256 = "47267c2a133d9a7c4fcb51ca9de1517d659fd2dd7503fe9b547bb4cc51569340"
+approved_at = "2026-11-03T00:00:00+00:00"
+decision = "Phase 2 Silver bounded-scope architecture approval"
+
+[[superseded]]
+run_id = "0c822d2b-be75-4497-a99a-06246013973a"
+status = "superseded"
+manifest_sha256 = "53e7268db1c862ea91130045d6fd6dd95f6a5686151997d3c3d6ba188147f52d"
+reason = "timestamp-invalid Windows compatibility publication"
+
+[[superseded]]
+run_id = "ed452342-931f-4549-809c-b072b4e8199a"
+status = "superseded"
+manifest_sha256 = "02c6d6f0dabcea1d25eecd434275acb912a7731d356c02e333c37cc8cdbfd6e4"
+reason = "timezone-implicit INT96 physical timestamp publication"

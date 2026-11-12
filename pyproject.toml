@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools==80.9.0", "wheel==0.45.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "labgdd-v2"
+version = "0.4.0"
+description = "Reproducible sector-volatility research foundation"
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+dependencies = []
+
+[project.optional-dependencies]
+ingestion = [
+    "exchange-calendars==4.11.2", "pyarrow==21.0.0", "numpy==2.3.4",
+    "pandas==2.3.3", "tzdata==2025.2",
+]
+batch = [
+    "pyspark==4.3.0", "pyarrow==21.0.0", "exchange-calendars==4.11.2",
+    "tzdata==2025.2",
+]
+
+[project.scripts]
+labgdd = "labgdd.runners.check:main"
+labgdd-ingest = "labgdd.runners.ingest:main"
+labgdd-silver = "labgdd.runners.silver:main"
+labgdd-gold = "labgdd.runners.gold:main"
+labgdd-expected-gold = "labgdd.runners.expected_gold:main"
+labgdd-publications = "labgdd.runners.publications:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+labgdd = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers --strict-config"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+files = ["src", "tests", "scripts"]
+
+[[tool.mypy.overrides]]
+module = ["pyarrow.*", "exchange_calendars.*"]
+ignore_missing_imports = true

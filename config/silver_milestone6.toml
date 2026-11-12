@@ -1,0 +1,11 @@
+# Bounded five-symbol validation candidate; not an authority decision.
+dataset_version = "silver-pilot-five-symbol-20260914-v1"
+bronze_manifests = [
+  "../data/bronze/dataset=milestone3-live-aapl-20260914-v1/acquisition=f2345e41-da10-420f-8b60-6079a9df2006/manifest.json",
+  "../data/bronze/dataset=iex-1min-pilot-msft-nvda-jpm-xom-20260914-v1/acquisition=ae7fecdc-d082-478d-b26d-b3e7e5db9600/manifest.json",
+]
+membership_valid_from = "2026-09-14T00:00:00+00:00"
+membership_valid_to = "2026-09-15T00:00:00+00:00"
+membership_basis = "project_declared_fixed_research_cohort_not_historical_classification"
+resolution_policy_version = "silver-resolution-v1"
+silver_schema_version = "1.0.0"

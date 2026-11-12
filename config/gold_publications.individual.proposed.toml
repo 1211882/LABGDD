@@ -1,0 +1,67 @@
+registry_version = "1.1.0"
+
+[[authority]]
+dataset_version = "gold-aapl-20260914-individual-v1"
+run_id = "2c36a9ab-78ce-45a8-869d-8c0225267d17"
+status = "approved"
+manifest = "../data/gold/dataset=gold-aapl-20260914-individual-v1/run=2c36a9ab-78ce-45a8-869d-8c0225267d17/manifest.json"
+manifest_sha256 = "cadbbcf50150b62ffc06aa348f503837c87281bbca2690d0179a788ec599d7ce"
+gold_schema_version = "1.0.0"
+measurement_version = "2.0.0"
+silver_dataset_version = "silver-aapl-20260914-v1"
+silver_run_id = "aecb53c1-d7a8-40c7-939b-a6901f435ff5"
+silver_manifest_sha256 = "33209b03a5f5f6d39efea922376e13f08c59756aa5a7cc01e3cae367711933d6"
+processing_source_sha256 = "61a13645c92841deb3564b79d27d7c9e0a8e20d348009f36e21a770dc4859778"
+configuration_sha256 = "a0bc3d8a7abe92a3b97226a730ab076a961206715b7746137f3a1719faf35094"
+manifest_publication_status = "not_recorded"
+contract_fingerprints = {}
+approved_at = "2026-11-03T18:52:45Z"
+decision = "independently_validated_individual_gold_v2_temporal_keys_and_values"
+
+[[authority]]
+dataset_version = "gold-study-cohort-20260914-expected-v1"
+run_id = "fddf0d53-e48f-4176-b045-45fcc12f2b8b"
+status = "approved"
+manifest = "../data/gold/dataset=gold-study-cohort-20260914-expected-v1/run=fddf0d53-e48f-4176-b045-45fcc12f2b8b/manifest.json"
+manifest_sha256 = "985574b1701c879679090202e9ab39e99cb15291d550c26da625e6bdf026e59e"
+gold_schema_version = "2.0.0"
+measurement_version = "2.0.0"
+silver_dataset_version = "silver-aapl-20260914-v1"
+silver_run_id = "aecb53c1-d7a8-40c7-939b-a6901f435ff5"
+silver_manifest_sha256 = "33209b03a5f5f6d39efea922376e13f08c59756aa5a7cc01e3cae367711933d6"
+processing_source_sha256 = "9f41729c1aa6887f6f1bb418154f80c3d3846c5650d82dd19a0f736ca684e5e9"
+configuration_sha256 = "807ea9de34c9736058c48407a9fe75977911be57170f572b25b40632c51dd5fc"
+manifest_publication_status = "pending_architecture_review"
+contract_fingerprints = { approved_expected_plan_sha256 = "05da9a6a55b74c17665d530e26a171f2a19ab8f2dbacd505fc3b2cac2880972e", research_reference_sha256 = "84bf9ab5f33ac3cda6eb096ba35b3342de32560e251c504af8158251195b02e3", schedule_sha256 = "b3a8f97e6d7e8a40c5c04682498b046f03f91c156174f63863b8c8092b2cfd48" }
+approved_at = "2026-11-05T00:00:00Z"
+decision = "independently_validated_expected_series_gold_v2_with_exact_aapl_parity"
+
+[[authority]]
+dataset_version = "gold-pilot-five-symbol-20260914-individual-v1"
+run_id = "310941bd-7ff9-4e25-971a-febec753c9e5"
+status = "approved"
+manifest = "../data/gold/dataset=gold-pilot-five-symbol-20260914-individual-v1/run=310941bd-7ff9-4e25-971a-febec753c9e5/manifest.json"
+manifest_sha256 = "c9ecea6009363f589bb57365acbccd6454fe8e122c3d737fbe3fd71363badad0"
+gold_schema_version = "1.0.0"
+measurement_version = "2.0.0"
+silver_dataset_version = "silver-pilot-five-symbol-20260914-v1"
+silver_run_id = "f9d4bcc6-5a51-4c37-8d74-86cf9cee1ca2"
+silver_manifest_sha256 = "f0ff790cfe0200e94c407010cfc4f2a8bfe93110d580f751b9f934095f9a15f8"
+processing_source_sha256 = "53f848a18cd536524488cab101df39e082600b50e8771c172540f40458bed0f5"
+configuration_sha256 = "3f2a0c49f6728b185016daa6c01c84100e8bdfe88737583d52ed720b15ddca22"
+manifest_publication_status = "not_recorded"
+contract_fingerprints = {}
+approved_at = "2026-11-06T00:00:00Z"
+decision = "Proposed authority for independently reviewed five-symbol Individual Gold evidence"
+
+[[superseded]]
+run_id = "e43ada7f-74b4-41cb-b7f3-add4076af3ce"
+status = "superseded"
+manifest_sha256 = "c313f81c0ba1ee6b9f28dcd1dae3eba7a37b8c92c7bce4764f063a349dadb765"
+reason = "development_run_preceded_window_membership_provenance"
+
+[[superseded]]
+run_id = "c6f9dc52-1015-43d2-83d9-a95f94f547bf"
+status = "superseded"
+manifest_sha256 = "d9cd953c9913e410a7a611aa537821c505c81c81faf8d218e19caaa0c1447702"
+reason = "development_run_preceded_configuration_fingerprint"

@@ -1,0 +1,15 @@
+dataset_version = "gold-study-cohort-20260914-multisymbol-expected-v1"
+silver_registry = "silver_publications.toml"
+silver_dataset_version = "silver-pilot-five-symbol-20260914-v1"
+silver_run_id = "f9d4bcc6-5a51-4c37-8d74-86cf9cee1ca2"
+silver_input_authority = "authorized_bounded_validation"
+research_universe = "../research_universe.toml"
+research_universe_version = "study-cohort-v1"
+requested_sessions = ["2026-09-14"]
+acquisition_scope_symbols = ["AAPL", "MSFT", "NVDA", "JPM", "XOM"]
+expected_series_contract_version = "1.0.0"
+population_policy_version = "expected-series-left-join-v1"
+eligibility_policy = "declared_research"
+measurement_version = "2.0.0"
+horizons = [5, 15, 30, 60]
+gold_schema_version = "2.0.0"

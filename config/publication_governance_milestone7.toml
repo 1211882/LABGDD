@@ -1,0 +1,47 @@
+plan_version = "1.0.0"
+proposal_id = "phase2-milestone7-multisymbol-publication"
+status = "pending_explicit_authorization"
+
+[[step]]
+name = "bronze_multisymbol"
+layer = "bronze"
+dataset_version = "iex-1min-pilot-msft-nvda-jpm-xom-20260914-v1"
+identity = "ae7fecdc-d082-478d-b26d-b3e7e5db9600"
+active_registry = "bronze_publications.toml"
+proposed_registry = "bronze_publications.proposed.toml"
+expected_active_sha256 = "absent"
+proposed_sha256 = "cbc827b63ee4a3067d626110f4479913aeb47580d50a9f749da5511edd8165e3"
+depends_on = []
+
+[[step]]
+name = "silver_multisymbol"
+layer = "silver"
+dataset_version = "silver-pilot-five-symbol-20260914-v1"
+identity = "f9d4bcc6-5a51-4c37-8d74-86cf9cee1ca2"
+active_registry = "silver_publications.toml"
+proposed_registry = "silver_publications.proposed.toml"
+expected_active_sha256 = "0abdbc9e8b69d6d35c6922d2a7a517fb4264a6d3fff8fa5a5962b6d7e246460b"
+proposed_sha256 = "d33289f7c23e0a9c7e10be41c1216475748bdb7a618daf807d878410dff419e5"
+depends_on = ["bronze_multisymbol"]
+
+[[step]]
+name = "gold_individual_multisymbol"
+layer = "gold"
+dataset_version = "gold-pilot-five-symbol-20260914-individual-v1"
+identity = "310941bd-7ff9-4e25-971a-febec753c9e5"
+active_registry = "gold_publications.toml"
+proposed_registry = "gold_publications.individual.proposed.toml"
+expected_active_sha256 = "2293259c9aa44fe271bab9bcf9db47a3c89173caa77b171decd780762ed027a5"
+proposed_sha256 = "1e4eca2065f61d2699498cb35ee2bc64e9a2d42b46509e3508ea27fe2ad65106"
+depends_on = ["silver_multisymbol"]
+
+[[step]]
+name = "gold_expected_multisymbol"
+layer = "gold"
+dataset_version = "gold-study-cohort-20260914-multisymbol-expected-v1"
+identity = "39ab367c-c6d2-480d-8c94-f35f767ed289"
+active_registry = "gold_publications.toml"
+proposed_registry = "gold_publications.expected.proposed.toml"
+expected_active_sha256 = "1e4eca2065f61d2699498cb35ee2bc64e9a2d42b46509e3508ea27fe2ad65106"
+proposed_sha256 = "62f182fb7b56d3f8d9e081af0da07d9b2e2d9b83e48f6754468ab2ef1e1511d5"
+depends_on = ["gold_individual_multisymbol"]

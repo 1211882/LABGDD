@@ -1,0 +1,8 @@
+dataset_version = "gold-pilot-five-symbol-20260914-individual-v1"
+silver_registry = "silver_publications.toml"
+silver_dataset_version = "silver-pilot-five-symbol-20260914-v1"
+silver_run_id = "f9d4bcc6-5a51-4c37-8d74-86cf9cee1ca2"
+silver_input_authority = "authorized_bounded_validation"
+measurement_version = "2.0.0"
+horizons = [5, 15, 30, 60]
+gold_schema_version = "1.0.0"

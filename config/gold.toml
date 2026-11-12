@@ -1,0 +1,7 @@
+dataset_version = "gold-aapl-20260914-individual-v1"
+silver_registry = "silver_publications.toml"
+silver_dataset_version = "silver-aapl-20260914-v1"
+silver_run_id = "aecb53c1-d7a8-40c7-939b-a6901f435ff5"
+measurement_version = "2.0.0"
+horizons = [5, 15, 30, 60]
+gold_schema_version = "1.0.0"

@@ -1,0 +1,41 @@
+{
+  "proposal_id": "phase2-milestone7-multisymbol-publication",
+  "proposal_sha256": "4bc12c61fe31a76cba5e89fa5b12acf60d63bf9e5422b863bb92f4592968a2d1",
+  "report_version": "1.0.0",
+  "reviewed_at": "2026-11-06T16:18:24.580810+00:00",
+  "status": "review_passed_pending_explicit_authorization",
+  "steps": [
+    {
+      "dataset_version": "iex-1min-pilot-msft-nvda-jpm-xom-20260914-v1",
+      "identity": "ae7fecdc-d082-478d-b26d-b3e7e5db9600",
+      "layer": "bronze",
+      "name": "bronze_multisymbol",
+      "proposed_registry_sha256": "cbc827b63ee4a3067d626110f4479913aeb47580d50a9f749da5511edd8165e3",
+      "result": "passed"
+    },
+    {
+      "dataset_version": "silver-pilot-five-symbol-20260914-v1",
+      "identity": "f9d4bcc6-5a51-4c37-8d74-86cf9cee1ca2",
+      "layer": "silver",
+      "name": "silver_multisymbol",
+      "proposed_registry_sha256": "d33289f7c23e0a9c7e10be41c1216475748bdb7a618daf807d878410dff419e5",
+      "result": "passed"
+    },
+    {
+      "dataset_version": "gold-pilot-five-symbol-20260914-individual-v1",
+      "identity": "310941bd-7ff9-4e25-971a-febec753c9e5",
+      "layer": "gold",
+      "name": "gold_individual_multisymbol",
+      "proposed_registry_sha256": "1e4eca2065f61d2699498cb35ee2bc64e9a2d42b46509e3508ea27fe2ad65106",
+      "result": "passed"
+    },
+    {
+      "dataset_version": "gold-study-cohort-20260914-multisymbol-expected-v1",
+      "identity": "39ab367c-c6d2-480d-8c94-f35f767ed289",
+      "layer": "gold",
+      "name": "gold_expected_multisymbol",
+      "proposed_registry_sha256": "62f182fb7b56d3f8d9e081af0da07d9b2e2d9b83e48f6754468ab2ef1e1511d5",
+      "result": "passed"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+# Declared research-cohort applicability for this one reviewed snapshot only.
+# It is not evidence of historical industry classification or listing history.
+dataset_version = "silver-aapl-20260914-v1"
+bronze_manifests = ["../data/bronze/dataset=milestone3-live-aapl-20260914-v1/acquisition=f2345e41-da10-420f-8b60-6079a9df2006/manifest.json"]
+membership_valid_from = "2026-09-14T00:00:00+00:00"
+membership_valid_to = "2026-09-15T00:00:00+00:00"
+membership_basis = "project_declared_fixed_research_cohort_not_historical_classification"
+resolution_policy_version = "silver-resolution-v1"
+silver_schema_version = "1.0.0"

@@ -1,0 +1,18 @@
+schema_version = "1.0.0"
+dataset_version = "study-cohort-v1"
+membership_version = "study-cohort-v1"
+data_root = "../data"
+log_level = "INFO"
+# Research eligibility delay, not evidence of source completeness.
+# Validated now; applied by future processing runners only.
+allowed_lateness_minutes = 10
+
+# Research cohort, not a historical industrial classification.
+# Effective membership dates must be established before historical ingestion.
+[universe]
+Technology = ["AAPL", "MSFT", "NVDA", "GOOGL", "AMD"]
+Healthcare = ["JNJ", "PFE", "LLY", "MRK", "ABBV"]
+Defense = ["LMT", "NOC", "GD", "RTX", "HII"]
+Aerospace = ["BA", "TDG", "HEI", "TXT", "GE"]
+Energy = ["XOM", "CVX", "COP", "SLB", "OXY"]
+Financials = ["JPM", "BAC", "GS", "MS", "V"]

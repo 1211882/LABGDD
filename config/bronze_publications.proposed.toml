@@ -1,0 +1,32 @@
+registry_version = "1.0.0"
+superseded = []
+
+[[authority]]
+dataset_version = "milestone3-live-aapl-20260914-v1"
+acquisition_id = "f2345e41-da10-420f-8b60-6079a9df2006"
+status = "approved"
+manifest = "../data/bronze/dataset=milestone3-live-aapl-20260914-v1/acquisition=f2345e41-da10-420f-8b60-6079a9df2006/manifest.json"
+manifest_sha256 = "048b6815a618b2779568ec6b10d15c0d71d4462f4d1282175508283765e8b9d0"
+manifest_version = "1.0.0"
+schema_version = "1.0.0"
+observation_identity_version = "bronze-observation-v1"
+source_contract_version = "alpaca-iex-1Min-raw-v1"
+package_source_sha256 = "ddbc728c0e5ee3e32023788b2f99e669a9acdd1fc46343cd1e4c59c5c215a0f1"
+schedule_sha256 = "b3a8f97e6d7e8a40c5c04682498b046f03f91c156174f63863b8c8092b2cfd48"
+approved_at = "2026-11-06T00:00:00Z"
+decision = "Proposed explicit authority for previously validated AAPL Bronze evidence"
+
+[[authority]]
+dataset_version = "iex-1min-pilot-msft-nvda-jpm-xom-20260914-v1"
+acquisition_id = "ae7fecdc-d082-478d-b26d-b3e7e5db9600"
+status = "approved"
+manifest = "../data/bronze/dataset=iex-1min-pilot-msft-nvda-jpm-xom-20260914-v1/acquisition=ae7fecdc-d082-478d-b26d-b3e7e5db9600/manifest.json"
+manifest_sha256 = "7b1b3ce751ca50ded0fca940f029347f1a8f4bb80c5dc5212f2624a616e3f6a3"
+manifest_version = "1.0.0"
+schema_version = "1.0.0"
+observation_identity_version = "bronze-observation-v1"
+source_contract_version = "alpaca-iex-1Min-raw-v1"
+package_source_sha256 = "46caa29f76fe5f0d381c2ba4800fbd67f76d8940b8de1dedc12d4ccd37297de8"
+schedule_sha256 = "b3a8f97e6d7e8a40c5c04682498b046f03f91c156174f63863b8c8092b2cfd48"
+approved_at = "2026-11-06T00:00:00Z"
+decision = "Proposed authority for independently reviewed bounded four-symbol Bronze evidence"

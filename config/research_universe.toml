@@ -1,0 +1,20 @@
+contract_version = "1.0.0"
+universe_version = "study-cohort-v1"
+membership_version = "study-cohort-v1"
+declared_valid_from = "2026-09-14T00:00:00+00:00"
+declared_valid_to = "2026-09-15T00:00:00+00:00"
+applicability_basis = "project_declared_fixed_research_cohort_not_historical_classification"
+evidence_source = "config/project.toml project-defined research cohort"
+evidence_status = "declared_research_assumption"
+historical_listing_status = "unverified"
+entity_identity_status = "unverified"
+sector_classification_status = "project_defined_unverified"
+exclusions = [
+  "extended_hours",
+  "symbols_outside_project_cohort",
+]
+limitations = [
+  "not_a_historical_industry_classification",
+  "listing_and_entity_history_not_independently_verified",
+  "selection_and_survivorship_bias_present",
+]

@@ -1,0 +1,13 @@
+# syntax=docker/dockerfile:1.7
+# Dedicated test layer. The production Spark image remains dependency-minimal.
+ARG BASE_IMAGE=labgdd-spark-batch:phase2-milestone5
+FROM ${BASE_IMAGE}
+
+USER root
+COPY requirements-linux-test.lock /opt/labgdd/requirements-linux-test.lock
+RUN python -m pip install --require-hashes -r /opt/labgdd/requirements-linux-test.lock
+
+USER 10001:10001
+WORKDIR /workspace
+ENV PYTHONPATH=/workspace/src
+ENTRYPOINT ["python", "-m", "pytest"]

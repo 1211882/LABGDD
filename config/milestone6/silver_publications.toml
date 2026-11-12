@@ -1,0 +1,14 @@
+registry_version = "1.0.0"
+superseded = []
+
+[authority]
+dataset_version = "silver-pilot-five-symbol-20260914-v1"
+run_id = "f9d4bcc6-5a51-4c37-8d74-86cf9cee1ca2"
+status = "authorized_bounded_validation"
+manifest = "../../data/silver/dataset=silver-pilot-five-symbol-20260914-v1/run=f9d4bcc6-5a51-4c37-8d74-86cf9cee1ca2/manifest.json"
+manifest_sha256 = "f0ff790cfe0200e94c407010cfc4f2a8bfe93110d580f751b9f934095f9a15f8"
+processing_source_sha256 = "46caa29f76fe5f0d381c2ba4800fbd67f76d8940b8de1dedc12d4ccd37297de8"
+request = "../silver_milestone6.toml"
+request_sha256 = "0185df0f7e9ad375069ad43e99cf604e2c0b6387763ab7f5471044b943cb1d70"
+approved_at = "2026-11-06T13:12:15+00:00"
+decision = "User-authorized bounded Milestone 6 validation only; not publication authority"
