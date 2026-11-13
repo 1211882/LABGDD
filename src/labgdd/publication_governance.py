@@ -117,6 +117,51 @@ def _resolve_all(layer: str, registry: Path, data_root: Path) -> list[Mapping[st
     return results
 
 
+def _review_step(
+    step: Mapping[str, Any],
+    authority: Mapping[str, Any],
+    metadata: Mapping[str, object],
+) -> dict[str, object]:
+    summary_fields = (
+        "manifest_version",
+        "schema_version",
+        "gold_schema_version",
+        "measurement_version",
+        "status",
+        "publication_status",
+        "observations",
+        "canonical_records",
+        "return_records",
+        "eligible_return_records",
+        "rolling_records",
+        "eligible_rolling_records",
+        "fixed_records",
+        "eligible_fixed_records",
+        "expected_symbols",
+        "observed_symbols",
+    )
+    evidence = {key: metadata[key] for key in summary_fields if key in metadata}
+    artifacts = metadata.get("artifacts")
+    evidence["artifact_count"] = len(artifacts) if isinstance(artifacts, list) else 0
+    evidence["manifest_sha256"] = authority.get("manifest_sha256")
+    evidence["processing_source_sha256"] = authority.get(
+        "processing_source_sha256", authority.get("package_source_sha256")
+    )
+    if "configuration_sha256" in authority:
+        evidence["configuration_sha256"] = authority["configuration_sha256"]
+    elif "request_sha256" in authority:
+        evidence["configuration_sha256"] = authority["request_sha256"]
+    return {
+        "name": step["name"],
+        "layer": step["layer"],
+        "dataset_version": step["dataset_version"],
+        "identity": step["identity"],
+        "proposed_registry_sha256": step["proposed_sha256"],
+        "result": "passed",
+        "evidence": evidence,
+    }
+
+
 def _validate_plan(
     plan_path: Path, project_root: Path, data_root: Path
 ) -> tuple[dict[str, Any], list[dict[str, Any]], list[dict[str, object]]]:
@@ -143,26 +188,23 @@ def _validate_plan(
         if current_hash != step["expected_active_sha256"]:
             raise ValueError("publication review: active registry fingerprint mismatch")
         _preserves_registry(previous, proposed)
+        proposed_authorities = _authorities(_toml(proposed, "publication review"))
         metadata = _resolve_all(str(step["layer"]), proposed, data_root)
         target_key = "acquisition_id" if step["layer"] == "bronze" else "run_id"
-        if not any(
-            item.get("dataset_version") == step["dataset_version"]
+        target_indexes = [
+            index
+            for index, item in enumerate(metadata)
+            if item.get("dataset_version") == step["dataset_version"]
             and item.get(target_key) == step["identity"]
-            for item in metadata
-        ):
+        ]
+        if len(target_indexes) != 1:
             raise ValueError("publication review: explicit target is absent")
         state[active] = (proposed, str(step["proposed_sha256"]))
         resolved_by_layer[str(step["layer"])] = proposed
         completed.add(str(step["name"]))
+        target_index = target_indexes[0]
         review_steps.append(
-            {
-                "name": step["name"],
-                "layer": step["layer"],
-                "dataset_version": step["dataset_version"],
-                "identity": step["identity"],
-                "proposed_registry_sha256": step["proposed_sha256"],
-                "result": "passed",
-            }
+            _review_step(step, proposed_authorities[target_index], metadata[target_index])
         )
 
     bronze_registry = resolved_by_layer.get("bronze")
@@ -243,23 +285,30 @@ def approve_reviewed_step(
     except (OSError, UnicodeDecodeError, json.JSONDecodeError):
         raise ValueError("publication approval: unreadable review report") from None
     document, steps = _plan(plan_path, project_root)
-    expected_report_steps = [
-        {
-            "name": item["name"],
-            "layer": item["layer"],
-            "dataset_version": item["dataset_version"],
-            "identity": item["identity"],
-            "proposed_registry_sha256": item["proposed_sha256"],
-            "result": "passed",
-        }
-        for item in steps
-    ]
+    report_steps = report.get("steps") if isinstance(report, dict) else None
+    report_identity_matches = isinstance(report_steps, list) and len(report_steps) == len(steps)
+    if report_identity_matches:
+        typed_report_steps = cast(list[object], report_steps)
+        for recorded, expected in zip(typed_report_steps, steps, strict=True):
+            if not isinstance(recorded, dict) or any(
+                recorded.get(key) != value
+                for key, value in {
+                    "name": expected["name"],
+                    "layer": expected["layer"],
+                    "dataset_version": expected["dataset_version"],
+                    "identity": expected["identity"],
+                    "proposed_registry_sha256": expected["proposed_sha256"],
+                    "result": "passed",
+                }.items()
+            ):
+                report_identity_matches = False
+                break
     if (
         not isinstance(report, dict)
         or report.get("status") != "review_passed_pending_explicit_authorization"
         or report.get("proposal_id") != document["proposal_id"]
         or report.get("proposal_sha256") != sha256(plan_path)
-        or report.get("steps") != expected_report_steps
+        or not report_identity_matches
     ):
         raise ValueError("publication approval: review report mismatch")
     selected = [item for item in steps if item["name"] == step_name]
@@ -275,7 +324,8 @@ def approve_reviewed_step(
     if not proposed.is_file() or sha256(proposed) != step["proposed_sha256"]:
         raise ValueError("publication approval: proposed registry changed")
     current_hash = sha256(active) if active.is_file() else "absent"
-    if current_hash != step["expected_active_sha256"]:
+    already_applied = current_hash == step["proposed_sha256"]
+    if current_hash != step["expected_active_sha256"] and not already_applied:
         raise ValueError("publication approval: active registry changed")
 
     if step["layer"] == "bronze":
@@ -308,6 +358,9 @@ def approve_reviewed_step(
         )
         if silver_upstream.manifest_sha256 != gold_target.metadata.get("silver_manifest_sha256"):
             raise ValueError("publication approval: Silver authority mismatch")
+
+    if already_applied:
+        return active
 
     temporary = active.with_name(f".{active.name}.{step_name}.pending")
     try:

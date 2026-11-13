@@ -3,9 +3,9 @@
 Reviewed 2026-11-03. Supersedes proposed v1.0.0: the equal-weight portfolio
 definition is corrected below and the original mean-log proxy gets its own name.
 No historical V2 calculation outputs exist to migrate. Bar schema remains 1.0.0.
-Independent scalar fixture arithmetic and temporal eligibility tests run in Phase 0;
-production financial functions and distributed engines remain unimplemented.
-Phase 2 begins with pure reference functions before Spark. Measurement IDs include
+Independent scalar fixture arithmetic and temporal eligibility tests began in Phase 0.
+Phase 2 implements individual calculations and a synthetic-only scalar/native-Spark
+Sector Gold foundation; no real Sector Gold publication exists. Measurement IDs include
 this version; changes to estimands/sampling/eligibility require a new version.
 Detection-rule and fitted-calibration versions are separate from measurement IDs.
 
@@ -96,7 +96,9 @@ into incidents in v1. No causal contagion or profitability claim follows.
 proxy-versus-portfolio and correlation scalar arithmetic independently with
 `math`/`statistics`. `tests/unit/test_temporal.py` checks temporal eligibility.
 Null propagation, full-sector eligibility, calibration, detection and engine parity
-remain future acceptance fixtures; no production analytics code exists today.
+are implemented for deterministic Sector Gold fixtures except fitted calibration and
+emergence detection, which remain future reviewed work. Synthetic parity is not real
+market evidence.
 
 ## Research protocol (Phase 5)
 

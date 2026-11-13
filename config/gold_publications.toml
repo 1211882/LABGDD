@@ -36,6 +36,42 @@ contract_fingerprints = { approved_expected_plan_sha256 = "05da9a6a55b74c17665d5
 approved_at = "2026-11-05T00:00:00Z"
 decision = "independently_validated_expected_series_gold_v2_with_exact_aapl_parity"
 
+[[authority]]
+dataset_version = "gold-pilot-five-symbol-20260914-individual-v1"
+run_id = "310941bd-7ff9-4e25-971a-febec753c9e5"
+status = "approved"
+manifest = "../data/gold/dataset=gold-pilot-five-symbol-20260914-individual-v1/run=310941bd-7ff9-4e25-971a-febec753c9e5/manifest.json"
+manifest_sha256 = "c9ecea6009363f589bb57365acbccd6454fe8e122c3d737fbe3fd71363badad0"
+gold_schema_version = "1.0.0"
+measurement_version = "2.0.0"
+silver_dataset_version = "silver-pilot-five-symbol-20260914-v1"
+silver_run_id = "f9d4bcc6-5a51-4c37-8d74-86cf9cee1ca2"
+silver_manifest_sha256 = "f0ff790cfe0200e94c407010cfc4f2a8bfe93110d580f751b9f934095f9a15f8"
+processing_source_sha256 = "53f848a18cd536524488cab101df39e082600b50e8771c172540f40458bed0f5"
+configuration_sha256 = "3f2a0c49f6728b185016daa6c01c84100e8bdfe88737583d52ed720b15ddca22"
+manifest_publication_status = "not_recorded"
+contract_fingerprints = {}
+approved_at = "2026-11-11T00:00:00Z"
+decision = "Milestone 7 authority for independently reviewed five-symbol Individual Gold evidence"
+
+[[authority]]
+dataset_version = "gold-study-cohort-20260914-multisymbol-expected-v1"
+run_id = "39ab367c-c6d2-480d-8c94-f35f767ed289"
+status = "approved"
+manifest = "../data/gold/dataset=gold-study-cohort-20260914-multisymbol-expected-v1/run=39ab367c-c6d2-480d-8c94-f35f767ed289/manifest.json"
+manifest_sha256 = "d97b0e48c8463b6a97aa58e576e7f24998b4246f496fabaa286982177ab605b2"
+gold_schema_version = "2.0.0"
+measurement_version = "2.0.0"
+silver_dataset_version = "silver-pilot-five-symbol-20260914-v1"
+silver_run_id = "f9d4bcc6-5a51-4c37-8d74-86cf9cee1ca2"
+silver_manifest_sha256 = "f0ff790cfe0200e94c407010cfc4f2a8bfe93110d580f751b9f934095f9a15f8"
+processing_source_sha256 = "53f848a18cd536524488cab101df39e082600b50e8771c172540f40458bed0f5"
+configuration_sha256 = "65cc05f6f6977d21a98861b030ad32e6c663577d21fb9c2028cee97982cff386"
+manifest_publication_status = "pending_architecture_review"
+contract_fingerprints = { approved_expected_plan_sha256 = "05da9a6a55b74c17665d530e26a171f2a19ab8f2dbacd505fc3b2cac2880972e", research_reference_sha256 = "84bf9ab5f33ac3cda6eb096ba35b3342de32560e251c504af8158251195b02e3", schedule_sha256 = "b3a8f97e6d7e8a40c5c04682498b046f03f91c156174f63863b8c8092b2cfd48" }
+approved_at = "2026-11-11T00:00:00Z"
+decision = "Milestone 7 authority for independently reviewed full-cohort Expected-Series Gold evidence"
+
 [[superseded]]
 run_id = "e43ada7f-74b4-41cb-b7f3-add4076af3ce"
 status = "superseded"

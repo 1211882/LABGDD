@@ -1,8 +1,8 @@
 # Milestone 6 candidate publication migration
 
-Date: 2026-11-06. Status: not executed. This document specifies the separate review
-required to make any Milestone 6 candidate authoritative. Milestone implementation
-approval and tag `phase2-multisymbol-pilot-approved-v1` do not perform this migration.
+Date: 2026-11-11. Status: implemented, independently reviewed and activated by
+explicit user authorization. The prior Milestone 6 implementation tag did not grant
+publication authority; Milestone 7 completed the separate migration described here.
 
 ## Silver authority migration
 
@@ -21,6 +21,10 @@ Only after independent publication review may an additional `approved` entry pin
 - processing source SHA-256 `46caa29f76fe5f0d381c2ba4800fbd67f76d8940b8de1dedc12d4ccd37297de8`;
 - request SHA-256 `0185df0f7e9ad375069ad43e99cf604e2c0b6387763ab7f5471044b943cb1d70`.
 
+Silver resolver v1.1 and the reviewed proposal
+`config/silver_publications.proposed.toml` implement this contract. The proposal was
+activated as `config/silver_publications.toml` with SHA-256
+`969309c9d1df647095351cd7069f6be19c97d09940cd07f816f2bcf71affdc2a`.
 The current `config/milestone6/silver_publications.toml` remains validation-only and
 must not be renamed, copied, or interpreted as publication approval.
 
@@ -51,3 +55,16 @@ approve the exact evidence without rewriting it.
 No migration may select a filesystem directory by recency, mutate an existing
 manifest, or infer approval from `status = "complete"`. A new acquisition or
 reprocessing run requires new identities and a separate review.
+
+## Activation plan
+
+`config/publication_governance_milestone7.toml` defines four exact, ordered steps:
+Bronze, Silver, Individual Gold and Expected-Series Gold. The inactive proposed
+registries preserve all existing AAPL/Silver/Gold authorities and superseded runs.
+`docs/architecture/PHASE2_MILESTONE7_APPROVAL_REVIEW.json` records the successful
+read-only review, exact proposal hashes and evidence summaries. Explicit authorization
+then executed each step in order with the exact dataset and UUID. Final active
+registry SHA-256 values are Bronze
+`87872458f765223dfbd3619c3ab054584f7967889d645a5053c1c28f0f89c439`, Silver
+`969309c9d1df647095351cd7069f6be19c97d09940cd07f816f2bcf71affdc2a`, and Gold
+`2f9aaf217ead86fea588dc6fb25f4faa9e4ceb8ed832545218ecf9ac95badf51`.

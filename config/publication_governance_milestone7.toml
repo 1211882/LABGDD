@@ -10,7 +10,7 @@ identity = "ae7fecdc-d082-478d-b26d-b3e7e5db9600"
 active_registry = "bronze_publications.toml"
 proposed_registry = "bronze_publications.proposed.toml"
 expected_active_sha256 = "absent"
-proposed_sha256 = "cbc827b63ee4a3067d626110f4479913aeb47580d50a9f749da5511edd8165e3"
+proposed_sha256 = "87872458f765223dfbd3619c3ab054584f7967889d645a5053c1c28f0f89c439"
 depends_on = []
 
 [[step]]
@@ -21,7 +21,7 @@ identity = "f9d4bcc6-5a51-4c37-8d74-86cf9cee1ca2"
 active_registry = "silver_publications.toml"
 proposed_registry = "silver_publications.proposed.toml"
 expected_active_sha256 = "0abdbc9e8b69d6d35c6922d2a7a517fb4264a6d3fff8fa5a5962b6d7e246460b"
-proposed_sha256 = "d33289f7c23e0a9c7e10be41c1216475748bdb7a618daf807d878410dff419e5"
+proposed_sha256 = "969309c9d1df647095351cd7069f6be19c97d09940cd07f816f2bcf71affdc2a"
 depends_on = ["bronze_multisymbol"]
 
 [[step]]
@@ -32,7 +32,7 @@ identity = "310941bd-7ff9-4e25-971a-febec753c9e5"
 active_registry = "gold_publications.toml"
 proposed_registry = "gold_publications.individual.proposed.toml"
 expected_active_sha256 = "2293259c9aa44fe271bab9bcf9db47a3c89173caa77b171decd780762ed027a5"
-proposed_sha256 = "1e4eca2065f61d2699498cb35ee2bc64e9a2d42b46509e3508ea27fe2ad65106"
+proposed_sha256 = "b12ac0b18f842457fd71ddc7051ad872a2f6c3b7109b6a19e530488d4a227f4f"
 depends_on = ["silver_multisymbol"]
 
 [[step]]
@@ -42,6 +42,6 @@ dataset_version = "gold-study-cohort-20260914-multisymbol-expected-v1"
 identity = "39ab367c-c6d2-480d-8c94-f35f767ed289"
 active_registry = "gold_publications.toml"
 proposed_registry = "gold_publications.expected.proposed.toml"
-expected_active_sha256 = "1e4eca2065f61d2699498cb35ee2bc64e9a2d42b46509e3508ea27fe2ad65106"
-proposed_sha256 = "62f182fb7b56d3f8d9e081af0da07d9b2e2d9b83e48f6754468ab2ef1e1511d5"
+expected_active_sha256 = "b12ac0b18f842457fd71ddc7051ad872a2f6c3b7109b6a19e530488d4a227f4f"
+proposed_sha256 = "2f9aaf217ead86fea588dc6fb25f4faa9e4ceb8ed832545218ecf9ac95badf51"
 depends_on = ["gold_individual_multisymbol"]

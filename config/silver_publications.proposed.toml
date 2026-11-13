@@ -29,8 +29,8 @@ silver_schema_version = "1.0.0"
 resolution_policy_version = "silver-resolution-v1"
 source_contract_version = "alpaca-iex-1Min-raw-v1"
 bronze_inputs = [{ dataset_version = "milestone3-live-aapl-20260914-v1", acquisition_id = "f2345e41-da10-420f-8b60-6079a9df2006", manifest_sha256 = "048b6815a618b2779568ec6b10d15c0d71d4462f4d1282175508283765e8b9d0" }, { dataset_version = "iex-1min-pilot-msft-nvda-jpm-xom-20260914-v1", acquisition_id = "ae7fecdc-d082-478d-b26d-b3e7e5db9600", manifest_sha256 = "7b1b3ce751ca50ded0fca940f029347f1a8f4bb80c5dc5212f2624a616e3f6a3" }]
-approved_at = "2026-11-06T00:00:00Z"
-decision = "Proposed authority for independently reviewed five-symbol Silver evidence"
+approved_at = "2026-11-11T00:00:00Z"
+decision = "Milestone 7 authority for independently reviewed five-symbol Silver evidence"
 
 [[superseded]]
 run_id = "0c822d2b-be75-4497-a99a-06246013973a"

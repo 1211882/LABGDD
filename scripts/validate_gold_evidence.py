@@ -2,6 +2,7 @@
 
 import argparse
 import json
+from collections import defaultdict
 from datetime import UTC
 from pathlib import Path
 from typing import Any, cast
@@ -9,7 +10,12 @@ from typing import Any, cast
 import pyarrow.dataset as ds
 
 from labgdd.adapters.bronze import sha256
-from labgdd.analytics.individual import ReferenceBar, calculate_individual_measurements
+from labgdd.analytics.individual import (
+    ReferenceBar,
+    ReferenceReturn,
+    ReferenceWindow,
+    calculate_individual_measurements,
+)
 
 
 def _manifest(path: Path) -> dict[str, Any]:
@@ -32,6 +38,53 @@ def _verify_artifacts(path: Path, document: dict[str, Any]) -> int:
     return len(artifacts)
 
 
+_IDENTITY_FIELDS = ("symbol", "source", "feed", "timeframe", "adjustment", "session_id")
+
+
+def _series_key(row: dict[str, Any]) -> tuple[str, ...]:
+    values = tuple(row.get(field) for field in _IDENTITY_FIELDS)
+    if any(not isinstance(value, str) or not value for value in values):
+        raise ValueError("evidence validation: invalid series identity")
+    return cast(tuple[str, ...], values)
+
+
+def _reference_maps(
+    rows: list[dict[str, Any]],
+) -> tuple[
+    dict[tuple[tuple[str, ...], object], ReferenceReturn],
+    dict[tuple[tuple[str, ...], int, object], ReferenceWindow],
+    dict[tuple[tuple[str, ...], int, object], ReferenceWindow],
+]:
+    series: dict[tuple[str, ...], list[dict[str, Any]]] = defaultdict(list)
+    for row in rows:
+        series[_series_key(row)].append(row)
+    expected_rolling: dict[tuple[tuple[str, ...], int, object], ReferenceWindow] = {}
+    expected_fixed: dict[tuple[tuple[str, ...], int, object], ReferenceWindow] = {}
+    expected_returns: dict[tuple[tuple[str, ...], object], ReferenceReturn] = {}
+    for key, series_rows in series.items():
+        bars = tuple(
+            ReferenceBar(
+                row["event_time"].astimezone(UTC),
+                row["open"],
+                row["close"],
+                row["membership_valid_from"].astimezone(UTC),
+                row["membership_valid_to"].astimezone(UTC),
+            )
+            for row in series_rows
+        )
+        reference = calculate_individual_measurements(
+            bars,
+            series_rows[0]["session_open"].astimezone(UTC),
+            series_rows[0]["session_close"].astimezone(UTC),
+        )
+        expected_returns.update({(key, row.event_time): row for row in reference.returns})
+        expected_rolling.update(
+            {(key, row.horizon, row.window_end): row for row in reference.rolling}
+        )
+        expected_fixed.update({(key, row.horizon, row.window_end): row for row in reference.fixed})
+    return expected_returns, expected_rolling, expected_fixed
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("silver_manifest", type=Path)
@@ -46,22 +99,9 @@ def main() -> None:
     canonical = ds.dataset(
         args.silver_manifest.parent / "canonical", format="parquet", partitioning="hive"
     ).to_table()
-    rows = sorted(canonical.to_pylist(), key=lambda row: row["event_time"])
+    rows = sorted(canonical.to_pylist(), key=lambda row: (_series_key(row), row["event_time"]))
     if not rows:
         raise ValueError("evidence validation: empty canonical input")
-    bars = tuple(
-        ReferenceBar(
-            row["event_time"].astimezone(UTC),
-            row["open"],
-            row["close"],
-            row["membership_valid_from"].astimezone(UTC),
-            row["membership_valid_to"].astimezone(UTC),
-        )
-        for row in rows
-    )
-    reference = calculate_individual_measurements(
-        bars, rows[0]["session_open"].astimezone(UTC), rows[0]["session_close"].astimezone(UTC)
-    )
     returns = (
         ds.dataset(args.gold_manifest.parent / "returns", format="parquet", partitioning="hive")
         .to_table()
@@ -77,17 +117,7 @@ def main() -> None:
         .to_table()
         .to_pylist()
     )
-    expected_rolling = {(row.horizon, row.window_end): row for row in reference.rolling}
-    expected_fixed = {(row.horizon, row.window_end): row for row in reference.fixed}
-    expected_returns = {row.event_time: row for row in reference.returns}
-    identity = {
-        "symbol": rows[0]["symbol"],
-        "source": rows[0]["source"],
-        "feed": rows[0]["feed"],
-        "timeframe": rows[0]["timeframe"],
-        "adjustment": rows[0]["adjustment"],
-        "session_id": rows[0]["session_id"],
-    }
+    expected_returns, expected_rolling, expected_fixed = _reference_maps(rows)
     max_return_error = 0.0
     max_rolling_error = 0.0
     max_variance_error = 0.0
@@ -95,9 +125,7 @@ def main() -> None:
     if len(returns) != len(expected_returns):
         raise ValueError("evidence validation: return record count mismatch")
     for row in returns:
-        if any(row[field] != value for field, value in identity.items()):
-            raise ValueError("evidence validation: return series identity mismatch")
-        expected_return = expected_returns[row["event_time"].astimezone(UTC)]
+        expected_return = expected_returns[(_series_key(row), row["event_time"].astimezone(UTC))]
         if (
             row["return_end"].astimezone(UTC) != expected_return.return_end
             or row["eligible"] != expected_return.eligible
@@ -119,10 +147,8 @@ def main() -> None:
     if len(rolling) != len(expected_rolling):
         raise ValueError("evidence validation: rolling record count mismatch")
     for row in rolling:
-        if any(row[field] != value for field, value in identity.items()):
-            raise ValueError("evidence validation: rolling series identity mismatch")
         expected_rolling_window = expected_rolling[
-            (row["horizon"], row["window_end"].astimezone(UTC))
+            (_series_key(row), row["horizon"], row["window_end"].astimezone(UTC))
         ]
         if (
             row["window_start"].astimezone(UTC) != expected_rolling_window.window_start
@@ -144,9 +170,9 @@ def main() -> None:
     if len(fixed) != len(expected_fixed):
         raise ValueError("evidence validation: fixed record count mismatch")
     for row in fixed:
-        if any(row[field] != value for field, value in identity.items()):
-            raise ValueError("evidence validation: fixed series identity mismatch")
-        expected_fixed_window = expected_fixed[(row["horizon"], row["window_end"].astimezone(UTC))]
+        expected_fixed_window = expected_fixed[
+            (_series_key(row), row["horizon"], row["window_end"].astimezone(UTC))
+        ]
         if (
             row["window_start"].astimezone(UTC) != expected_fixed_window.window_start
             or row["expected_returns"] != expected_fixed_window.expected_returns

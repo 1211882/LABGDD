@@ -1,6 +1,6 @@
-registry_version = "1.0.0"
+registry_version = "1.1.0"
 
-[authority]
+[[authority]]
 dataset_version = "silver-aapl-20260914-v1"
 run_id = "aecb53c1-d7a8-40c7-939b-a6901f435ff5"
 status = "approved"
@@ -9,8 +9,28 @@ manifest_sha256 = "33209b03a5f5f6d39efea922376e13f08c59756aa5a7cc01e3cae36771193
 processing_source_sha256 = "200a9842dcd806581dae82b74abb452fee7bc00c4c75731cd1a8fbe7560a95fd"
 request = "silver.toml"
 request_sha256 = "47267c2a133d9a7c4fcb51ca9de1517d659fd2dd7503fe9b547bb4cc51569340"
+silver_schema_version = "1.0.0"
+resolution_policy_version = "silver-resolution-v1"
+source_contract_version = "alpaca-iex-1Min-raw-v1"
+bronze_inputs = [{ dataset_version = "milestone3-live-aapl-20260914-v1", acquisition_id = "f2345e41-da10-420f-8b60-6079a9df2006", manifest_sha256 = "048b6815a618b2779568ec6b10d15c0d71d4462f4d1282175508283765e8b9d0" }]
 approved_at = "2026-11-03T00:00:00+00:00"
 decision = "Phase 2 Silver bounded-scope architecture approval"
+
+[[authority]]
+dataset_version = "silver-pilot-five-symbol-20260914-v1"
+run_id = "f9d4bcc6-5a51-4c37-8d74-86cf9cee1ca2"
+status = "approved"
+manifest = "../data/silver/dataset=silver-pilot-five-symbol-20260914-v1/run=f9d4bcc6-5a51-4c37-8d74-86cf9cee1ca2/manifest.json"
+manifest_sha256 = "f0ff790cfe0200e94c407010cfc4f2a8bfe93110d580f751b9f934095f9a15f8"
+processing_source_sha256 = "46caa29f76fe5f0d381c2ba4800fbd67f76d8940b8de1dedc12d4ccd37297de8"
+request = "silver_milestone6.toml"
+request_sha256 = "0185df0f7e9ad375069ad43e99cf604e2c0b6387763ab7f5471044b943cb1d70"
+silver_schema_version = "1.0.0"
+resolution_policy_version = "silver-resolution-v1"
+source_contract_version = "alpaca-iex-1Min-raw-v1"
+bronze_inputs = [{ dataset_version = "milestone3-live-aapl-20260914-v1", acquisition_id = "f2345e41-da10-420f-8b60-6079a9df2006", manifest_sha256 = "048b6815a618b2779568ec6b10d15c0d71d4462f4d1282175508283765e8b9d0" }, { dataset_version = "iex-1min-pilot-msft-nvda-jpm-xom-20260914-v1", acquisition_id = "ae7fecdc-d082-478d-b26d-b3e7e5db9600", manifest_sha256 = "7b1b3ce751ca50ded0fca940f029347f1a8f4bb80c5dc5212f2624a616e3f6a3" }]
+approved_at = "2026-11-11T00:00:00Z"
+decision = "Milestone 7 authority for independently reviewed five-symbol Silver evidence"
 
 [[superseded]]
 run_id = "0c822d2b-be75-4497-a99a-06246013973a"

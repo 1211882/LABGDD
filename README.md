@@ -15,13 +15,18 @@ relation independently of observed bars. Milestone 4 adds a bounded optional Spa
 left-join path. Milestone 5 publishes and independently approves that path under a
 separate immutable dataset without replacing the frozen individual Gold authority.
 Milestone 6 validates a five-symbol end-to-end pilot under an accepted bounded
-candidate authority; it does not approve the candidate datasets or begin sector analytics.
+candidate authority. Milestone 7 independently reviews and explicitly publishes its
+Bronze, Silver, Individual Gold and Expected-Series Gold evidence through exact
+multi-authority registries. Milestone 8 adds synthetic-only scalar and native Spark
+Sector Gold calculation foundations with explicit complete-population semantics; it
+does not publish or calculate real sector results.
 The supplied reference audit is preserved byte-for-byte.
 
-Downstream Gold selection is explicit through `config/gold_publications.toml`;
-unregistered, failed or superseded run directories are never selected by recency.
-Registry v1.1 supports multiple explicit dataset/run authorities and remains able to
-read the original v1.0 singleton contract.
+Publication selection is explicit through `config/bronze_publications.toml`,
+`config/silver_publications.toml` and `config/gold_publications.toml`; unregistered,
+failed or superseded directories are never selected by recency. Silver and Gold
+registry v1.1 support multiple explicit dataset/run authorities, and Silver remains
+able to read the original v1.0 singleton contract.
 
 ## Setup (PowerShell, Python 3.11)
 
@@ -81,12 +86,14 @@ exception text and extra fields by design. Extend the event schema deliberately.
 - [Bounded Spark expected-series integration](docs/architecture/PHASE2_EXPECTED_SERIES_SPARK.md)
 - [Pending multi-symbol validation](docs/architecture/PHASE2_MULTISYMBOL_VALIDATION.md)
 - [Milestone 6 publication migration](docs/architecture/MILESTONE6_PUBLICATION_MIGRATION.md)
+- [Sector Gold calculation foundation](docs/architecture/PHASE2_SECTOR_GOLD.md)
 - [Proposed expected-series Gold publication decision](docs/decisions/011-expected-series-gold-publication.md)
 - [Phase 0 architecture-review remediation](docs/handoffs/TASK_PHASE0_ARCHITECTURE_REVIEW_HANDOFF.md)
 
 Implemented packages include domain, configuration, observability, adapters,
-acquisition orchestration, native Spark processing, individual-company analytics
-and runners. Sector analytics, research/serving and deployment remain future work.
+acquisition orchestration, native Spark processing, individual-company analytics,
+synthetic Sector Gold references and runners. Real Sector Gold publication,
+research/serving and deployment remain future work.
 The initial six-sector/30-symbol mapping is a study cohort; historical membership
 and calendar applicability must be established before sector-enriched analysis.
 

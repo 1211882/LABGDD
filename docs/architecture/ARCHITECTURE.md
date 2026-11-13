@@ -1,12 +1,14 @@
 # LABGDD V2 architecture
 
 Status: Phase 0, bounded Bronze, canonical Silver and individual-company Gold are
-approved for their recorded scopes. Phase 2 Milestone 5 adds a separate bounded
-expected-series Gold publication without modifying earlier immutable evidence
-or implementing sector analytics. See PHASE1_INGESTION.md, PHASE2_BATCH.md, PHASE2_GOLD.md,
+approved for their recorded scopes. Phase 2 Milestone 7 publishes the reviewed
+five-symbol pilot through explicit Bronze, Silver, Individual Gold and Expected-Series
+Gold authorities without modifying immutable evidence. Milestone 8 implements a
+synthetic-only Sector Gold scalar/Spark foundation without real publication. See
+PHASE1_INGESTION.md, PHASE2_BATCH.md, PHASE2_GOLD.md, PHASE2_SECTOR_GOLD.md,
 RESEARCH_UNIVERSE.md and PHASE2_EXPECTED_SERIES_SPARK.md.
 Baseline: `phase0-approved-v1` / `81be7794ffa4c197e866f3fc89d147287abb3731`.
-Reviewed: 2026-11-04. Bar schema is v1.0.0; measurements are v2.0.0.
+Reviewed: 2026-11-12. Bar schema is v1.0.0; measurements are v2.0.0.
 The calendar adapter and local acquisition are tested with mocked provider input.
 Correction resolution and live finalization remain designs, not runtime services.
 
@@ -54,7 +56,9 @@ No network, filesystem writes, logging configuration or services occur at import
 `validate_return_window` is a small domain eligibility check over caller-supplied
 UTC session bounds: H+1 consecutive closes for H returns, with no calendar lookup,
 sorting, correction resolution or implicit gap filling. Individual-company formula
-code and independent Spark parity are implemented; sector formulas remain deferred.
+code and independent Spark parity are implemented. Sector formulas have a
+synthetic-only scalar/native-Spark implementation; real authority preparation,
+persistence and publication remain deferred.
 
 ## Intended data flow (future phases)
 
@@ -98,8 +102,31 @@ Completed Silver directories are not authoritative by discovery order. Downstrea
 selection requires an explicit dataset/run identity resolved through the checked-in
 publication registry with verified status and fingerprints.
 Gold registry v1.1 retains explicit selection while supporting more than one
-independently approved dataset and Gold schema. The embedded publication status is
-historical creation metadata; registry approval is the external selection authority.
+independently approved dataset and Gold schema. Silver registry v1.1 provides the
+same exact multi-authority selection while retaining valid v1.0 input compatibility
+and pinning Bronze lineage, schema, source, request and processing fingerprints.
+Bronze publication authority is external to immutable acquisition completion and
+pins exact acquisition identities, source contracts, manifests and raw inventories.
+The embedded publication status is historical creation metadata; registry approval
+is the external selection authority.
+
+Publication governance separates a read-only `review` from a mutating `approve`
+operation. Review verifies the complete proposed registry chain and writes a
+structured report without changing active registries. Approval requires an exact
+reviewed step, dataset and UUID; validates active-registry preconditions and upstream
+authorities; and atomically replaces one registry. Proposed files are inert because
+resolvers use only explicitly configured active paths. No operation discovers the
+newest directory or approves downstream evidence while upstream evidence is pending.
+ADR 013 records the accepted governance contract. The activated inventories contain
+two Bronze acquisitions, two Silver runs and four Gold runs; the original AAPL
+authorities remain independent and unchanged.
+
+Sector Gold calculation uses an independently declared expected population rather
+than observed survivors. `sector-complete-population-v1` records scope, membership,
+historical evidence and reference fingerprints. The Milestone 8 Spark boundary
+accepts synthetic fixtures only; any future real path must begin with the approved
+Gold resolver and a separately reviewed manifest-bound projection. ADR 014 is
+proposed, not approved, and no Sector Gold registry or artifact exists.
 
 ## Testing and reproducibility
 

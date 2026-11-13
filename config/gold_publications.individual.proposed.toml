@@ -51,8 +51,8 @@ processing_source_sha256 = "53f848a18cd536524488cab101df39e082600b50e8771c172540
 configuration_sha256 = "3f2a0c49f6728b185016daa6c01c84100e8bdfe88737583d52ed720b15ddca22"
 manifest_publication_status = "not_recorded"
 contract_fingerprints = {}
-approved_at = "2026-11-06T00:00:00Z"
-decision = "Proposed authority for independently reviewed five-symbol Individual Gold evidence"
+approved_at = "2026-11-11T00:00:00Z"
+decision = "Milestone 7 authority for independently reviewed five-symbol Individual Gold evidence"
 
 [[superseded]]
 run_id = "e43ada7f-74b4-41cb-b7f3-add4076af3ce"

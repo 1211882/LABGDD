@@ -218,6 +218,18 @@ def test_approval_requires_exact_reviewed_identity_and_updates_atomically(
     )
     assert active == config / "bronze.toml"
     assert sha256(active) == sha256(config / "bronze.proposed.toml")
+    assert (
+        approve_reviewed_step(
+            plan,
+            tmp_path,
+            tmp_path / "data",
+            report,
+            step_name="bronze",
+            dataset_version="bronze-v1",
+            identity=BRONZE_ID,
+        )
+        == active
+    )
 
 
 def test_approval_rejects_pending_upstream_and_recovers_replace_failure(

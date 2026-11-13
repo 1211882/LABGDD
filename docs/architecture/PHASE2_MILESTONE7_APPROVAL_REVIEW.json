@@ -1,40 +1,92 @@
 {
   "proposal_id": "phase2-milestone7-multisymbol-publication",
-  "proposal_sha256": "4bc12c61fe31a76cba5e89fa5b12acf60d63bf9e5422b863bb92f4592968a2d1",
+  "proposal_sha256": "a45712300bb29736ae03d4c6e18e5be3191fdb67665bd43a3545f9034ac5b858",
   "report_version": "1.0.0",
-  "reviewed_at": "2026-11-06T16:18:24.580810+00:00",
+  "reviewed_at": "2026-11-11T22:06:29.125633+00:00",
   "status": "review_passed_pending_explicit_authorization",
   "steps": [
     {
       "dataset_version": "iex-1min-pilot-msft-nvda-jpm-xom-20260914-v1",
+      "evidence": {
+        "artifact_count": 4,
+        "manifest_sha256": "7b1b3ce751ca50ded0fca940f029347f1a8f4bb80c5dc5212f2624a616e3f6a3",
+        "manifest_version": "1.0.0",
+        "observations": 1471,
+        "processing_source_sha256": "46caa29f76fe5f0d381c2ba4800fbd67f76d8940b8de1dedc12d4ccd37297de8",
+        "schema_version": "1.0.0",
+        "status": "complete"
+      },
       "identity": "ae7fecdc-d082-478d-b26d-b3e7e5db9600",
       "layer": "bronze",
       "name": "bronze_multisymbol",
-      "proposed_registry_sha256": "cbc827b63ee4a3067d626110f4479913aeb47580d50a9f749da5511edd8165e3",
+      "proposed_registry_sha256": "87872458f765223dfbd3619c3ab054584f7967889d645a5053c1c28f0f89c439",
       "result": "passed"
     },
     {
       "dataset_version": "silver-pilot-five-symbol-20260914-v1",
+      "evidence": {
+        "artifact_count": 7,
+        "canonical_records": 1861,
+        "configuration_sha256": "0185df0f7e9ad375069ad43e99cf604e2c0b6387763ab7f5471044b943cb1d70",
+        "manifest_sha256": "f0ff790cfe0200e94c407010cfc4f2a8bfe93110d580f751b9f934095f9a15f8",
+        "manifest_version": "1.0.0",
+        "processing_source_sha256": "46caa29f76fe5f0d381c2ba4800fbd67f76d8940b8de1dedc12d4ccd37297de8",
+        "status": "complete"
+      },
       "identity": "f9d4bcc6-5a51-4c37-8d74-86cf9cee1ca2",
       "layer": "silver",
       "name": "silver_multisymbol",
-      "proposed_registry_sha256": "d33289f7c23e0a9c7e10be41c1216475748bdb7a618daf807d878410dff419e5",
+      "proposed_registry_sha256": "969309c9d1df647095351cd7069f6be19c97d09940cd07f816f2bcf71affdc2a",
       "result": "passed"
     },
     {
       "dataset_version": "gold-pilot-five-symbol-20260914-individual-v1",
+      "evidence": {
+        "artifact_count": 31,
+        "configuration_sha256": "3f2a0c49f6728b185016daa6c01c84100e8bdfe88737583d52ed720b15ddca22",
+        "eligible_fixed_records": 468,
+        "eligible_rolling_records": 5117,
+        "fixed_records": 600,
+        "gold_schema_version": "1.0.0",
+        "manifest_sha256": "c9ecea6009363f589bb57365acbccd6454fe8e122c3d737fbe3fd71363badad0",
+        "manifest_version": "1.0.0",
+        "measurement_version": "2.0.0",
+        "processing_source_sha256": "53f848a18cd536524488cab101df39e082600b50e8771c172540f40458bed0f5",
+        "return_records": 1950,
+        "rolling_records": 7780,
+        "status": "complete"
+      },
       "identity": "310941bd-7ff9-4e25-971a-febec753c9e5",
       "layer": "gold",
       "name": "gold_individual_multisymbol",
-      "proposed_registry_sha256": "1e4eca2065f61d2699498cb35ee2bc64e9a2d42b46509e3508ea27fe2ad65106",
+      "proposed_registry_sha256": "b12ac0b18f842457fd71ddc7051ad872a2f6c3b7109b6a19e530488d4a227f4f",
       "result": "passed"
     },
     {
       "dataset_version": "gold-study-cohort-20260914-multisymbol-expected-v1",
+      "evidence": {
+        "artifact_count": 7,
+        "configuration_sha256": "65cc05f6f6977d21a98861b030ad32e6c663577d21fb9c2028cee97982cff386",
+        "eligible_fixed_records": 468,
+        "eligible_return_records": 1787,
+        "eligible_rolling_records": 5117,
+        "expected_symbols": 30,
+        "fixed_records": 3600,
+        "gold_schema_version": "2.0.0",
+        "manifest_sha256": "d97b0e48c8463b6a97aa58e576e7f24998b4246f496fabaa286982177ab605b2",
+        "manifest_version": "1.0.0",
+        "measurement_version": "2.0.0",
+        "observed_symbols": 5,
+        "processing_source_sha256": "53f848a18cd536524488cab101df39e082600b50e8771c172540f40458bed0f5",
+        "publication_status": "pending_architecture_review",
+        "return_records": 11700,
+        "rolling_records": 46680,
+        "status": "complete"
+      },
       "identity": "39ab367c-c6d2-480d-8c94-f35f767ed289",
       "layer": "gold",
       "name": "gold_expected_multisymbol",
-      "proposed_registry_sha256": "62f182fb7b56d3f8d9e081af0da07d9b2e2d9b83e48f6754468ab2ef1e1511d5",
+      "proposed_registry_sha256": "2f9aaf217ead86fea588dc6fb25f4faa9e4ceb8ed832545218ecf9ac95badf51",
       "result": "passed"
     }
   ]
