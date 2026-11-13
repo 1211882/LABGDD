@@ -126,7 +126,9 @@ than observed survivors. `sector-complete-population-v1` records scope, membersh
 historical evidence and reference fingerprints. The Milestone 8 Spark boundary
 accepts synthetic fixtures only; any future real path must begin with the approved
 Gold resolver and a separately reviewed manifest-bound projection. ADR 014 is
-proposed, not approved, and no Sector Gold registry or artifact exists.
+accepted for the synthetic calculation contract after numerical correlation,
+eligibility-policy provenance and threshold-validation remediation. No Sector Gold
+registry or artifact exists.
 
 ## Testing and reproducibility
 

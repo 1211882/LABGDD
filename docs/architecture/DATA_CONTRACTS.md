@@ -187,6 +187,29 @@ windows and four unsampled final returns. A 210-bar early-close session supplies
 209 returns, 41 complete windows and four unsampled final returns. A trailing
 window ending at the session close is eligible but is not an extra fixed window.
 
+## Sector calculation identity and eligibility
+
+The calculation-only Sector Gold population relation requires
+`population_policy_version=sector-complete-population-v1`, an
+`eligibility_policy` of `declared_research` or
+`verified_historical_applicability`, and
+`eligibility_policy_version=sector-eligibility-policy-v1`. A sector/session cannot
+mix these authorities. Missing or unknown values fail closed.
+
+Every scalar and Spark sector window and pair row preserves the eligibility policy
+and version. `sector-output-identity-v1` is the lowercase SHA-256 of a UTF-8,
+pipe-delimited payload containing, in order: identity version, sector, session ID,
+horizon, zero-based window index, comma-joined sorted expected symbols, population
+policy version, eligibility policy, eligibility-policy version and research-reference
+SHA-256. The delimiter is forbidden by the validated source fields. Changing policy
+therefore changes output identity even when financial values happen to be equal.
+
+Primary ineligibility precedence is acquisition scope, complete membership,
+historical applicability under the declared policy, wholly absent member, missing
+observed bar, then ineligible individual return. Correlation degeneracy,
+insufficient-pair, concentration and threshold-calibration reasons are separate
+metric states.
+
 ## Lateness and finalization policy (future processing)
 
 - **Allowed lateness L:** configurable `allowed_lateness_minutes`, default 10,

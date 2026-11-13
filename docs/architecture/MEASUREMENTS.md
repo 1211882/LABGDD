@@ -44,7 +44,11 @@ anchors in DATA_CONTRACTS.md; rolling RV would require a separate output identif
 | emergence_event | Boolean rule below | Finalized complete H-return window with frozen calibration |
 
 Pearson uses centered sums `sum((x-xbar)*(y-ybar))/sqrt(sum((x-xbar)^2)*sum((y-ybar)^2))`.
-Constant series produce null. Store expected/valid pair counts; if any expected
+Constant series are identified by `min(x)==max(x)` or `min(y)==max(y)` and produce
+null. Implementations translate nonconstant vectors by their minimum before
+centering and scale normalized deviations before accumulating products. This is
+algebraically equivalent for finite vectors, avoids rounded zero-variance decisions,
+and preserves small representable variation without an arbitrary epsilon. Store expected/valid pair counts; if any expected
 intra-sector pair is undefined, the headline aggregate is null (do not silently
 change the denominator). Single-constituent sector correlation is null. Dispersion
 and intensity are separate outputs. No pooling of constituent intrabar returns

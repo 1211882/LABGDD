@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
+from hashlib import sha256
 from itertools import combinations
 from math import expm1, isfinite, log1p, sqrt
 
@@ -18,6 +19,11 @@ UNVERIFIED_HISTORY = "unverified_historical_applicability"
 INCOMPLETE_POPULATION = "incomplete_sector_population"
 INCOMPLETE_CALIBRATION = "incomplete_threshold_calibration"
 SECTOR_POPULATION_POLICY_VERSION = "sector-complete-population-v1"
+SECTOR_ELIGIBILITY_POLICY_VERSION = "sector-eligibility-policy-v1"
+DECLARED_RESEARCH_POLICY = "declared_research"
+VERIFIED_HISTORICAL_POLICY = "verified_historical_applicability"
+SECTOR_OUTPUT_IDENTITY_VERSION = "sector-output-identity-v1"
+ELIGIBILITY_POLICIES = frozenset({DECLARED_RESEARCH_POLICY, VERIFIED_HISTORICAL_POLICY})
 
 
 @dataclass(frozen=True, slots=True)
@@ -38,6 +44,8 @@ class SectorPopulationMember:
     sector_classification_status: str
     acquisition_scope: bool
     population_policy_version: str
+    eligibility_policy: str
+    eligibility_policy_version: str
     research_reference_sha256: str
 
 
@@ -69,6 +77,9 @@ class SectorPairCorrelation:
     horizon: int
     window_start: datetime
     window_end: datetime
+    eligibility_policy: str
+    eligibility_policy_version: str
+    output_identity_sha256: str
     left_symbol: str
     right_symbol: str
     value: float | None
@@ -96,7 +107,10 @@ class SectorWindow:
     valid_pairs: int
     membership_applicable: bool
     population_policy_version: str
+    eligibility_policy: str
+    eligibility_policy_version: str
     research_reference_sha256: str
+    output_identity_sha256: str
     sector_realized_variance: float | None
     sector_realized_volatility: float | None
     portfolio_realized_variance: float | None
@@ -145,17 +159,53 @@ def _membership_applicable(member: SectorPopulationMember) -> bool:
 def _pearson(left: tuple[float, ...], right: tuple[float, ...]) -> float | None:
     if len(left) != len(right) or len(left) < 3:
         return None
-    left_mean = sum(left) / len(left)
-    right_mean = sum(right) / len(right)
-    left_centered = tuple(value - left_mean for value in left)
-    right_centered = tuple(value - right_mean for value in right)
-    left_sum = sum(value * value for value in left_centered)
-    right_sum = sum(value * value for value in right_centered)
-    if left_sum == 0.0 or right_sum == 0.0:
+    left_min = min(left)
+    right_min = min(right)
+    if left_min == max(left) or right_min == max(right):
         return None
-    return sum(x * y for x, y in zip(left_centered, right_centered, strict=True)) / sqrt(
+    left_offsets = tuple(value - left_min for value in left)
+    right_offsets = tuple(value - right_min for value in right)
+    left_mean_offset = sum(left_offsets) / len(left_offsets)
+    right_mean_offset = sum(right_offsets) / len(right_offsets)
+    left_centered = tuple(value - left_mean_offset for value in left_offsets)
+    right_centered = tuple(value - right_mean_offset for value in right_offsets)
+    left_scale = max(abs(value) for value in left_centered)
+    right_scale = max(abs(value) for value in right_centered)
+    left_normalized = tuple(value / left_scale for value in left_centered)
+    right_normalized = tuple(value / right_scale for value in right_centered)
+    left_sum = sum(value * value for value in left_normalized)
+    right_sum = sum(value * value for value in right_normalized)
+    return sum(x * y for x, y in zip(left_normalized, right_normalized, strict=True)) / sqrt(
         left_sum * right_sum
     )
+
+
+def _output_identity(
+    sector: str,
+    session_id: str,
+    horizon: int,
+    window_index: int,
+    symbols: tuple[str, ...],
+    population_policy: str,
+    eligibility_policy: str,
+    eligibility_policy_version: str,
+    research_reference: str,
+) -> str:
+    payload = "|".join(
+        (
+            SECTOR_OUTPUT_IDENTITY_VERSION,
+            sector,
+            session_id,
+            str(horizon),
+            str(window_index),
+            ",".join(symbols),
+            population_policy,
+            eligibility_policy,
+            eligibility_policy_version,
+            research_reference,
+        )
+    )
+    return sha256(payload.encode("utf-8")).hexdigest()
 
 
 def _validate_population(population: tuple[SectorPopulationMember, ...]) -> None:
@@ -186,6 +236,10 @@ def _validate_population(population: tuple[SectorPopulationMember, ...]) -> None
         )
         if any(not value.strip() for value in texts):
             raise ValueError("sector reference: blank population field")
+        if any("|" in value for value in (row.symbol, row.sector, row.session_id)) or (
+            "," in row.symbol
+        ):
+            raise ValueError("sector reference: reserved identity delimiter")
         if (
             row.session_close <= row.session_open
             or row.membership_valid_to <= row.membership_valid_from
@@ -193,6 +247,10 @@ def _validate_population(population: tuple[SectorPopulationMember, ...]) -> None
             raise ValueError("sector reference: invalid temporal bounds")
         if row.population_policy_version != SECTOR_POPULATION_POLICY_VERSION:
             raise ValueError("sector reference: unsupported population policy")
+        if row.eligibility_policy not in ELIGIBILITY_POLICIES:
+            raise ValueError("sector reference: unsupported eligibility policy")
+        if row.eligibility_policy_version != SECTOR_ELIGIBILITY_POLICY_VERSION:
+            raise ValueError("sector reference: unsupported eligibility policy version")
         if len(row.research_reference_sha256) != 64 or any(
             character not in "0123456789abcdef" for character in row.research_reference_sha256
         ):
@@ -248,13 +306,15 @@ def _validate_returns(
 def _primary_reason(
     members: tuple[SectorPopulationMember, ...],
     rows: dict[str, tuple[SectorMemberReturn | None, ...]],
-    strict_historical: bool,
+    eligibility_policy: str,
 ) -> str | None:
     if any(not member.acquisition_scope for member in members):
         return OUTSIDE_ACQUISITION_SCOPE
     if any(not _membership_applicable(member) for member in members):
         return INCOMPLETE_POPULATION
-    if strict_historical and any(not _verified(member) for member in members):
+    if eligibility_policy == VERIFIED_HISTORICAL_POLICY and any(
+        not _verified(member) for member in members
+    ):
         return UNVERIFIED_HISTORY
     if any(all(item is None for item in rows[member.symbol]) for member in members):
         return MISSING_EXPECTED_MEMBER
@@ -280,7 +340,6 @@ def calculate_sector_measurements(
     *,
     horizons: tuple[int, ...] = HORIZONS,
     thresholds: tuple[SectorThreshold, ...] = (),
-    strict_historical: bool = True,
 ) -> SectorMeasurements:
     """Calculate complete-population fixed-window sector measurements without gap filling."""
     _validate_population(population)
@@ -291,6 +350,7 @@ def calculate_sector_measurements(
     ):
         raise ValueError("sector reference: unsupported or duplicate horizon")
     by_return = _validate_returns(population, returns)
+    population_threshold_keys = {(row.symbol, row.sector) for row in population}
     threshold_map: dict[tuple[str, str, int], float] = {}
     for threshold in thresholds:
         if (
@@ -300,6 +360,8 @@ def calculate_sector_measurements(
         ):
             raise ValueError("sector reference: invalid threshold")
         key = (threshold.symbol, threshold.sector, threshold.horizon)
+        if (threshold.symbol, threshold.sector) not in population_threshold_keys:
+            raise ValueError("sector reference: threshold outside expected population")
         if key in threshold_map:
             raise ValueError("sector reference: duplicate threshold")
         threshold_map[key] = threshold.realized_volatility_threshold
@@ -319,6 +381,8 @@ def calculate_sector_measurements(
                 member.membership_version,
                 member.universe_version,
                 member.population_policy_version,
+                member.eligibility_policy,
+                member.eligibility_policy_version,
                 member.research_reference_sha256,
             )
             for member in members
@@ -340,7 +404,18 @@ def calculate_sector_measurements(
                     )
                     for member in members
                 }
-                reason = _primary_reason(members, member_rows, strict_historical)
+                reason = _primary_reason(members, member_rows, first.eligibility_policy)
+                output_identity = _output_identity(
+                    sector,
+                    session_id,
+                    horizon,
+                    index,
+                    tuple(member.symbol for member in members),
+                    first.population_policy_version,
+                    first.eligibility_policy,
+                    first.eligibility_policy_version,
+                    first.research_reference_sha256,
+                )
                 expected = len(members)
                 acquired = sum(member.acquisition_scope for member in members)
                 verified = sum(_verified(member) for member in members)
@@ -458,6 +533,9 @@ def calculate_sector_measurements(
                             horizon,
                             window_start,
                             window_end,
+                            first.eligibility_policy,
+                            first.eligibility_policy_version,
+                            output_identity,
                             left.symbol,
                             right.symbol,
                             value,
@@ -497,7 +575,10 @@ def calculate_sector_measurements(
                         len(valid_correlations),
                         all(_membership_applicable(member) for member in members),
                         first.population_policy_version,
+                        first.eligibility_policy,
+                        first.eligibility_policy_version,
                         first.research_reference_sha256,
+                        output_identity,
                         sector_variance,
                         sector_volatility,
                         portfolio_variance,

@@ -5,6 +5,8 @@ from typing import TYPE_CHECKING
 
 from labgdd.analytics.sector import (
     CONSTANT_SERIES,
+    DECLARED_RESEARCH_POLICY,
+    ELIGIBILITY_POLICIES,
     INCOMPLETE_CALIBRATION,
     INCOMPLETE_POPULATION,
     INELIGIBLE_INDIVIDUAL_RETURN,
@@ -12,8 +14,11 @@ from labgdd.analytics.sector import (
     MISSING_EXPECTED_MEMBER,
     MISSING_OBSERVED_BAR,
     OUTSIDE_ACQUISITION_SCOPE,
+    SECTOR_ELIGIBILITY_POLICY_VERSION,
+    SECTOR_OUTPUT_IDENTITY_VERSION,
     SECTOR_POPULATION_POLICY_VERSION,
     UNVERIFIED_HISTORY,
+    VERIFIED_HISTORICAL_POLICY,
 )
 
 if TYPE_CHECKING:
@@ -55,6 +60,8 @@ def sector_population_schema() -> "StructType":
             StructField("sector_classification_status", text, required),
             StructField("acquisition_scope", BooleanType(), required),
             StructField("population_policy_version", text, required),
+            StructField("eligibility_policy", text, required),
+            StructField("eligibility_policy_version", text, required),
             StructField("research_reference_sha256", text, required),
             StructField("input_authority", text, required),
             StructField("expected_plan_sha256", text, required),
@@ -130,6 +137,7 @@ def _validate_inputs(population: "DataFrame", returns: "DataFrame") -> None:
         | (F.col("timeframe") != "1Min")
         | (F.col("adjustment") != "raw")
         | ~F.col("symbol").rlike(r"^[A-Z][A-Z0-9.-]{0,15}$")
+        | F.col("sector").contains("|")
         | ~F.col("session_id").rlike(r"^\d{4}-\d{2}-\d{2}$")
         | ~F.col("session_membership_status").isin(
             "full_session", "partial_session", "membership_change_during_session"
@@ -141,6 +149,8 @@ def _validate_inputs(population: "DataFrame", returns: "DataFrame") -> None:
             "project_defined_unverified", "independently_verified"
         )
         | (F.col("population_policy_version") != SECTOR_POPULATION_POLICY_VERSION)
+        | ~F.col("eligibility_policy").isin(*sorted(ELIGIBILITY_POLICIES))
+        | (F.col("eligibility_policy_version") != SECTOR_ELIGIBILITY_POLICY_VERSION)
         | ~F.col("research_reference_sha256").rlike(r"^[0-9a-f]{64}$")
         | ~F.col("expected_plan_sha256").rlike(r"^[0-9a-f]{64}$")
         | (F.col("input_authority") != "synthetic_fixture")
@@ -174,6 +184,8 @@ def _validate_inputs(population: "DataFrame", returns: "DataFrame") -> None:
         "membership_version",
         "universe_version",
         "population_policy_version",
+        "eligibility_policy",
+        "eligibility_policy_version",
         "research_reference_sha256",
         "input_authority",
         "expected_plan_sha256",
@@ -272,7 +284,6 @@ def transform_sector_gold(
     horizons: tuple[int, ...],
     *,
     thresholds: "DataFrame | None" = None,
-    strict_historical: bool = True,
 ) -> SectorGoldFrames:
     """Calculate fixed-window sector metrics from explicit population and return authorities."""
     from pyspark.sql import functions as F
@@ -362,6 +373,8 @@ def transform_sector_gold(
         "sector_classification_status",
         "acquisition_scope",
         "population_policy_version",
+        "eligibility_policy",
+        "eligibility_policy_version",
         "research_reference_sha256",
         "input_authority",
         "expected_plan_sha256",
@@ -403,7 +416,10 @@ def transform_sector_gold(
             "member_eligible",
             F.col("acquisition_scope")
             & F.col("membership_applicable")
-            & (~F.lit(strict_historical) | F.col("historically_verified"))
+            & (
+                (F.col("eligibility_policy") == DECLARED_RESEARCH_POLICY)
+                | F.col("historically_verified")
+            )
             & (F.col("expected_return_slots") == F.col("horizon"))
             & (F.col("eligible_slots") == F.col("horizon")),
         )
@@ -443,6 +459,8 @@ def transform_sector_gold(
         "membership_version",
         "universe_version",
         "population_policy_version",
+        "eligibility_policy",
+        "eligibility_policy_version",
         "research_reference_sha256",
         "input_authority",
         "expected_plan_sha256",
@@ -484,7 +502,7 @@ def transform_sector_gold(
         )
         .when(~F.col("membership_applicable"), F.lit(INCOMPLETE_POPULATION))
         .when(
-            F.lit(strict_historical)
+            (F.col("eligibility_policy") == VERIFIED_HISTORICAL_POLICY)
             & (F.col("historically_verified_members") < F.col("expected_members")),
             F.lit(UNVERIFIED_HISTORY),
         )
@@ -523,6 +541,25 @@ def transform_sector_gold(
         )
         .withColumn(
             "expected_pairs", F.col("expected_members") * (F.col("expected_members") - 1) / 2
+        )
+        .withColumn(
+            "output_identity_sha256",
+            F.sha2(
+                F.concat_ws(
+                    "|",
+                    F.lit(SECTOR_OUTPUT_IDENTITY_VERSION),
+                    F.col("sector"),
+                    F.col("session_id"),
+                    F.col("horizon").cast("string"),
+                    F.col("window_index").cast("string"),
+                    F.concat_ws(",", F.col("expected_symbols")),
+                    F.col("population_policy_version"),
+                    F.col("eligibility_policy"),
+                    F.col("eligibility_policy_version"),
+                    F.col("research_reference_sha256"),
+                ),
+                256,
+            ),
         )
         .withColumn(
             "sector_realized_variance",
@@ -689,15 +726,37 @@ def transform_sector_gold(
     left_vector = F.col("left.return_vector")
     right_vector = F.col("right.return_vector")
     horizon = F.col("left.horizon")
-    left_mean = F.aggregate(left_vector, F.lit(0.0), lambda total, value: total + value) / horizon
-    right_mean = F.aggregate(right_vector, F.lit(0.0), lambda total, value: total + value) / horizon
+    left_min = F.array_min(left_vector)
+    left_max = F.array_max(left_vector)
+    right_min = F.array_min(right_vector)
+    right_max = F.array_max(right_vector)
+    left_offsets = F.transform(left_vector, lambda value: value - left_min)
+    right_offsets = F.transform(right_vector, lambda value: value - right_min)
+    left_mean_offset = (
+        F.aggregate(left_offsets, F.lit(0.0), lambda total, value: total + value) / horizon
+    )
+    right_mean_offset = (
+        F.aggregate(right_offsets, F.lit(0.0), lambda total, value: total + value) / horizon
+    )
+    left_scale = F.when(left_min == left_max, F.lit(1.0)).otherwise(
+        F.greatest(F.abs(left_mean_offset), F.abs((left_max - left_min) - left_mean_offset))
+    )
+    right_scale = F.when(right_min == right_max, F.lit(1.0)).otherwise(
+        F.greatest(F.abs(right_mean_offset), F.abs((right_max - right_min) - right_mean_offset))
+    )
+    normalized_left = F.transform(
+        left_offsets, lambda value: (value - left_mean_offset) / left_scale
+    )
+    normalized_right = F.transform(
+        right_offsets, lambda value: (value - right_mean_offset) / right_scale
+    )
     products = F.zip_with(
-        left_vector,
-        right_vector,
+        normalized_left,
+        normalized_right,
         lambda left, right: F.struct(
-            ((left - left_mean) * (right - right_mean)).alias("cross"),
-            F.pow(left - left_mean, 2).alias("left_square"),
-            F.pow(right - right_mean, 2).alias("right_square"),
+            (left * right).alias("cross"),
+            F.pow(left, 2).alias("left_square"),
+            F.pow(right, 2).alias("right_square"),
         ),
     )
     cross = F.aggregate(products, F.lit(0.0), lambda total, item: total + item["cross"])
@@ -707,7 +766,7 @@ def transform_sector_gold(
     )
     pair_eligible = F.col("left.member_eligible") & F.col("right.member_eligible")
     pair_reason = F.when(~pair_eligible, F.lit(INCOMPLETE_POPULATION)).when(
-        (left_square == 0) | (right_square == 0), F.lit(CONSTANT_SERIES)
+        (left_min == left_max) | (right_min == right_max), F.lit(CONSTANT_SERIES)
     )
     raw_correlations = pair_base.select(
         F.col("left.sector").alias("sector"),
@@ -737,6 +796,9 @@ def transform_sector_gold(
         "horizon",
         "window_start",
         "window_end",
+        "eligibility_policy",
+        "eligibility_policy_version",
+        "output_identity_sha256",
         F.col("reason").alias("sector_reason"),
     )
     correlations = (
@@ -754,9 +816,28 @@ def transform_sector_gold(
         "sector", "session_id", "horizon", "window_start", "window_end"
     ).agg(
         F.count(F.when(F.col("eligible"), 1)).alias("valid_pairs"),
-        F.avg(F.when(F.col("eligible"), F.col("value"))).alias("candidate_mean_correlation"),
+        F.sort_array(
+            F.collect_list(
+                F.when(
+                    F.col("eligible"),
+                    F.struct("left_symbol", "right_symbol", "value"),
+                )
+            )
+        ).alias("ordered_valid_pairs"),
         F.max(F.when(F.col("reason") == CONSTANT_SERIES, 1).otherwise(0)).alias("constant_pair"),
     )
+    pair_summary = pair_summary.withColumn(
+        "candidate_mean_correlation",
+        F.when(
+            F.col("valid_pairs") > 0,
+            F.aggregate(
+                "ordered_valid_pairs",
+                F.lit(0.0),
+                lambda total, item: total + item["value"],
+            )
+            / F.col("valid_pairs"),
+        ),
+    ).drop("ordered_valid_pairs")
     windows = (
         sectors.join(
             pair_summary,
@@ -790,6 +871,7 @@ def transform_sector_gold(
             F.col("expected_pairs").cast("int").alias("expected_pairs"),
             F.col("valid_pairs").cast("int").alias("valid_pairs"),
             "membership_applicable",
+            "output_identity_sha256",
             "sector_realized_variance",
             "sector_realized_volatility",
             "portfolio_realized_variance",

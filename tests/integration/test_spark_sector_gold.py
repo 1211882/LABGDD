@@ -7,11 +7,15 @@ from typing import Any
 import pytest
 
 from labgdd.analytics.sector import (
+    CONSTANT_SERIES,
+    DECLARED_RESEARCH_POLICY,
     INCOMPLETE_POPULATION,
     MISSING_EXPECTED_MEMBER,
     MISSING_OBSERVED_BAR,
     OUTSIDE_ACQUISITION_SCOPE,
+    SECTOR_ELIGIBILITY_POLICY_VERSION,
     UNVERIFIED_HISTORY,
+    VERIFIED_HISTORICAL_POLICY,
     SectorMemberReturn,
     SectorPopulationMember,
     SectorThreshold,
@@ -59,6 +63,7 @@ def population(
     outside_scope: set[str] | None = None,
     verified: bool = True,
     membership_status: str = "full_session",
+    eligibility_policy: str = VERIFIED_HISTORICAL_POLICY,
 ) -> tuple[SectorPopulationMember, ...]:
     outside_scope = outside_scope or set()
     return tuple(
@@ -79,6 +84,8 @@ def population(
             "independently_verified" if verified else "project_defined_unverified",
             symbol not in outside_scope,
             "sector-complete-population-v1",
+            eligibility_policy,
+            SECTOR_ELIGIBILITY_POLICY_VERSION,
             FINGERPRINT,
         )
         for symbol in symbols
@@ -137,6 +144,8 @@ def population_frame(spark: Any, members: tuple[SectorPopulationMember, ...]) ->
             row.sector_classification_status,
             row.acquisition_scope,
             row.population_policy_version,
+            row.eligibility_policy,
+            row.eligibility_policy_version,
             row.research_reference_sha256,
             "synthetic_fixture",
             PLAN,
@@ -182,7 +191,7 @@ def assert_number(actual: float | None, expected: float | None) -> None:
 def test_native_spark_matches_scalar_all_horizons_and_partition_orders(spark: Any) -> None:
     symbols = ("AAPL", "MSFT", "NVDA", "ORCL", "ADBE")
     members = population(symbols) + population(("XOM",), sector="Energy")
-    values = {
+    values: dict[str, tuple[float, ...]] = {
         symbol: tuple(
             (symbol_index + 1) * (1 if minute % 3 else -2) * 0.0001 for minute in range(60)
         )
@@ -249,6 +258,9 @@ def test_native_spark_matches_scalar_all_horizons_and_partition_orders(spark: An
         assert row.expected_members == expected_window.expected_members
         assert row.valid_pairs == expected_window.valid_pairs
         assert row.reason == expected_window.reason
+        assert row.eligibility_policy == expected_window.eligibility_policy
+        assert row.eligibility_policy_version == expected_window.eligibility_policy_version
+        assert row.output_identity_sha256 == expected_window.output_identity_sha256
     actual_pairs = {
         (
             row.sector,
@@ -281,6 +293,9 @@ def test_native_spark_matches_scalar_all_horizons_and_partition_orders(spark: An
         assert_number(row.value, expected_pair.value)
         assert row.eligible == expected_pair.eligible
         assert row.reason == expected_pair.reason
+        assert row.eligibility_policy == expected_pair.eligibility_policy
+        assert row.eligibility_policy_version == expected_pair.eligibility_policy_version
+        assert row.output_identity_sha256 == expected_pair.output_identity_sha256
 
 
 @pytest.mark.parametrize(
@@ -335,3 +350,128 @@ def test_spark_rejects_duplicate_returns_and_wrong_types(spark: Any) -> None:
     wrong_type = valid_frame.withColumn("observed_bars", valid_frame.observed_bars.cast("long"))
     with pytest.raises(ValueError, match="invalid return schema or types"):
         transform_sector_gold(population_frame(spark, members), wrong_type, (5,))
+
+
+def test_spark_constant_and_near_constant_correlation_parity_all_horizons(spark: Any) -> None:
+    from math import inf, nextafter
+
+    from pyspark.sql import functions as F
+
+    sectors = {
+        "Positive": (("POS1", "POS2"), 0.0025),
+        "Negative": (("NEG1", "NEG2"), -0.0025),
+        "Zero": (("ZER1", "ZER2"), 0.0),
+    }
+    members = tuple(
+        member
+        for sector, (symbols, _) in sectors.items()
+        for member in population(symbols, sector=sector)
+    )
+    low = 1.0e-12
+    high = nextafter(low, inf)
+    near_members = population(("NAR1", "NAR2"), sector="Near")
+    members += near_members
+    values: dict[str, tuple[float, ...]] = {
+        symbol: (constant,) * 60 for symbols, constant in sectors.values() for symbol in symbols
+    }
+    values["NAR1"] = tuple(low if index % 2 else high for index in range(60))
+    values["NAR2"] = tuple(high if index % 2 else low for index in range(60))
+    member_returns = returns(members, values)
+    expected = calculate_sector_measurements(members, member_returns)
+    first = transform_sector_gold(
+        population_frame(spark, members).repartition(4),
+        return_frame(spark, member_returns).repartition(2),
+        (5, 15, 30, 60),
+    )
+    second = transform_sector_gold(
+        population_frame(spark, tuple(reversed(members))).repartition(2),
+        return_frame(spark, tuple(reversed(member_returns))).repartition(5),
+        (5, 15, 30, 60),
+    )
+    assert first.windows.exceptAll(second.windows).count() == 0
+    assert second.windows.exceptAll(first.windows).count() == 0
+    actual = {
+        (row.sector, row.horizon, row.window_start_us): row
+        for row in first.windows.select(
+            "*", F.unix_micros("window_start").alias("window_start_us")
+        ).collect()
+    }
+    for scalar in expected.windows:
+        row = actual[
+            (scalar.sector, scalar.horizon, int(scalar.window_start.timestamp() * 1_000_000))
+        ]
+        assert row.output_identity_sha256 == scalar.output_identity_sha256
+        if scalar.sector == "Near":
+            assert row.correlation_reason is None
+            assert_number(row.mean_pairwise_correlation, -1.0)
+        else:
+            assert row.correlation_reason == CONSTANT_SERIES
+            assert row.mean_pairwise_correlation is None
+
+
+def test_spark_policy_provenance_validation_and_identity(spark: Any) -> None:
+    from pyspark.sql import functions as F
+
+    symbols = ("AAPL", "MSFT")
+    values = {"AAPL": (0.01, -0.01, 0.02, -0.02, 0.03), "MSFT": (0.005,) * 5}
+    strict_members = population(symbols, minutes=6)
+    declared_members = population(symbols, minutes=6, eligibility_policy=DECLARED_RESEARCH_POLICY)
+    strict = transform_sector_gold(
+        population_frame(spark, strict_members),
+        return_frame(spark, returns(strict_members, values)),
+        (5,),
+    ).windows.first()
+    declared = transform_sector_gold(
+        population_frame(spark, declared_members),
+        return_frame(spark, returns(declared_members, values)),
+        (5,),
+    ).windows.first()
+    assert strict is not None and declared is not None
+    assert strict.eligibility_policy == VERIFIED_HISTORICAL_POLICY
+    assert declared.eligibility_policy == DECLARED_RESEARCH_POLICY
+    assert strict.eligibility_policy_version == SECTOR_ELIGIBILITY_POLICY_VERSION
+    assert strict.output_identity_sha256 != declared.output_identity_sha256
+    unknown = population_frame(spark, strict_members).withColumn(
+        "eligibility_policy", F.lit("unknown")
+    )
+    with pytest.raises(ValueError, match="invalid population authority"):
+        transform_sector_gold(unknown, return_frame(spark, returns(strict_members, values)), (5,))
+    missing = population_frame(spark, strict_members).drop("eligibility_policy")
+    with pytest.raises(ValueError, match="invalid population schema or types"):
+        transform_sector_gold(missing, return_frame(spark, returns(strict_members, values)), (5,))
+
+
+def test_spark_threshold_validation_and_reason_precedence(spark: Any) -> None:
+    from math import inf
+
+    members = population(
+        ("AAPL", "MSFT"),
+        minutes=6,
+        outside_scope={"MSFT"},
+        verified=False,
+        membership_status="membership_change_during_session",
+    )
+    values = {"AAPL": (0.01,) * 5, "MSFT": (0.02,) * 5}
+    result = transform_sector_gold(
+        population_frame(spark, members), return_frame(spark, returns(members, values)), (5,)
+    )
+    window = result.windows.first()
+    assert window is not None
+    assert window.reason == OUTSIDE_ACQUISITION_SCOPE
+
+    complete = population(("AAPL",), minutes=6)
+    complete_returns = returns(complete, {"AAPL": (0.01,) * 5})
+    valid = SectorThreshold("AAPL", "Technology", 5, 0.0)
+    for rows, match in (
+        ((SectorThreshold("MSFT", "Technology", 5, 0.0),), "outside expected population"),
+        ((valid, valid), "duplicate threshold"),
+        ((valid, SectorThreshold("AAPL", "Technology", 5, 1.0)), "duplicate threshold"),
+        ((SectorThreshold("AAPL", "Technology", 5, inf),), "invalid threshold"),
+    ):
+        with pytest.raises(ValueError, match=match):
+            transform_sector_gold(
+                population_frame(spark, complete),
+                return_frame(spark, complete_returns),
+                (5,),
+                thresholds=threshold_frame(spark, rows),
+            )

@@ -1,16 +1,20 @@
 from collections.abc import Mapping
+from dataclasses import replace
 from datetime import UTC, datetime, timedelta
-from math import exp, isclose, log, sqrt
+from math import exp, inf, isclose, log, nextafter, sqrt
 
 import pytest
 
 from labgdd.analytics.sector import (
     CONSTANT_SERIES,
+    DECLARED_RESEARCH_POLICY,
     INCOMPLETE_POPULATION,
     MISSING_EXPECTED_MEMBER,
     MISSING_OBSERVED_BAR,
     OUTSIDE_ACQUISITION_SCOPE,
+    SECTOR_ELIGIBILITY_POLICY_VERSION,
     UNVERIFIED_HISTORY,
+    VERIFIED_HISTORICAL_POLICY,
     SectorMemberReturn,
     SectorPopulationMember,
     SectorThreshold,
@@ -29,6 +33,7 @@ def population(
     outside_scope: set[str] | None = None,
     verified: bool = True,
     membership_status: str = "full_session",
+    eligibility_policy: str = VERIFIED_HISTORICAL_POLICY,
 ) -> tuple[SectorPopulationMember, ...]:
     outside_scope = outside_scope or set()
     return tuple(
@@ -49,6 +54,8 @@ def population(
             "independently_verified" if verified else "project_defined_unverified",
             symbol not in outside_scope,
             "sector-complete-population-v1",
+            eligibility_policy,
+            SECTOR_ELIGIBILITY_POLICY_VERSION,
             FINGERPRINT,
         )
         for symbol in symbols
@@ -195,10 +202,17 @@ def test_scope_membership_and_historical_evidence_fail_closed() -> None:
     assert unverified_window.reason == UNVERIFIED_HISTORY
     assert changed_window.reason == INCOMPLETE_POPULATION
     declared_window = calculate_sector_measurements(
-        unverified,
-        member_returns(unverified, values),
+        population(symbols, minutes=6, verified=False, eligibility_policy=DECLARED_RESEARCH_POLICY),
+        member_returns(
+            population(
+                symbols,
+                minutes=6,
+                verified=False,
+                eligibility_policy=DECLARED_RESEARCH_POLICY,
+            ),
+            values,
+        ),
         horizons=(5,),
-        strict_historical=False,
     ).windows[0]
     assert declared_window.eligible
 
@@ -243,3 +257,127 @@ def test_invalid_or_duplicate_inputs_are_rejected() -> None:
     with pytest.raises(ValueError, match="duplicate member return"):
         calculate_sector_measurements(members, rows + (rows[0],), horizons=(5,))
     assert isclose(rows[0].value or 0.0, 0.01)
+
+
+@pytest.mark.parametrize("constant", (0.0, 0.0025, -0.0025))
+@pytest.mark.parametrize("horizon", (5, 15, 30, 60))
+def test_constant_correlations_are_null_for_every_horizon(constant: float, horizon: int) -> None:
+    members = population(("AAPL", "MSFT"), minutes=horizon + 1)
+    values = {symbol: (constant,) * horizon for symbol in ("AAPL", "MSFT")}
+    result = calculate_sector_measurements(
+        members, member_returns(members, values), horizons=(horizon,)
+    )
+    assert len(result.windows) == 1
+    assert result.windows[0].correlation_reason == CONSTANT_SERIES
+    assert result.windows[0].mean_pairwise_correlation is None
+    assert result.correlations[0].reason == CONSTANT_SERIES
+    assert result.correlations[0].value is None
+
+
+@pytest.mark.parametrize("horizon", (5, 15, 30, 60))
+def test_near_constant_but_varying_correlations_remain_defined(horizon: int) -> None:
+    members = population(("AAPL", "MSFT"), minutes=horizon + 1)
+    low = 1.0e-12
+    high = nextafter(low, inf)
+    left = tuple(low if index % 2 else high for index in range(horizon))
+    right = tuple(high if index % 2 else low for index in range(horizon))
+    result = calculate_sector_measurements(
+        members,
+        member_returns(members, {"AAPL": left, "MSFT": right}),
+        horizons=(horizon,),
+    )
+    assert result.windows[0].correlation_reason is None
+    assert result.windows[0].mean_pairwise_correlation == pytest.approx(-1.0)
+    assert result.correlations[0].eligible
+    assert result.correlations[0].value == pytest.approx(-1.0)
+
+
+def test_eligibility_policy_is_validated_and_changes_output_identity() -> None:
+    symbols = ("AAPL", "MSFT")
+    values = {"AAPL": (0.01, -0.01, 0.02, -0.02, 0.03), "MSFT": values_for_policy()}
+    strict_members = population(symbols, minutes=6)
+    declared_members = population(symbols, minutes=6, eligibility_policy=DECLARED_RESEARCH_POLICY)
+    strict = calculate_sector_measurements(
+        strict_members, member_returns(strict_members, values), horizons=(5,)
+    ).windows[0]
+    declared = calculate_sector_measurements(
+        declared_members, member_returns(declared_members, values), horizons=(5,)
+    ).windows[0]
+    assert strict.eligibility_policy == VERIFIED_HISTORICAL_POLICY
+    assert declared.eligibility_policy == DECLARED_RESEARCH_POLICY
+    assert strict.eligibility_policy_version == SECTOR_ELIGIBILITY_POLICY_VERSION
+    assert strict.output_identity_sha256 != declared.output_identity_sha256
+    assert len(strict.output_identity_sha256) == 64
+    with pytest.raises(ValueError, match="unsupported eligibility policy"):
+        calculate_sector_measurements(
+            tuple(replace(row, eligibility_policy="") for row in strict_members),
+            member_returns(strict_members, values),
+            horizons=(5,),
+        )
+    with pytest.raises(ValueError, match="unsupported eligibility policy"):
+        calculate_sector_measurements(
+            tuple(replace(row, eligibility_policy="unknown") for row in strict_members),
+            member_returns(strict_members, values),
+            horizons=(5,),
+        )
+
+
+def values_for_policy() -> tuple[float, ...]:
+    return (0.005, -0.003, 0.004, -0.002, 0.001)
+
+
+def test_scalar_threshold_validation_matches_population_contract() -> None:
+    members = population(("AAPL",), minutes=6)
+    rows = member_returns(members, {"AAPL": (0.01,) * 5})
+    valid = SectorThreshold("AAPL", "Technology", 5, 0.0)
+    calculate_sector_measurements(members, rows, horizons=(5,), thresholds=(valid,))
+    for threshold, match in (
+        (SectorThreshold("MSFT", "Technology", 5, 0.0), "outside expected population"),
+        (SectorThreshold("AAPL", "Energy", 5, 0.0), "outside expected population"),
+        (SectorThreshold("AAPL", "Technology", 7, 0.0), "invalid threshold"),
+        (SectorThreshold("AAPL", "Technology", 5, inf), "invalid threshold"),
+        (SectorThreshold("AAPL", "Technology", 5, float("nan")), "invalid threshold"),
+        (SectorThreshold("AAPL", "Technology", 5, -1.0), "invalid threshold"),
+    ):
+        with pytest.raises(ValueError, match=match):
+            calculate_sector_measurements(members, rows, horizons=(5,), thresholds=(threshold,))
+    with pytest.raises(ValueError, match="duplicate threshold"):
+        calculate_sector_measurements(
+            members,
+            rows,
+            horizons=(5,),
+            thresholds=(valid, replace(valid, realized_volatility_threshold=1.0)),
+        )
+
+
+def test_reason_precedence_is_normative() -> None:
+    symbols = ("AAPL", "MSFT")
+    values = {"AAPL": (0.01,) * 5, "MSFT": (0.02,) * 5}
+    outside = population(
+        symbols,
+        minutes=6,
+        outside_scope={"MSFT"},
+        verified=False,
+        membership_status="membership_change_during_session",
+    )
+    assert (
+        calculate_sector_measurements(outside, member_returns(outside, values), horizons=(5,))
+        .windows[0]
+        .reason
+        == OUTSIDE_ACQUISITION_SCOPE
+    )
+    membership = population(
+        symbols,
+        minutes=6,
+        verified=False,
+        membership_status="membership_change_during_session",
+    )
+    assert (
+        calculate_sector_measurements(membership, tuple(), horizons=(5,)).windows[0].reason
+        == INCOMPLETE_POPULATION
+    )
+    unverified = population(symbols, minutes=6, verified=False)
+    assert (
+        calculate_sector_measurements(unverified, tuple(), horizons=(5,)).windows[0].reason
+        == UNVERIFIED_HISTORY
+    )

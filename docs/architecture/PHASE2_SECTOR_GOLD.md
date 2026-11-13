@@ -1,7 +1,7 @@
 # Phase 2 Milestone 8: Sector Gold calculation foundation
 
-Status: synthetic calculation candidate; no Sector Gold publication exists.
-Date: 2026-11-12. Measurement specification: 2.0.0.
+Status: accepted synthetic calculation contract; no Sector Gold publication exists.
+Date: 2026-11-13. Measurement specification: 2.0.0.
 
 ## Scope and authority
 
@@ -32,10 +32,16 @@ the complete expected member set. The outputs preserve:
 - expected/valid correlation-pair counts;
 - population-policy version and research-reference SHA-256.
 
-`strict_historical=True` requires independently verified applicability, listing,
-entity identity and sector classification for every expected member. Declared-only
-synthetic policy is supported explicitly for formula testing but must not be
-described as verified history.
+Verified historical applicability requires independently verified applicability,
+listing, entity identity and sector classification for every expected member.
+Declared-only synthetic policy is supported explicitly for formula testing but must
+not be described as verified history. The former calculation boolean is replaced by
+required population provenance:
+`eligibility_policy` is exactly `declared_research` or
+`verified_historical_applicability`, and `eligibility_policy_version` is exactly
+`sector-eligibility-policy-v1`. These values are homogeneous within a sector/session,
+preserved in window and pair outputs, and bound into `sector-output-identity-v1`.
+Missing, unknown or contradictory policy values are rejected.
 
 The primary fail-closed reasons are `missing_expected_member`,
 `member_outside_acquisition_scope`, `missing_observed_bar`,
@@ -43,6 +49,18 @@ The primary fail-closed reasons are `missing_expected_member`,
 `insufficient_valid_pairs`, `constant_return_series`,
 `unverified_historical_applicability` and `incomplete_sector_population`.
 `incomplete_threshold_calibration` applies specifically to threshold breadth.
+
+Their normative primary precedence is:
+
+1. `member_outside_acquisition_scope`;
+2. `incomplete_sector_population`;
+3. `unverified_historical_applicability`;
+4. `missing_expected_member`;
+5. `missing_observed_bar`;
+6. `ineligible_individual_return`.
+
+Correlation, concentration, pair-count and calibration undefined states remain
+metric-specific and do not replace a primary population/observation failure.
 
 ## Measurements
 
@@ -63,6 +81,10 @@ The implementation preserves the definitions in `MEASUREMENTS.md`:
 Zero realized variance is valid. Zero total variance makes HHI/effective breadth
 and correlations undefined. A single-member sector has zero volatility dispersion
 but no pair correlation. Financial values are null for incomplete populations.
+Correlation identifies constant vectors by exact representable range (`min == max`).
+For nonconstant vectors, values are translated by the minimum before centering and
+scale-normalized before covariance products, avoiding both an arbitrary epsilon and
+loss of small but valid variation.
 
 ## Implementation boundaries
 
