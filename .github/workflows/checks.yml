@@ -6,11 +6,11 @@ jobs:
   checks:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-24.04, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.1.0
         with:
           python-version: '3.11.9'
       - run: python -m pip install --require-hashes -r requirements-dev.lock
@@ -21,7 +21,7 @@ jobs:
       - run: python -m pytest
       - run: python -m pip check
       - run: python -m build --no-isolation
-      - run: python scripts/smoke_wheel.py dist/labgdd_v2-0.2.0-py3-none-any.whl --config config/project.toml
+      - run: python scripts/smoke_wheel.py dist/labgdd_v2-0.4.0-py3-none-any.whl --config config/project.toml
       - run: python -m labgdd.runners.check --config config/project.toml
       - run: python -m labgdd.runners.ingest --check
       - run: python scripts/check_repository.py
