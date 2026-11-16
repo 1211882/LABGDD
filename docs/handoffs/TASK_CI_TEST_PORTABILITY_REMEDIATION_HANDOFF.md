@@ -6,7 +6,7 @@ Task: make tests portable across clean CI checkouts while preserving strict publ
 
 ## 2. Repository and Git State
 
-Canonical repository C:\Users\Deus\Documents\LABGDD; branch main. Starting HEAD a08a5f7d6fa1feaf25d83f26e120a39af43c1725 preserves the prior local documentation commit. Origin https://github.com/1211882/LABGDD.git. Commit, push and remote verification are pending. No tags or history rewriting.
+Canonical repository C:\Users\Deus\Documents\LABGDD; branch main. Starting HEAD a08a5f7d6fa1feaf25d83f26e120a39af43c1725 preserves the prior local documentation commit. Origin https://github.com/1211882/LABGDD.git. Correction commit 268cc9c0cbce25062dd1b828316d01f7a99c6dcc pushed normally after fetch and ancestry verification; ls-remote matched. Final documentation commit is self-referential and its SHA will be given in the final response. No tags or history rewriting.
 
 ## 3. Initial State and Dependencies
 
@@ -39,6 +39,8 @@ tests/integration/test_spark_expected_series.py: optional evidence boundary and 
 VERIFIED focused pytest selection configuration_check or optional_aapl: 6 passed, 14 deselected in 4.44 seconds. Present real AAPL parity test: 1 passed in 207.63 seconds; Windows emitted nonfatal post-exit cleanup Access denied. Ruff format: 78 files formatted; Ruff lint, strict mypy (78 files), pip check, repository security (173 candidates including this document) and git diff --check passed. Build and clean-wheel smoke passed in a secret-free tracked-file copy. Full Linux suite runs network-disabled with no developer data directory; interrupted initial session had no retrievable final summary and is not counted as passed. A rerun reported 311 passed, 1 skipped and 2 environment failures in 397.42 seconds because the local test image lacked Git. Git was installed into a separate temporary validation image, never the production image; an initial entrypoint mismatch was corrected with explicit python -m pytest. All 5 Git/architecture tests then passed in 0.32 seconds; complete rerun pending. Remote results pending.
 
 Final complete network-isolated Linux rerun with Git available: 313 passed, 1 skipped in 358.52 seconds. Only the absent real AAPL publication was skipped; synthetic integration and publication tests executed. The tracked-file copy initially had no data directory and no developer datasets were mounted.
+
+VERIFIED GitHub Actions run https://github.com/1211882/LABGDD/actions/runs/43934206966 tests correction commit 268cc9c0cbce25062dd1b828316d01f7a99c6dcc. Ubuntu 24.04 job 133534374839 succeeded: 313 passed, 1 expected absent-evidence skip in 237.28 seconds; build, clean-wheel smoke, CLI and repository security steps succeeded (173 candidates). Windows job 133534374423 failed: 308 passed, 3 skipped, 3 failed in 789.56 seconds. The three invalid-manifest regression cases hit request fingerprint mismatch first because Windows checkout changed the copied request to CRLF. The temporary fixture registry now binds to the copied request's actual bytes, with explicit LF/CRLF variants; the real registry is unchanged. Focused rerun: 9 passed, 14 deselected in 3.31 seconds. Follow-up remote execution pending. User subsequently authorized starting Milestone 9 without waiting for Windows; that waiver does not establish Windows success.
 
 ## 10. Quantitative Results
 

@@ -1,5 +1,6 @@
 import os
 import sys
+import tomllib
 from dataclasses import replace
 from datetime import UTC, date, datetime, timedelta
 from decimal import Decimal
@@ -11,6 +12,7 @@ from uuid import UUID
 import pyarrow.dataset as ds
 import pytest
 
+from labgdd.adapters.bronze import sha256
 from labgdd.adapters.calendar import xnys_snapshot
 from labgdd.adapters.silver import ApprovedSilver, resolve_approved_silver
 from labgdd.analytics.individual import ReferenceBar, calculate_individual_measurements
@@ -580,10 +582,11 @@ def test_optional_aapl_absent_evidence_skips(tmp_path: Path) -> None:
 
 
 @pytest.mark.parametrize("manifest_content", (None, "{}", "corrupted manifest"))
+@pytest.mark.parametrize("crlf_request", (False, True))
 def test_optional_aapl_present_invalid_evidence_fails(
-    tmp_path: Path, manifest_content: str | None
+    tmp_path: Path, manifest_content: str | None, crlf_request: bool
 ) -> None:
-    _copy_aapl_configuration(tmp_path)
+    _copy_aapl_configuration(tmp_path, crlf_request=crlf_request)
     run = (
         tmp_path
         / "data/silver/dataset=silver-aapl-20260914-v1"
@@ -596,11 +599,26 @@ def test_optional_aapl_present_invalid_evidence_fails(
         _optional_approved_aapl(tmp_path)
 
 
-def _copy_aapl_configuration(root: Path) -> None:
+def _copy_aapl_configuration(root: Path, *, crlf_request: bool = False) -> None:
     config = root / "config"
     config.mkdir()
     for name in ("project.toml", "silver.toml", "silver_publications.toml"):
         (config / name).write_bytes((ROOT / "config" / name).read_bytes())
+    request = config / "silver.toml"
+    normalized = request.read_bytes().replace(b"\r\n", b"\n")
+    request.write_bytes(normalized.replace(b"\n", b"\r\n") if crlf_request else normalized)
+    # This is an isolated registry fixture, not the real publication authority.
+    # Checkout may use CRLF on Windows: bind to the fixture request's actual bytes
+    # so the invalid-manifest test reaches its intended strict validation stage.
+    registry = config / "silver_publications.toml"
+    text = registry.read_text(encoding="utf-8")
+    original = tomllib.loads(text)["authority"][0]["request_sha256"]
+    registry.write_text(
+        text.replace(
+            f'request_sha256 = "{original}"', f'request_sha256 = "{sha256(config / "silver.toml")}"'
+        ),
+        encoding="utf-8",
+    )
 
 
 def test_approved_aapl_silver_parity_without_publishing(spark: Any) -> None:
