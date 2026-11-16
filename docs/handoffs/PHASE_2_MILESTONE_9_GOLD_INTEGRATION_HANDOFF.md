@@ -3,7 +3,8 @@
 ## 1. Executive Summary
 
 Task: implement a read-only approved Expected-Series Gold to Sector Gold integration.
-Status: implementation and local validation complete, remote CI pending. Reuses accepted scalar
+Status: Completed under the user's explicit Windows-wait waiver. Local validation
+and remote Ubuntu CI passed; current Windows execution remains pending. Reuses accepted scalar
 and native Spark engines without a publication writer or new financial formulas.
 ADR 015 remains Proposed. The user explicitly authorized proceeding without waiting
 for Windows CI; this does not constitute Windows success or architecture approval.
@@ -15,8 +16,11 @@ HEAD a08a5f7d6fa1feaf25d83f26e120a39af43c1725. Portability correction
 268cc9c0cbce25062dd1b828316d01f7a99c6dcc and LF/CRLF fixture follow-up
 bdc11581076fcf5ba339c58ee5999485211067da were committed and pushed normally,
 preserving all prior ancestry. Origin https://github.com/1211882/LABGDD.git.
-Milestone 9 commit/push pending final gates; final SHA is reported after creation
-because a commit cannot contain its own hash. No approval tags or history rewriting.
+Milestone 9 implementation 55efcb3ebfd882e9d8e2745a8a32c9471346b50a was committed
+with feat(sector-gold): integrate approved expected-gold inputs, pushed normally and
+verified through ls-remote. Final documentation-only commit records these results;
+its self-referential SHA is reported in the final response. Working tree was clean
+after implementation push. No approval tags or history rewriting.
 
 ## 3. Initial State and Dependencies
 
@@ -107,7 +111,14 @@ dist/labgdd_v2-0.4.0-py3-none-any.whl --config config/project.toml: all passed.
 Build and wheel installation ran from a secret-free tracked-file copy. Full pytest
 used network-disabled Linux Docker, user 10001, explicit Python entrypoint and
 -m pytest -q -p no:cacheprovider. Repository scanner and git diff --check passed;
-repeat after final handoff/staging. Remote Milestone 9 CI pending.
+repeat after final handoff/staging.
+
+VERIFIED source-commit CI run https://github.com/1211882/LABGDD/actions/runs/43982258745:
+Ubuntu 24.04 job 133701415778 succeeded, 330 passed/2 optional-real skips in 270.66
+seconds; package build, clean-wheel smoke, CLI and repository security all passed
+(178 candidates). Windows job 133701416184 was still running pytest at final
+inspection. The user twice explicitly directed continuation without waiting for
+Windows; no final Windows count or success is claimed for Milestone 9.
 
 An initial Linux container launch lacked a nested mountpoint; creating it only in
 the disposable copy corrected the launch. First integration execution rejected
@@ -157,19 +168,24 @@ Research classification is declared, not independently verified historical listi
 entity or sector membership. IEX is venue-specific; absent bars do not prove
 exchange-wide absence. Correction finality remains unproven. No sector is complete
 in the real pilot. Threshold calibration, detection, persistence and actual Sector
-Gold publication remain excluded. Windows CI status must be reported factually.
+Gold publication remain excluded. Native approved Parquet integration tests execute
+on supported Linux; their Windows skips do not prove native Windows file handling.
+Current Windows CI remains unverified pending completion, explicitly deferred by user.
 
 ## 14. Current Project State
 
-Read-only approved input integration implemented; full real/synthetic and portable
-Linux checks passed. Commit/push and remote Milestone 9 CI pending. No real Sector
-Gold artifacts exist.
+Read-only approved input integration implemented, committed and pushed; full
+real/synthetic and portable Linux checks plus remote Ubuntu workflow passed. Windows
+is pending under user waiver. ADR 015 remains Proposed; no real Sector Gold
+artifacts or approval tags exist.
 
 ## 15. Recommended Next Step
 
-Finish final exact staged review, normal commit/push and remote job inspection.
-After completion, request architecture review of Proposed ADR 015;
-do not begin a publication or next milestone automatically.
+Architecture review of Proposed ADR 015 is the primary next task: examine exact
+authority resolution, source-bound identity, independent population, strict-policy
+nullability, replay tests and scientific limitations. Acceptance requires explicit
+review, not passing tests. Record the eventual Windows job result when available.
+Exclude publication, acquisition, calibration and another milestone unless authorized.
 
 ## 16. Decisions Requiring Approval
 
@@ -185,6 +201,6 @@ present-invalid. Retain strict source verification and complete populations.
 Do not touch LABGDD_NEW, immutable publications, registries or financial contracts.
 Do not start another milestone. Stop for unresolved integrity or scope conflicts.
 
-**Review status:** NEEDS ATTENTION
+**Review status:** READY FOR REVIEW
 
 **Next phase:** NOT STARTED

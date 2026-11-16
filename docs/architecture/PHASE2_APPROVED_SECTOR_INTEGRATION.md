@@ -36,7 +36,7 @@ It has 30 research symbols, 11,700 scheduled Gold slots, 1,861 observed bars and
 out-of-scope research members. No sector has full coverage, so complete-sector
 financial metrics must remain null with member_outside_acquisition_scope precedence.
 
-These counts are an expected validation target until executed evidence is recorded
-in the Milestone 9 handoff. Fixtures are synthetic and isolated; optional real tests
+These counts were verified by the read-only real-pilot test; executed evidence is
+recorded in the Milestone 9 handoff. Fixtures are synthetic and isolated; optional real tests
 skip only when the exact run directory is absent. Present-invalid evidence fails.
 All data and registries remain immutable. No approval tag is created.
