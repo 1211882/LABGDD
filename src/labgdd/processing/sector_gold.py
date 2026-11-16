@@ -108,17 +108,37 @@ def sector_threshold_schema() -> "StructType":
     )
 
 
-def _validate_inputs(population: "DataFrame", returns: "DataFrame") -> None:
+def _validate_inputs(
+    population: "DataFrame", returns: "DataFrame", input_authority: str = "synthetic_fixture"
+) -> None:
     from pyspark.sql import functions as F
 
     if population.sparkSession.conf.get("spark.sql.session.timeZone") != "UTC":
         raise ValueError("sector transform: Spark session timezone must be UTC")
     if returns.sparkSession is not population.sparkSession:
         raise ValueError("sector transform: inputs must share one Spark session")
-    if population.schema != sector_population_schema():
+
+    def valid_schema(frame: "DataFrame", expected: "StructType") -> bool:
+        if input_authority == "synthetic_fixture":
+            return frame.schema == expected
+        return [(field.name, field.dataType) for field in frame.schema] == [
+            (field.name, field.dataType) for field in expected
+        ]
+
+    if not valid_schema(population, sector_population_schema()):
         raise ValueError("sector transform: invalid population schema or types")
-    if returns.schema != sector_return_schema():
+    if not valid_schema(returns, sector_return_schema()):
         raise ValueError("sector transform: invalid return schema or types")
+    for frame, schema in (
+        (population, sector_population_schema()),
+        (returns, sector_return_schema()),
+    ):
+        nulls = F.lit(False)
+        for schema_field in schema:
+            if not schema_field.nullable:
+                nulls = nulls | F.col(schema_field.name).isNull()
+        if frame.filter(nulls).limit(1).count():
+            raise ValueError("sector transform: mandatory NULL field")
     text_fields = [
         field.name for field in population.schema.fields if field.dataType.typeName() == "string"
     ]
@@ -153,7 +173,7 @@ def _validate_inputs(population: "DataFrame", returns: "DataFrame") -> None:
         | (F.col("eligibility_policy_version") != SECTOR_ELIGIBILITY_POLICY_VERSION)
         | ~F.col("research_reference_sha256").rlike(r"^[0-9a-f]{64}$")
         | ~F.col("expected_plan_sha256").rlike(r"^[0-9a-f]{64}$")
-        | (F.col("input_authority") != "synthetic_fixture")
+        | (F.col("input_authority") != input_authority)
         | (F.col("session_close") <= F.col("session_open"))
         | (F.col("membership_valid_to") <= F.col("membership_valid_from"))
         | (F.pmod(F.unix_micros("session_open"), F.lit(60_000_000)) != 0)
@@ -286,6 +306,18 @@ def transform_sector_gold(
     thresholds: "DataFrame | None" = None,
 ) -> SectorGoldFrames:
     """Calculate fixed-window sector metrics from explicit population and return authorities."""
+    return _transform_sector_gold(population, returns, horizons, thresholds=thresholds)
+
+
+def _transform_sector_gold(
+    population: "DataFrame",
+    returns: "DataFrame",
+    horizons: tuple[int, ...],
+    *,
+    thresholds: "DataFrame | None" = None,
+    input_authority: str = "synthetic_fixture",
+) -> SectorGoldFrames:
+    """Internal engine; approved mode is called only by the file-owning Gold projection."""
     from pyspark.sql import functions as F
 
     if (
@@ -294,7 +326,7 @@ def transform_sector_gold(
         or any(value not in {5, 15, 30, 60} for value in horizons)
     ):
         raise ValueError("sector transform: unsupported or duplicate horizon")
-    _validate_inputs(population, returns)
+    _validate_inputs(population, returns, input_authority)
     if thresholds is not None:
         _validate_thresholds(thresholds)
         population_threshold_keys = population.select("symbol", "sector").distinct()

@@ -2,7 +2,7 @@
 
 ## 1. Executive Summary
 
-Task: make tests portable across clean CI checkouts while preserving strict publication authority. Status: local validation complete, remote validation pending. Only test code changes; no scientific or production behavior changes.
+Task: make tests portable across clean CI checkouts while preserving strict publication authority. Status: Completed. Both platform workflows passed after the LF/CRLF fixture correction. Only test code changed; no scientific or production behavior changes.
 
 ## 2. Repository and Git State
 
@@ -44,6 +44,8 @@ VERIFIED GitHub Actions run https://github.com/1211882/LABGDD/actions/runs/43934
 
 ## 10. Quantitative Results
 
+Final VERIFIED run https://github.com/1211882/LABGDD/actions/runs/43937276053 on bdc11581076fcf5ba339c58ee5999485211067da passed both workflows. Ubuntu: 316 passed, 1 expected optional-real skip in 186.35 seconds. Windows: 314 passed, 3 expected skips in 1251.90 seconds (two Linux publication cases and the optional real AAPL evidence case). Build, clean-wheel smoke, CLI and repository security checks passed on both; 173 candidates. This supersedes the pending status recorded above without concealing the earlier failures.
+
 Four new evidence regressions: absent, empty run, invalid JSON manifest and fingerprint-mismatching manifest; one additional invalid-configuration parameter case. Financial record counts are unchanged; no acquisition occurred.
 
 ## 11. Architecture Decisions
@@ -60,11 +62,11 @@ Clean CI cannot validate the optional real publication; synthetic Spark tests re
 
 ## 14. Current Project State
 
-Bounded test changes implemented and focused validations passed. Full and remote verification pending. No later milestone started.
+Bounded test changes implemented, committed and pushed; complete remote workflows passed on both operating systems. User subsequently authorized Milestone 9, whose separate handoff records its implementation and evidence.
 
 ## 15. Recommended Next Step
 
-Finish full isolated validation, review exact staged files, commit with test(ci): make Silver evidence tests portable, fetch and push fast-forward, then inspect both platform jobs and downstream build/wheel/security steps.
+Portability task is complete. Continue only the separately authorized Milestone 9 work and preserve the absent-versus-invalid evidence boundary.
 
 ## 16. Decisions Requiring Approval
 
@@ -74,6 +76,6 @@ None within authorized test-portability scope. Stop for unrelated application or
 
 Use canonical LABGDD only. Read AGENTS.md and this handoff. Preserve a08a5f7d ancestry and all immutable evidence. Never skip present-invalid evidence, weaken resolver checks, add datasets, access Alpaca or advance milestones. Record actual remote outcomes before declaring success.
 
-**Review status:** NEEDS ATTENTION
+**Review status:** READY FOR REVIEW
 
 **Next phase:** NOT STARTED
