@@ -12,7 +12,7 @@ import pyarrow.dataset as ds
 import pytest
 
 from labgdd.adapters.calendar import xnys_snapshot
-from labgdd.adapters.silver import resolve_approved_silver
+from labgdd.adapters.silver import ApprovedSilver, resolve_approved_silver
 from labgdd.analytics.individual import ReferenceBar, calculate_individual_measurements
 from labgdd.config import load_settings
 from labgdd.processing.expected_series import generate_xnys_expected_series
@@ -554,16 +554,58 @@ def test_calendar_holiday_dst_and_early_close_projection(spark: Any) -> None:
     assert row.session_close.replace(tzinfo=UTC) == datetime(2026, 11, 27, 18, 0, tzinfo=UTC)
 
 
-def test_approved_aapl_silver_parity_without_publishing(spark: Any) -> None:
-    settings = load_settings(ROOT / "config/project.toml")
-    approved = resolve_approved_silver(
-        ROOT / "config/silver_publications.toml",
+def _optional_approved_aapl(root: Path) -> ApprovedSilver:
+    settings = load_settings(root / "config/project.toml")
+    run = (
+        settings.data_root
+        / "silver/dataset=silver-aapl-20260914-v1"
+        / "run=aecb53c1-d7a8-40c7-939b-a6901f435ff5"
+    )
+    # Only total absence is optional. A partial run (even an empty directory or
+    # broken symlink) must reach strict authority validation and fail if invalid.
+    if not run.exists() and not run.is_symlink():
+        pytest.skip("optional approved AAPL Silver run is absent from this checkout")
+    return resolve_approved_silver(
+        root / "config/silver_publications.toml",
         settings.data_root,
         "silver-aapl-20260914-v1",
         UUID("aecb53c1-d7a8-40c7-939b-a6901f435ff5"),
     )
-    if not approved.manifest.is_file():
-        pytest.skip("approved local Silver evidence is unavailable")
+
+
+def test_optional_aapl_absent_evidence_skips(tmp_path: Path) -> None:
+    _copy_aapl_configuration(tmp_path)
+    with pytest.raises(pytest.skip.Exception, match="run is absent"):
+        _optional_approved_aapl(tmp_path)
+
+
+@pytest.mark.parametrize("manifest_content", (None, "{}", "corrupted manifest"))
+def test_optional_aapl_present_invalid_evidence_fails(
+    tmp_path: Path, manifest_content: str | None
+) -> None:
+    _copy_aapl_configuration(tmp_path)
+    run = (
+        tmp_path
+        / "data/silver/dataset=silver-aapl-20260914-v1"
+        / "run=aecb53c1-d7a8-40c7-939b-a6901f435ff5"
+    )
+    run.mkdir(parents=True)
+    if manifest_content is not None:
+        (run / "manifest.json").write_text(manifest_content, encoding="utf-8")
+    with pytest.raises(ValueError, match="manifest fingerprint mismatch"):
+        _optional_approved_aapl(tmp_path)
+
+
+def _copy_aapl_configuration(root: Path) -> None:
+    config = root / "config"
+    config.mkdir()
+    for name in ("project.toml", "silver.toml", "silver_publications.toml"):
+        (config / name).write_bytes((ROOT / "config" / name).read_bytes())
+
+
+def test_approved_aapl_silver_parity_without_publishing(spark: Any) -> None:
+    settings = load_settings(ROOT / "config/project.toml")
+    approved = _optional_approved_aapl(ROOT)
     # Native Windows Hadoop cannot reliably enumerate this immutable Linux Spark
     # publication. The bounded 390-row evidence load mirrors the independent
     # PyArrow validator; all transformations below remain native Spark.

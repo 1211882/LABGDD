@@ -1,10 +1,13 @@
 import builtins
 import hashlib
+import socket
 from pathlib import Path
 from typing import Any
+from unittest.mock import Mock
 
 import pytest
 
+from labgdd.adapters.silver import ApprovedSilver
 from labgdd.config import ConfigurationError, load_settings
 from labgdd.expected_gold_config import load_expected_gold_request
 from labgdd.runners.expected_gold import main
@@ -105,8 +108,9 @@ def test_both_eligibility_policies_are_explicitly_supported(tmp_path: Path) -> N
     assert request.eligibility_policy == "verified_historical_applicability"
 
 
+@pytest.mark.parametrize("valid_request", (True, False))
 def test_configuration_check_does_not_start_spark_or_write(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, valid_request: bool
 ) -> None:
     original_import = builtins.__import__
 
@@ -115,19 +119,52 @@ def test_configuration_check_does_not_start_spark_or_write(
             raise AssertionError("configuration check started Spark")
         return original_import(name, *args, **kwargs)
 
-    target = ROOT / "data/gold/dataset=gold-study-cohort-20260914-expected-v1"
-    before = _inventory(target)
-    monkeypatch.setattr(builtins, "__import__", guarded_import)
-    assert (
-        main(
-            [
-                "--config",
-                str(ROOT / "config/project.toml"),
-                "--request",
-                str(ROOT / "config/expected_gold.toml"),
-                "--check",
-            ]
+    config = tmp_path / "config"
+    config.mkdir()
+    for name in ("project.toml", "expected_gold.toml", "research_universe.toml"):
+        (config / name).write_bytes((ROOT / "config" / name).read_bytes())
+    if not valid_request:
+        request_path = config / "expected_gold.toml"
+        request_path.write_text(
+            request_path.read_text(encoding="utf-8").replace(
+                'eligibility_policy = "declared_research"',
+                'eligibility_policy = "invalid"',
+            ),
+            encoding="utf-8",
         )
-        == 0
+    # Only the external publication authority boundary is mocked. Configuration,
+    # research-plan generation and check-mode control flow remain real.
+    authority = Mock(
+        return_value=ApprovedSilver(
+            config / "silver_publications.toml",
+            tmp_path / "external-evidence/manifest.json",
+            "a" * 64,
+            "silver-aapl-20260914-v1",
+            "aecb53c1-d7a8-40c7-939b-a6901f435ff5",
+            {},
+        )
     )
-    assert _inventory(target) == before
+    monkeypatch.setattr("labgdd.processing.expected_gold.resolve_silver_input", authority)
+
+    def reject_network(*args: Any, **kwargs: Any) -> Any:
+        raise AssertionError("configuration check attempted network access")
+
+    monkeypatch.setattr(socket, "create_connection", reject_network)
+    monkeypatch.setattr(socket.socket, "connect", reject_network)
+    before = _inventory(tmp_path)
+    monkeypatch.setattr(builtins, "__import__", guarded_import)
+    assert main(
+        [
+            "--config",
+            str(config / "project.toml"),
+            "--request",
+            str(config / "expected_gold.toml"),
+            "--check",
+        ]
+    ) == (0 if valid_request else 2)
+    assert _inventory(tmp_path) == before
+    assert not (tmp_path / "data").exists()
+    if valid_request:
+        authority.assert_called_once()
+    else:
+        authority.assert_not_called()
