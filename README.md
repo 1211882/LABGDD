@@ -9,7 +9,7 @@ Alpaca historical REST acquisition, XNYS calendar snapshots and immutable Bronze
 Parquet persistence, including one reviewed live AAPL session. No broad acquisition
 campaign was run. Phase 2 adds bounded Spark Batch Bronze-to-Silver processing
 and v2.0.0 individual-company Gold returns/volatility for explicitly approved
-Silver evidence. Sector analytics and later infrastructure are not started.
+Silver evidence. Real Sector Gold publication and later infrastructure remain future work.
 Milestone 3 defines the versioned research cohort and expected XNYS symbol/session
 relation independently of observed bars. Milestone 4 adds a bounded optional Spark
 left-join path. Milestone 5 publishes and independently approves that path under a
@@ -20,6 +20,9 @@ Bronze, Silver, Individual Gold and Expected-Series Gold evidence through exact
 multi-authority registries. Milestone 8 adds synthetic-only scalar and native Spark
 Sector Gold calculation foundations with explicit complete-population semantics; it
 does not publish or calculate real sector results.
+Milestone 9 adds accepted read-only projection from explicitly approved Expected-Series
+Gold. Milestone 10 implements an immutable synthetic Sector publication foundation
+under Proposed ADR 016; completion does not confer external publication authority.
 The supplied reference audit is preserved byte-for-byte.
 
 Publication selection is explicit through `config/bronze_publications.toml`,
@@ -87,6 +90,8 @@ exception text and extra fields by design. Extend the event schema deliberately.
 - [Pending multi-symbol validation](docs/architecture/PHASE2_MULTISYMBOL_VALIDATION.md)
 - [Milestone 6 publication migration](docs/architecture/MILESTONE6_PUBLICATION_MIGRATION.md)
 - [Sector Gold calculation foundation](docs/architecture/PHASE2_SECTOR_GOLD.md)
+- [Approved Gold to Sector integration](docs/architecture/PHASE2_APPROVED_SECTOR_INTEGRATION.md)
+- [Synthetic Sector publication foundation](docs/architecture/PHASE2_SECTOR_PUBLICATION.md)
 - [Proposed expected-series Gold publication decision](docs/decisions/011-expected-series-gold-publication.md)
 - [Phase 0 architecture-review remediation](docs/handoffs/TASK_PHASE0_ARCHITECTURE_REVIEW_HANDOFF.md)
 

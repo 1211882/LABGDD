@@ -257,11 +257,20 @@ def resolve_approved_gold(
 
 class GoldRun:
     def __init__(
-        self, data_root: Path, dataset: str, run_id: UUID, metadata: Mapping[str, object]
+        self,
+        data_root: Path,
+        dataset: str,
+        run_id: UUID,
+        metadata: Mapping[str, object],
+        *,
+        sector_outputs: bool = False,
     ) -> None:
         if not dataset or any(not (char.isalnum() or char in "_.-") for char in dataset):
             raise ValueError("gold storage: invalid dataset identifier")
-        root = data_root.resolve() / "gold"
+        root = data_root.resolve() / ("sector_gold" if sector_outputs else "gold")
+        self.output_names = (
+            ("windows", "correlations") if sector_outputs else ("returns", "rolling", "fixed")
+        )
         dataset_root = root / f"dataset={dataset}"
         self.path = dataset_root / "_staging" / f"run={run_id}"
         self.completed_path = dataset_root / f"run={run_id}"
@@ -291,10 +300,9 @@ class GoldRun:
         if status not in {"complete", "failed"} or self.finished:
             raise ValueError("gold storage: invalid terminal state")
         if status == "complete":
-            expected = {"run.json", "returns", "rolling", "fixed"}
+            expected = {"run.json", *self.output_names}
             if {item.name for item in self.path.iterdir()} != expected or any(
-                not any((self.path / name).rglob("*.parquet"))
-                for name in ("returns", "rolling", "fixed")
+                not any((self.path / name).rglob("*.parquet")) for name in self.output_names
             ):
                 raise ValueError("gold storage: incomplete output inventory")
         artifacts = [

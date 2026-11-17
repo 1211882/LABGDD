@@ -117,6 +117,12 @@ def _registry(path: Path, manifest: Path, metadata: dict[str, Any], *, gold: boo
 @pytest.fixture(scope="module")
 def evidence(tmp_path_factory: pytest.TempPathFactory, spark: Any) -> Path:
     root = tmp_path_factory.mktemp("approved-sector")
+    return make_evidence(root, spark)
+
+
+def make_evidence(
+    root: Path, spark: Any, universe: dict[str, tuple[str, ...]] | None = None
+) -> Path:
     config = root / "config"
     config.mkdir()
     (config / "research_universe.toml").write_bytes(
@@ -125,7 +131,7 @@ def evidence(tmp_path_factory: pytest.TempPathFactory, spark: Any) -> Path:
     settings = replace(
         load_settings(ROOT / "config/project.toml"),
         data_root=root / "data",
-        universe={"Technology": ("AAPL", "MSFT")},
+        universe=universe or {"Technology": ("AAPL", "MSFT")},
     )
     research = load_research_universe(config / "research_universe.toml", settings)
     calendar = xnys_snapshot(date(2026, 9, 14), date(2026, 9, 14))
@@ -133,10 +139,16 @@ def evidence(tmp_path_factory: pytest.TempPathFactory, spark: Any) -> Path:
     rows = []
     for member in plan.rows:
         for minute in range(390):
-            if member.symbol == "MSFT" and minute == 10:
+            if universe is None and member.symbol == "MSFT" and minute == 10:
+                continue
+            if universe is not None and (
+                member.symbol == "V" or (member.symbol == "JPM" and minute == 10)
+            ):
                 continue
             event = member.session_open + timedelta(minutes=minute)
             price = Decimal("100") + Decimal(minute % 7) / Decimal("100")
+            if universe is not None and member.sector == "Energy":
+                price = Decimal("100")
             rows.append(
                 dict(
                     symbol=member.symbol,
@@ -198,7 +210,7 @@ def evidence(tmp_path_factory: pytest.TempPathFactory, spark: Any) -> Path:
         (5, 15, 30, 60),
         "2.0.0",
         config / "expected_gold.toml",
-        acquisition_scope_symbols=("AAPL", "MSFT"),
+        acquisition_scope_symbols=tuple(sorted({row.symbol for row in plan.rows})),
     )
     plan_hash = expected_plan_fingerprint(
         plan, source="alpaca", feed="iex", timeframe="1Min", adjustment="raw"
@@ -208,6 +220,8 @@ def evidence(tmp_path_factory: pytest.TempPathFactory, spark: Any) -> Path:
     )
     result = process_expected_gold(settings, request, spark, run_id=RUN, prepared=prepared)
     document = json.loads(result.manifest.read_text())
+    document["evidence_kind"] = "synthetic_fixture"
+    result.manifest.write_text(json.dumps(document), encoding="utf-8")
     _registry(config / "gold_publications.toml", result.manifest, document, gold=True)
     return root
 
