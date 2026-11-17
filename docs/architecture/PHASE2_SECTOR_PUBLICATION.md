@@ -1,6 +1,6 @@
 # Milestone 10: Sector Gold publication foundation
 
-Implementation candidate governed by Proposed ADR 016. ADRs 014/015 remain accepted
+Reviewed synthetic foundation governed by Accepted ADR 016. ADRs 014/015 remain accepted
 and unchanged. Real Sector Gold publication and external approval are deferred.
 
 ## Interfaces
@@ -39,6 +39,20 @@ filesystem failures can retain staging, which is never complete or authoritative
 Use a fresh UUID after inspecting an interrupted attempt. Existing completed/failed
 evidence is never overwritten. These are local same-filesystem semantics, not
 distributed transactions or object-store atomicity.
+
+Before readback, the publisher captures all staged paths, sizes and SHA-256 hashes.
+`GoldRun.finish(..., expected_artifacts=...)` compares the final inventory with
+those validated bytes; same-size replacement fails completion and is quarantined.
+The storage adapter also validates UUIDs before creating paths. Candidate inspection
+independently regenerates coverage aggregates and verifies source/feed/timeframe/
+adjustment claims against resolved input authority. Checksums do not authenticate a
+registry owner. Inspection requires the candidate's processing-source hash to match
+the executing implementation; use the exact recorded source version for historical
+candidates. An arbitrary well-formed source hash is rejected. Trusted local staging
+ownership, configured registries and reviewed code remain prerequisites. The final
+check/rename is not protection against a
+privileged concurrent writer, a power-loss durability guarantee or a distributed
+transaction. Interrupted staging is evidence to inspect, never authority to infer.
 
 Sector schema 1.0.0 preserves accepted metrics and extends pair provenance/identity.
 Integral counts are int64; financial values remain doubles. Mandatory values are

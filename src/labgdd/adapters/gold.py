@@ -267,6 +267,7 @@ class GoldRun:
     ) -> None:
         if not dataset or any(not (char.isalnum() or char in "_.-") for char in dataset):
             raise ValueError("gold storage: invalid dataset identifier")
+        run_id = UUID(str(run_id))
         root = data_root.resolve() / ("sector_gold" if sector_outputs else "gold")
         self.output_names = (
             ("windows", "correlations") if sector_outputs else ("returns", "rolling", "fixed")
@@ -296,16 +297,11 @@ class GoldRun:
             stream.flush()
             os.fsync(stream.fileno())
 
-    def finish(self, status: str, summary: Mapping[str, object]) -> Path:
-        if status not in {"complete", "failed"} or self.finished:
-            raise ValueError("gold storage: invalid terminal state")
-        if status == "complete":
-            expected = {"run.json", *self.output_names}
-            if {item.name for item in self.path.iterdir()} != expected or any(
-                not any((self.path / name).rglob("*.parquet")) for name in self.output_names
-            ):
-                raise ValueError("gold storage: incomplete output inventory")
-        artifacts = [
+    def artifact_inventory(self) -> list[dict[str, object]]:
+        """Capture the exact bytes to bind a caller's validation to finalization."""
+        if self.finished:
+            raise ValueError("gold storage: closed run")
+        return [
             {
                 "path": item.relative_to(self.path).as_posix(),
                 "sha256": sha256(item),
@@ -314,6 +310,25 @@ class GoldRun:
             for item in sorted(self.path.rglob("*"))
             if item.is_file() and item.name not in {"manifest.pending", "manifest.json"}
         ]
+
+    def finish(
+        self,
+        status: str,
+        summary: Mapping[str, object],
+        *,
+        expected_artifacts: list[dict[str, object]] | None = None,
+    ) -> Path:
+        if status not in {"complete", "failed"} or self.finished:
+            raise ValueError("gold storage: invalid terminal state")
+        if status == "complete":
+            expected = {"run.json", *self.output_names}
+            if {item.name for item in self.path.iterdir()} != expected or any(
+                not any((self.path / name).rglob("*.parquet")) for name in self.output_names
+            ):
+                raise ValueError("gold storage: incomplete output inventory")
+        artifacts = self.artifact_inventory()
+        if expected_artifacts is not None and artifacts != expected_artifacts:
+            raise ValueError("gold storage: artifacts changed after validation")
         document = {
             **self.metadata,
             **summary,

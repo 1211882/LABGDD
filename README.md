@@ -22,7 +22,7 @@ Sector Gold calculation foundations with explicit complete-population semantics;
 does not publish or calculate real sector results.
 Milestone 9 adds accepted read-only projection from explicitly approved Expected-Series
 Gold. Milestone 10 implements an immutable synthetic Sector publication foundation
-under Proposed ADR 016; completion does not confer external publication authority.
+under Accepted ADR 016; completion does not confer external publication authority.
 The supplied reference audit is preserved byte-for-byte.
 
 Publication selection is explicit through `config/bronze_publications.toml`,

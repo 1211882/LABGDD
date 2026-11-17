@@ -635,6 +635,7 @@ def publish_synthetic_sector_gold(
                 str(storage.path / name)
             )
         # Native Parquet only: no driver collection or PyArrow financial writer.
+        validated_artifacts = storage.artifact_inventory()
         decoded = _read_outputs(spark, storage.path)
         _validate_frames(*decoded)
         _validate_expected_grid(decoded[0], projection.population)
@@ -663,7 +664,7 @@ def publish_synthetic_sector_gold(
             "partitioning": [],
             "max_output_files_per_dataset": 1,
         }
-        return storage.finish("complete", summary)
+        return storage.finish("complete", summary, expected_artifacts=validated_artifacts)
     except Exception:
         if not storage.finished:
             try:
@@ -703,6 +704,7 @@ def inspect_sector_candidate(
         or doc.get("evidence_kind") != "synthetic_fixture"
         or doc.get("input_gold_manifest_sha256") != request.input_manifest_sha256
         or doc.get("configuration_sha256") != _configuration_sha256(request)
+        or doc.get("processing_source_sha256") != _source_sha256()
     ):
         raise ValueError("sector candidate: incompatible candidate or input authority")
     required: dict[str, object] = {
@@ -721,6 +723,10 @@ def inspect_sector_candidate(
         "pair_identity_version": "sector-pair-identity-v1",
     }
     for key in (
+        "source",
+        "feed",
+        "timeframe",
+        "adjustment",
         "silver_dataset_version",
         "silver_run_id",
         "silver_manifest_sha256",
@@ -796,6 +802,13 @@ def inspect_sector_candidate(
         doc.get("population", []), key=population_key
     ):
         raise ValueError("sector candidate: population evidence mismatch")
+    actual_coverage = [
+        json.loads(cast(str, value)) for value in projection.coverage.toJSON().collect()
+    ]
+    if sorted(actual_coverage, key=population_key) != sorted(
+        doc.get("coverage", []), key=population_key
+    ):
+        raise ValueError("sector candidate: coverage evidence mismatch")
     for name, frame in zip(("windows", "correlations"), frames, strict=True):
         if doc.get("schemas", {}).get(name) != sector_publication_schema(name).jsonValue():
             raise ValueError("sector candidate: declared schema mismatch")

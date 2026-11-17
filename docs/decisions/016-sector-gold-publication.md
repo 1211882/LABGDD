@@ -1,6 +1,6 @@
 # ADR 016: Immutable Sector Gold publication foundation
 
-- Status: Proposed
+- Status: Accepted
 - Date: 2026-11-17
 - Depends on: accepted ADRs 014 and 015; existing local Gold publication lifecycle
 - Scientific measurement specification: 2.0.0
@@ -12,7 +12,7 @@ a file-owning verification boundary. Calculation completion cannot confer public
 authority. A separate immutable candidate contract is needed before real publication
 can be considered. The existing real pilot has no complete five-member sector.
 
-## Proposed decision
+## Decision
 
 Use `processing.sector_publication.publish_synthetic_sector_gold` with a strict
 `SectorPublicationRequest`. This milestone provides no real-publication execution
@@ -65,6 +65,12 @@ reasons and recomputed identities. Compare physical readback bidirectionally aga
 the calculated frames. Tests independently compare windows and pairs to Python.
 Revalidate source Gold, upstream Silver, research bytes and processing fingerprint
 immediately before finalization. No partial output may receive complete status.
+Capture the exact staged artifact inventory before physical readback; completion
+must compare every path, size and SHA-256 with that validated inventory. A replaced
+file, even with unchanged size, cannot receive a newly blessed completion checksum.
+This inventory-binding option is required by the Sector publisher and remains
+optional for existing Individual/Expected Gold callers. Validate the storage run
+UUID before creating any filesystem paths.
 
 ## Manifest and inspection
 
@@ -81,6 +87,34 @@ bidirectionally, rejecting semantically forged artifacts even when their candida
 checksums have been resealed. It returns metadata, not lazy financial frames, and
 confers no approval. Native recomputation is not an independent mathematical
 implementation: Python scalar parity remains a separate test/review requirement.
+Independently regenerate bounded coverage aggregates and compare them with manifest
+coverage; validate top-level source/feed/timeframe/adjustment against the approved
+source rather than trusting creation metadata alone.
+Inspection also requires the Sector processing-source hash to match the executing
+reviewed implementation. Historical candidates must be inspected with their exact
+recorded source version; a syntactically valid arbitrary digest is not provenance.
+
+## Bounded trust and review evidence
+
+The owner of the local staging tree, repository code, configured authority registries
+and approved research references is trusted. SHA-256 binds exact bytes and detects
+changes; it is not a signature or proof that the registry owner is honest. Evidence
+classification comes from the independently resolved source manifest. No public
+publisher accepts an arbitrary financial DataFrame or a caller flag as authority.
+The final inventory check and local rename are not a transaction against a
+privileged concurrent filesystem writer; staging ownership and write isolation are
+operational prerequisites. Atomic visibility is limited to the existing local,
+same-filesystem rename. No power-loss durability or object-store guarantee is added.
+
+Independent review regressions cover same-size corruption, replacement after
+validation, missing/extra artifacts, corrupted upstream manifests, resealed false
+coverage/feed claims, INT96/naive/incompatible Parquet types, duplicate/reversed
+pairs and forged source-bound identities. Existing tests cover manifest-write and
+rename failures, partial output, idempotent inspection and deterministic replay.
+Scalar references compare all ten metrics and all pairs at H={5,15,30,60}, with
+absolute tolerance 1e-12 and relative tolerance 1e-10; exact logical replay excludes
+only the run-specific Sector UUID. A native self-recomputation alone cannot replace
+that independent scientific validation.
 
 ## Future external authority contract (not implemented or activated)
 
@@ -115,5 +149,8 @@ current one-session five-symbol pilot cannot justify official complete-sector
 financial values. IEX coverage, provider corrections and historical research-sector
 classification remain limited evidence. No acquisition or real publication is
 authorized here. Scaling beyond bounded reference collection/snapshot size, durable
-checkpoint recovery and object-store transactions are deferred. This ADR remains
-Proposed until independent review; test success does not accept it automatically.
+checkpoint recovery and object-store transactions are deferred. Independent final
+review accepted this bounded contract on 2026-11-17 after the corrected source passed
+392 Linux tests with no skips, including scalar/Spark parity and adversarial physical
+publication checks. This accepts the synthetic foundation only; real publication,
+registry activation and later milestones remain unauthorized.

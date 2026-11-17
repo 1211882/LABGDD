@@ -2,6 +2,7 @@ from collections.abc import Mapping
 from dataclasses import replace
 from datetime import UTC, datetime, timedelta
 from math import exp, inf, isclose, log, nextafter, sqrt
+from typing import Any
 
 import pytest
 
@@ -18,6 +19,7 @@ from labgdd.analytics.sector import (
     SectorMemberReturn,
     SectorPopulationMember,
     SectorThreshold,
+    _output_identity,
     calculate_sector_measurements,
 )
 
@@ -324,6 +326,38 @@ def test_eligibility_policy_is_validated_and_changes_output_identity() -> None:
 
 def values_for_policy() -> tuple[float, ...]:
     return (0.005, -0.003, 0.004, -0.002, 0.001)
+
+
+@pytest.mark.parametrize(
+    ("field", "changed"),
+    (
+        ("sector", "Energy"),
+        ("session_id", "2026-09-15"),
+        ("horizon", 15),
+        ("window_index", 1),
+        ("symbols", ("AAPL", "MSFT", "NVDA")),
+        ("population_policy", "different-policy-version"),
+        ("eligibility_policy", "verified_historical_applicability"),
+        ("eligibility_policy_version", "different-eligibility-version"),
+        ("research_reference", "b" * 64),
+    ),
+)
+def test_window_identity_binds_contract_dimensions(field: str, changed: Any) -> None:
+    # Encoding sensitivity only: unsupported policies still fail public validation.
+    arguments: dict[str, Any] = dict(
+        sector="Technology",
+        session_id="2026-09-14",
+        horizon=5,
+        window_index=0,
+        symbols=("AAPL", "MSFT"),
+        population_policy="sector-complete-population-v1",
+        eligibility_policy="declared_research",
+        eligibility_policy_version="sector-eligibility-policy-v1",
+        research_reference="a" * 64,
+    )
+    original = _output_identity(**arguments)
+    arguments[field] = changed
+    assert _output_identity(**arguments) != original
 
 
 def test_scalar_threshold_validation_matches_population_contract() -> None:

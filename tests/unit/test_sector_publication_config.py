@@ -107,3 +107,37 @@ def test_output_uuid_is_validated_before_any_publication_work() -> None:
         publish_synthetic_sector_gold(
             cast(Any, None), cast(Any, None), request(), run_id=cast(Any, "not-a-uuid")
         )
+
+
+def test_finalization_binds_same_size_artifacts_to_validation(tmp_path: Path) -> None:
+    storage = GoldRun(tmp_path, "sector-synthetic-sealed", uuid4(), {}, sector_outputs=True)
+    for name in ("windows", "correlations"):
+        (storage.path / name).mkdir()
+        (storage.path / name / "part.parquet").write_bytes(b"synthetic-before")
+    validated = storage.artifact_inventory()
+    (storage.path / "windows/part.parquet").write_bytes(b"synthetic-after!")
+    with pytest.raises(ValueError, match="changed after validation"):
+        storage.finish("complete", {}, expected_artifacts=validated)
+    assert not storage.completed_path.exists()
+    assert not (storage.path / "manifest.json").exists()
+    assert "_failed" in storage.finish("failed", {}).parts
+
+
+def test_interrupted_staging_identity_is_exclusive(tmp_path: Path) -> None:
+    identity = uuid4()
+    first = GoldRun(tmp_path, "sector-synthetic-interrupted", identity, {}, sector_outputs=True)
+    before = (first.path / "run.json").read_bytes()
+    with pytest.raises(FileExistsError):
+        GoldRun(tmp_path, "sector-synthetic-interrupted", identity, {}, sector_outputs=True)
+    assert not first.completed_path.exists()
+    assert (first.path / "run.json").read_bytes() == before
+
+
+def test_storage_rejects_invalid_uuid_before_creating_paths(tmp_path: Path) -> None:
+    from typing import cast
+
+    with pytest.raises(ValueError):
+        GoldRun(
+            tmp_path, "sector-synthetic-invalid", cast(Any, "not-a-uuid"), {}, sector_outputs=True
+        )
+    assert not (tmp_path / "sector_gold").exists()

@@ -140,7 +140,7 @@ paths. It produces calculation
 frames with input lineage, not a Sector Gold publication or new authority.
 
 Milestone 10 adds a synthetic-only immutable Sector publication foundation under
-Proposed ADR 016 (`PHASE2_SECTOR_PUBLICATION.md`). It reuses the verified approved
+Accepted ADR 016 (`PHASE2_SECTOR_PUBLICATION.md`). It reuses the verified approved
 input boundary and existing local GoldRun lifecycle in a separate `sector_gold`
 namespace, validates windows and pairs, and creates pending synthetic candidates.
 No real Sector publication or Sector registry activation is implemented or authorized.
