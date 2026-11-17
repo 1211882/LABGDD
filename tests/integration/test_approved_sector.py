@@ -7,6 +7,7 @@ import sys
 from dataclasses import fields, replace
 from datetime import UTC, date, timedelta
 from decimal import Decimal
+from hashlib import sha256 as new_sha256
 from pathlib import Path
 from typing import Any
 from uuid import UUID
@@ -15,6 +16,7 @@ import pytest
 
 from labgdd.adapters.bronze import sha256
 from labgdd.adapters.calendar import xnys_snapshot
+from labgdd.adapters.gold import resolve_approved_gold
 from labgdd.adapters.silver import resolve_approved_silver
 from labgdd.analytics.sector import (
     SectorMemberReturn,
@@ -92,6 +94,7 @@ def _registry(path: Path, manifest: Path, metadata: dict[str, Any], *, gold: boo
                 "research_reference_sha256",
                 "schedule_sha256",
             )
+            if key in metadata
         }
         inline = ", ".join(f"{key} = {json.dumps(value)}" for key, value in fingerprints.items())
         extra = f"contract_fingerprints = {{ {inline} }}\n"
@@ -271,6 +274,32 @@ def test_approved_projection_scalar_spark_parity_and_strict_policy(
     scalar = calculate_sector_measurements(tuple(population), returns)
     actual = {row.output_identity_sha256: row for row in result.windows.collect()}
     assert len(actual) == len(scalar.windows) == 120
+    lineage = {
+        "input_processing_source_sha256": "processing_source_sha256",
+        "input_configuration_sha256": "configuration_sha256",
+        "input_gold_schema_version": "gold_schema_version",
+        "input_measurement_version": "measurement_version",
+        "input_silver_dataset_version": "silver_dataset_version",
+        "input_silver_run_id": "silver_run_id",
+        "input_silver_manifest_sha256": "silver_manifest_sha256",
+        "input_approved_expected_plan_sha256": "approved_expected_plan_sha256",
+        "input_research_reference_sha256": "research_reference_sha256",
+    }
+    for row in [*actual.values(), *result.correlations.collect()]:
+        assert row.input_gold_dataset_version == DATASET and row.input_gold_run_id == str(RUN)
+        assert row.sector_publication_status == "calculation_only_not_published"
+        for output, source in lineage.items():
+            assert row[output] == projection.gold.metadata[source]
+        payload = "|".join(
+            (
+                "sector-approved-input-v1",
+                row.output_identity_sha256,
+                DATASET,
+                str(RUN),
+                projection.gold.manifest_sha256,
+            )
+        )
+        assert row.approved_input_identity_sha256 == new_sha256(payload.encode()).hexdigest()
     for expected in scalar.windows:
         row = actual[expected.output_identity_sha256]
         assert row.reason == expected.reason
@@ -339,9 +368,24 @@ def test_approved_projection_rejects_invalid_authority(
 
 
 @pytest.mark.parametrize(
-    "mutation", ("duplicate", "timestamp", "source", "membership", "scope", "missing", "nan")
+    "mutation",
+    (
+        "duplicate",
+        "timestamp",
+        "source",
+        "membership",
+        "scope",
+        "missing",
+        "nan",
+        "eligible_missing_close",
+        "silver_lineage",
+        "plan_fingerprint",
+        "calendar",
+        "quality",
+        "equivalent_duplicate",
+    ),
 )
-def test_approved_but_contradictory_rows_are_rejected(
+def test_approved_rows_are_validated(
     evidence: Path, tmp_path: Path, spark: Any, mutation: str
 ) -> None:
     import pyarrow as pa
@@ -366,6 +410,21 @@ def test_approved_but_contradictory_rows_are_rejected(
         document["acquisition_scope_symbols"] = ["AAPL"]
     elif mutation == "nan":
         next(row for row in values if row["eligible"])["close_to_close_log_return"] = float("nan")
+    elif mutation == "eligible_missing_close":
+        next(row for row in values if row["eligible"])["close"] = None
+        document["observed_bar_slots"] -= 1
+    elif mutation == "silver_lineage":
+        document["silver_manifest_sha256"] = "f" * 64
+    elif mutation == "plan_fingerprint":
+        del document["approved_expected_plan_sha256"]
+    elif mutation == "calendar":
+        document["calendar_version"] = "unverified"
+    elif mutation == "quality":
+        next(row for row in values if row["eligible"])["quality_status"] = "invalid"
+    elif mutation == "equivalent_duplicate":
+        next(row for row in values if row["eligible"])["quality_status"] = (
+            "canonical_equivalent_duplicate"
+        )
     changed = pa.Table.from_pylist(values, schema=table.schema)
     if mutation == "missing":
         changed = changed.drop(["quality_status"])
@@ -385,8 +444,131 @@ def test_approved_but_contradictory_rows_are_rejected(
     ]
     manifest.write_text(json.dumps(document), encoding="utf-8")
     _registry(root / "config/gold_publications.toml", manifest, document, gold=True)
+    if mutation == "equivalent_duplicate":
+        projection = project_approved_expected_gold(spark, _settings(root), **_arguments(root))
+        assert (
+            projection.returns.filter("financial_eligible").count()
+            == document["eligible_return_records"]
+        )
+        return
     with pytest.raises(ValueError):
         project_approved_expected_gold(spark, _settings(root), **_arguments(root))
+
+
+@pytest.mark.parametrize(
+    "boundary", ("before_resolve", "after_resolve", "after_projection", "snapshot_limit")
+)
+def test_source_mutation_cannot_change_verified_calculation(
+    evidence: Path, tmp_path: Path, spark: Any, monkeypatch: pytest.MonkeyPatch, boundary: str
+) -> None:
+    from labgdd.processing import approved_sector
+
+    root = tmp_path / "mutation"
+    shutil.copytree(evidence, root)
+    args = _arguments(root)
+    manifest = root / "data/gold" / f"dataset={DATASET}" / f"run={RUN}/manifest.json"
+    path = next((manifest.parent / "returns").rglob("*.parquet"))
+
+    def replace_source() -> None:
+        # Replacement of controlled synthetic evidence only; frozen data is never touched.
+        changed = bytearray(path.read_bytes())
+        changed[len(changed) // 2] ^= 1
+        path.unlink()
+        # Preserve the size so the digest, not merely the size guard, must reject it.
+        path.write_bytes(changed)
+
+    if boundary == "after_projection":
+        projection, calculated = calculate_approved_sector_gold(spark, _settings(root), **args)
+        before = calculated.windows.orderBy("output_identity_sha256").collect()
+        pairs = calculated.correlations.orderBy(
+            "output_identity_sha256", "left_symbol", "right_symbol"
+        ).collect()
+        replace_source()
+        assert projection.returns.inputFiles() == []
+        assert calculated.windows.orderBy("output_identity_sha256").collect() == before
+        assert (
+            calculated.correlations.orderBy(
+                "output_identity_sha256", "left_symbol", "right_symbol"
+            ).collect()
+            == pairs
+        )
+        assert sum(row.observed_slots for row in projection.coverage.collect()) == 779
+        return
+    if boundary == "before_resolve":
+        replace_source()
+    elif boundary == "snapshot_limit":
+        monkeypatch.setattr(approved_sector, "_MAX_SNAPSHOT_BYTES", 0)
+    else:
+
+        def replace_after_resolve(*positional: Any, **keywords: Any) -> Any:
+            approved = resolve_approved_gold(*positional, **keywords)
+            replace_source()
+            return approved
+
+        monkeypatch.setattr(approved_sector, "resolve_approved_gold", replace_after_resolve)
+    with pytest.raises(ValueError, match="artifact|snapshot"):
+        project_approved_expected_gold(spark, _settings(root), **args)
+
+
+def test_different_approved_run_has_distinct_source_identity(
+    evidence: Path, tmp_path: Path, spark: Any
+) -> None:
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+
+    root = tmp_path / "new-run"
+    shutil.copytree(evidence, root)
+    other = UUID("90000000-0000-4000-8000-000000000003")
+    parent = root / "data/gold" / f"dataset={DATASET}"
+    (parent / f"run={RUN}").rename(parent / f"run={other}")
+    manifest = parent / f"run={other}/manifest.json"
+    document = json.loads(manifest.read_text())
+    document["run_id"] = str(other)
+    for path in (manifest.parent / "returns").rglob("*.parquet"):
+        table = pq.ParquetFile(path).read()
+        values = table.to_pylist()
+        for row in values:
+            row["gold_run_id"] = str(other)
+        pq.write_table(pa.Table.from_pylist(values, schema=table.schema), path)
+    for checksum in manifest.parent.rglob("*.crc"):
+        checksum.unlink()
+    document["artifacts"] = [
+        {
+            "path": p.relative_to(manifest.parent).as_posix(),
+            "sha256": sha256(p),
+            "bytes": p.stat().st_size,
+        }
+        for p in sorted(manifest.parent.rglob("*"))
+        if p.is_file() and p.name != "manifest.json"
+    ]
+    manifest.write_text(json.dumps(document), encoding="utf-8")
+    _registry(root / "config/gold_publications.toml", manifest, document, gold=True)
+    _, original = calculate_approved_sector_gold(spark, _settings(evidence), **_arguments(evidence))
+    args = _arguments(evidence)
+    args.update(
+        registry=root / "config/gold_publications.toml",
+        silver_registry=root / "config/silver_publications.toml",
+        research_reference=root / "config/research_universe.toml",
+        run_id=other,
+        manifest_sha256=sha256(manifest),
+    )
+    _, changed = calculate_approved_sector_gold(spark, _settings(root), **args)
+    for old, new in (
+        (original.windows, changed.windows),
+        (original.correlations, changed.correlations),
+    ):
+        assert (
+            old.select("output_identity_sha256")
+            .exceptAll(new.select("output_identity_sha256"))
+            .count()
+            == 0
+        )
+        assert (
+            old.select("approved_input_identity_sha256")
+            .intersect(new.select("approved_input_identity_sha256"))
+            .count()
+            == 0
+        )
 
 
 def test_optional_real_approved_pilot_projection(spark: Any) -> None:

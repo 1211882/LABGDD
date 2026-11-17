@@ -1,8 +1,11 @@
 """Read-only approved Expected-Series Gold projection into sector calculations."""
 
+import json
 from dataclasses import dataclass
 from datetime import date
+from hashlib import sha256 as new_sha256
 from pathlib import Path
+from tempfile import TemporaryDirectory
 from typing import TYPE_CHECKING, cast
 from uuid import UUID
 
@@ -34,6 +37,71 @@ from labgdd.research_config import load_research_universe
 
 if TYPE_CHECKING:
     from pyspark.sql import DataFrame, SparkSession
+    from pyspark.sql.types import StructType
+
+_MAX_SNAPSHOT_BYTES = 256 * 1024 * 1024
+
+
+def _verified_returns_snapshot(
+    spark: "SparkSession", approved: ApprovedGold, schema: "StructType"
+) -> "DataFrame":
+    """Detach lazy reads from mutable paths using a bounded, byte-verified copy.
+
+    Local checkpoint blocks belong to this Spark session. Loss of those blocks
+    fails the calculation; they cannot be recomputed from the original files.
+    """
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+    from pyspark import StorageLevel
+    from pyspark.sql.pandas.types import from_arrow_type
+
+    manifest_bytes = approved.manifest.read_bytes()
+    if (
+        new_sha256(manifest_bytes).hexdigest() != approved.manifest_sha256
+        or json.loads(manifest_bytes) != approved.metadata
+    ):
+        raise ValueError("sector projection: snapshot manifest changed")
+    artifacts = cast(list[dict[str, object]], approved.metadata["artifacts"])
+    selected = [
+        item
+        for item in artifacts
+        if Path(str(item["path"])).parts[0] == "returns"
+        and Path(str(item["path"])).suffix == ".parquet"
+    ]
+    if not selected or sum(cast(int, item["bytes"]) for item in selected) > _MAX_SNAPSHOT_BYTES:
+        raise ValueError("sector projection: missing or oversized bounded returns snapshot")
+    with TemporaryDirectory(prefix="labgdd-sector-verified-") as temporary:
+        root = Path(temporary)
+        for item in selected:
+            relative = Path(str(item["path"]))
+            source = (approved.manifest.parent / relative).resolve()
+            target = (root / relative).resolve()
+            if not source.is_relative_to(
+                approved.manifest.parent.resolve()
+            ) or not target.is_relative_to(root.resolve()):
+                raise ValueError("sector projection: snapshot path escapes root")
+            target.parent.mkdir(parents=True, exist_ok=True)
+            digest = new_sha256()
+            size = 0
+            with source.open("rb") as reader, target.open("xb") as writer:
+                while block := reader.read(1024 * 1024):
+                    size += len(block)
+                    if size > cast(int, item["bytes"]):
+                        raise ValueError("sector projection: snapshot artifact size mismatch")
+                    digest.update(block)
+                    writer.write(block)
+            if size != item["bytes"] or digest.hexdigest() != item["sha256"]:
+                raise ValueError("sector projection: snapshot artifact checksum mismatch")
+            physical = pq.read_schema(target)
+            if set(physical.names) != set(schema.fieldNames()) - {"session_id"}:
+                raise ValueError("sector projection: physical schema inventory mismatch")
+            for field in physical:
+                if pa.types.is_timestamp(field.type) and field.type != pa.timestamp("us", tz="UTC"):
+                    raise ValueError("sector projection: physical UTC timestamp mismatch")
+                if from_arrow_type(field.type) != schema[field.name].dataType:
+                    raise ValueError("sector projection: physical field type mismatch")
+        rows = spark.read.schema(schema).parquet(str(root / "returns"))
+        return rows.localCheckpoint(eager=True, storageLevel=StorageLevel.DISK_ONLY)
 
 
 @dataclass(frozen=True)
@@ -79,13 +147,10 @@ def project_approved_expected_gold(
 ) -> ApprovedSectorProjection:
     """Resolve exact files and independently validate population before projecting.
 
-    No caller-supplied frame or preconstructed ApprovedGold is accepted. Files are
-    verified before reading and again after projection checks (immutable snapshot).
+    No caller-supplied frame or preconstructed ApprovedGold is accepted. Returned
+    frames read a materialized verified snapshot, never the original lazy paths.
     """
-    import pyarrow as pa
-    import pyarrow.parquet as pq
     from pyspark.sql import functions as F
-    from pyspark.sql.pandas.types import from_arrow_type
     from pyspark.sql.types import StructType
 
     if spark.conf.get("spark.sql.session.timeZone") != "UTC":
@@ -175,21 +240,7 @@ def project_approved_expected_gold(
     if not isinstance(schemas, dict) or not isinstance(schemas.get("returns"), dict):
         raise ValueError("sector projection: missing returns schema")
     declared_schema = StructType.fromJson(schemas["returns"])
-    files = sorted((approved.manifest.parent / "returns").rglob("*.parquet"))
-    if not files:
-        raise ValueError("sector projection: missing returns files")
-    for path in files:
-        physical = pq.read_schema(path)
-        if set(physical.names) != set(declared_schema.fieldNames()) - {"session_id"}:
-            raise ValueError("sector projection: physical schema inventory mismatch")
-        for arrow_field in physical:
-            if pa.types.is_timestamp(arrow_field.type) and arrow_field.type != pa.timestamp(
-                "us", tz="UTC"
-            ):
-                raise ValueError("sector projection: physical UTC timestamp mismatch")
-            if from_arrow_type(arrow_field.type) != declared_schema[arrow_field.name].dataType:
-                raise ValueError("sector projection: physical field type mismatch")
-    rows = spark.read.schema(declared_schema).parquet(str(approved.manifest.parent / "returns"))
+    rows = _verified_returns_snapshot(spark, approved, declared_schema)
     expected_columns = expected_series_schema().fieldNames()
     required_columns = expected_columns + [
         "event_time",
@@ -241,19 +292,25 @@ def project_approved_expected_gold(
         | F.col("eligible").isNull()
         | F.col("observed_bars").isNull()
         | ~F.col("observed_bars").isin(0, 1, 2)
+        | (F.col("close").isNull() & (F.col("observed_bars") != 0))
+        | (F.col("close").isNotNull() & (F.col("observed_bars") == 0))
         | (~F.col("symbol").isin(*scope) & (F.col("close").isNotNull() | F.col("eligible")))
         | (
             F.col("close").isNotNull()
             & (
                 F.col("bar_end").isNull()
                 | (F.col("bar_end") != F.col("return_end"))
-                | ~F.col("quality_status").eqNullSafe(F.lit("canonical"))
+                | ~F.coalesce(
+                    F.col("quality_status").isin("canonical", "canonical_equivalent_duplicate"),
+                    F.lit(False),
+                )
             )
         )
         | (
             F.col("eligible")
             & (
                 ~F.col("expected_eligible")
+                | F.col("close").isNull()
                 | F.col("reason").isNotNull()
                 | F.col("close_to_close_log_return").isNull()
                 | F.isnan("close_to_close_log_return")
@@ -342,7 +399,7 @@ def project_approved_expected_gold(
         .withColumn("acquisition_scope", F.col("symbol").isin(*scope))
         .withColumn("missing_slots", F.col("expected_slots") - F.col("observed_slots"))
     )
-    # Repeat byte verification before releasing lazily evaluated read-only frames.
+    # Detect authority/source changes during validation as well as during copying.
     rechecked = resolve_approved_gold(registry, settings.data_root, dataset_version, run_id)
     if rechecked.manifest_sha256 != approved.manifest_sha256:
         raise ValueError("sector projection: input changed during validation")

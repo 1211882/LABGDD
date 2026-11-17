@@ -1,6 +1,8 @@
 # Milestone 9: Approved Expected-Series Gold projection
 
-Status: implementation candidate; ADR 015 remains Proposed. No Sector Gold publication.
+Status: read-only integration accepted under ADR 015 after final architecture
+review. No Sector Gold publication. Validation: 343 full Linux tests passed;
+four final same-size corruption regressions passed. See the final Milestone 9 handoff.
 
 `processing.approved_sector.project_approved_expected_gold` resolves an explicit
 approved Gold identity, checks upstream approved Silver and research/calendar/plan
@@ -27,6 +29,17 @@ All fields must match the approved regenerated expectation grid; physical Parque
 types, UTC instants, canonical provenance, duplicates, acquisition scope and manifest
 coverage counts are validated before engine execution. Aggregate checks execute in
 Spark; the production path does not collect financial rows or use Python UDFs.
+
+To close the lazy-read substitution gap, copy only manifested return Parquet bytes
+into a private temporary snapshot, bounded to 256 MiB, and verify each copied hash
+and byte count. Manifest metadata must equal the exact fingerprinted JSON bytes.
+Read and validate physical schemas from that copy, then eagerly detach its Spark
+lineage with a disk-only local checkpoint before removing temporary files. The
+original source is reverified before returning. Later source replacements cannot
+change returned frames. Lost checkpoint blocks fail closed; stop the session to
+release them. This bounded filesystem execution is not durable distributed recovery
+or protection against malicious in-process code. An eligible upstream return must
+also have a current close.
 
 The pilot identity is gold-study-cohort-20260914-multisymbol-expected-v1,
 39ab367c-c6d2-480d-8c94-f35f767ed289, manifest

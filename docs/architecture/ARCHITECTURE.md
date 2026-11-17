@@ -130,11 +130,13 @@ accepted for the synthetic calculation contract after numerical correlation,
 eligibility-policy provenance and threshold-validation remediation. No Sector Gold
 registry or artifact exists.
 
-Milestone 9 adds a read-only approved Expected-Series Gold projection candidate in
-`processing.approved_sector`, described in ADR 015 (Proposed) and
+Milestone 9 adds an accepted read-only approved Expected-Series Gold projection in
+`processing.approved_sector`, described in ADR 015 (Accepted) and
 `PHASE2_APPROVED_SECTOR_INTEGRATION.md`. Its public entry owns exact registry
 resolution, physical/checksum verification and independent population regeneration;
-the existing public frame transform remains synthetic-only. It produces calculation
+the existing public frame transform remains synthetic-only. A bounded verified
+byte snapshot and eager disk checkpoint detach later Spark actions from source
+paths. It produces calculation
 frames with input lineage, not a Sector Gold publication or new authority.
 
 ## Testing and reproducibility
