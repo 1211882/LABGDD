@@ -18,10 +18,15 @@ validation. Real publication and authority activation are not authorized.
 Canonical repository: `C:\Users\Deus\Documents\LABGDD`; branch `main`; origin
 `https://github.com/1211882/LABGDD.git`. Starting clean HEAD and fetched origin/main:
 `880f842ee8edca265193b133b7af612efdd6a79c`. No pre-existing unrelated changes.
-Final commit/push: pending the authorized Git finalization after passing validation.
-Exact enclosing commit SHA cannot be
-embedded in itself; it will be recorded with remote verification in the final
-response. No approval tag, history rewrite or change to `LABGDD_NEW` is permitted.
+Correction commit: `24efa73f8008d223f09efbdd4b81eb176acf690c`,
+`fix(sector-gold): bind immutable candidates to validated evidence`. After final
+staged review/security checks, origin was fetched and ancestry verified; a normal
+push advanced main from the starting baseline to this commit. `git ls-remote`
+independently verified remote main at the correction SHA; working tree was clean.
+This documentation-only follow-up records actual push/CI evidence. Its enclosing
+commit SHA and final remote HEAD are recorded in the final response because a
+commit cannot contain its own SHA. No tag was created, no history was rewritten,
+and `LABGDD_NEW` was not modified.
 
 ## 3. Initial State and Dependencies
 
@@ -161,7 +166,12 @@ for implementation run [44139229661](https://github.com/1211882/LABGDD/actions/r
 and documentation run [44141511380](https://github.com/1211882/LABGDD/actions/runs/44141511380).
 Implementation job IDs: Ubuntu 134237106744, Windows 134237106295; documentation:
 Ubuntu 134245242369, Windows 134245242771. These prove their respective earlier
-commits, not this review's unpushed changes. No failed workflow needed log analysis.
+commits, not this review's correction commit. No failed workflow needed log analysis.
+Correction workflow [44154148258](https://github.com/1211882/LABGDD/actions/runs/44154148258)
+was triggered by correction commit `24efa73f8008d223f09efbdd4b81eb176acf690c` and
+was in progress on both platforms when this follow-up was written: Ubuntu job
+134290201719 and Windows job 134290201267. No success is claimed for it or
+the enclosing documentation commit's workflow. Windows was not awaited, as requested.
 
 No failing adversarial regression was suppressed. Initial formatting/import issues
 were corrected before the passing focused tests. Missing optional evidence may skip
