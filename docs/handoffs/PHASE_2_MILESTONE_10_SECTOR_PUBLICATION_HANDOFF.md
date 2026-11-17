@@ -16,9 +16,14 @@ Measurement 2.0.0 and complete-population scientific contracts are preserved.
 Canonical repository: C:\Users\Deus\Documents\LABGDD; branch main; origin
 https://github.com/1211882/LABGDD.git. Starting HEAD:
 `d9686dd4f5850569808ed10c9fe656028a55495b`, initially clean. No unrelated changes
-were present. Commit/push are conditional on validation; final identities and remote
-verification will be recorded in the final response because this report cannot
-contain its enclosing commit SHA. No approval tag, force-push, rebase or history
+were present. Implementation commit `6b6ee182651e96cbf7467ce06cb45ae395528a87`,
+`feat(sector-gold): implement immutable publication foundation`, was created after
+all gates passed and pushed normally from the starting baseline. Git ls-remote
+verified origin/main equals that commit; the working tree was clean. This report
+then received a documentation-only update containing actual CI/push evidence.
+Its enclosing documentation-commit SHA and final remote verification are recorded
+in the final response because a commit cannot contain its own SHA.
+No approval tag, force-push, rebase or history
 rewrite is authorized. Historical LABGDD_NEW remains untouched.
 
 ## 3. Initial State and Dependencies
@@ -170,6 +175,16 @@ while retaining valid keys/counts. Inspection now recomputes every inherited val
 and provenance field through the accepted native boundary; an adversarial changed-feed
 fixture verifies rejection. Output UUID normalization and early reference bounds
 close malformed/oversized execution requests before publication work.
+
+Implementation CI [44139229661](https://github.com/1211882/LABGDD/actions/runs/44139229661),
+Ubuntu job 134237106744, completed successfully: 356 passed, three skipped,
+four warnings, 463.25s. Skips were optional real multi-symbol Gold projection,
+real-input publication refusal and approved AAPL Silver evidence absent from the
+clean checkout; all ran in the no-skip local suite. Formatting, lint, strict typing,
+dependencies, build, new-module clean-wheel imports, offline CLIs and security
+(188 candidates) all succeeded. Windows was not awaited and no success is claimed
+for its new run. Any documentation-only follow-up CI is separate and is reported
+at its actual observed status in the final response, never predicted here.
 
 ## 10. Quantitative Results
 
