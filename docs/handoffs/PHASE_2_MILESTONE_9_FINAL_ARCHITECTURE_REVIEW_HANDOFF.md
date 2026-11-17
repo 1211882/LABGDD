@@ -18,9 +18,13 @@ Canonical repository: `C:\Users\Deus\Documents\LABGDD`; branch `main`.
 Starting HEAD: `ba516cd7a48d8b8ac732602faf64a78c9a22f57e`, initially clean.
 Origin: `https://github.com/1211882/LABGDD.git`. A fetch confirmed the same
 `origin/main` and zero divergence. No unrelated changes were present.
-The authorized review commit and normal fast-forward push follow validation.
-This report cannot contain its own enclosing commit SHA; final HEAD, push result
-and verified remote SHA must be recorded in the accompanying final response.
+Reviewed implementation commit: `8b10ceeeed8da6746d3e4fc8d38b24e8c62e56d8`,
+`fix(sector-gold): snapshot verified inputs before lazy calculations`. It was
+committed after validation and pushed normally from the starting baseline;
+`git ls-remote` verified the exact same remote SHA and the working tree was clean.
+This report was then updated with actual CI evidence in a documentation-only
+follow-up. It cannot contain its own enclosing documentation-commit SHA; final HEAD,
+push result and verified remote SHA are recorded in the accompanying final response.
 No tag is requested or created; no previous history or tags are rewritten.
 Historical `C:\Users\Deus\Documents\LABGDD_NEW` is untouched.
 
@@ -163,8 +167,14 @@ also completed successfully: Ubuntu 330/2, 197.78s; Windows 314/18, 1271.96s.
 Job conclusions and test summaries were retrieved directly. Windows skips include
 the Linux-only approved-Parquet suite; they are not Windows execution evidence for
 that suite. The user explicitly waived waiting for Windows for this final review.
-Any new review-commit CI is a separate run, reported in the final response; a pending
-Windows job must never be described as passed.
+Review-commit CI [43993885696](https://github.com/1211882/LABGDD/actions/runs/43993885696),
+Ubuntu job `133741036431`, completed successfully: 341 passed/2 skipped in 224.09s.
+The skips were absent optional multi-symbol Gold and AAPL Silver evidence, both
+covered by the no-skip local full suite. Formatting, lint, strict typing, dependency
+consistency, build, clean-wheel smoke, offline CLIs and security (179 candidates)
+all succeeded. Windows was not awaited and no success is inferred for it. A later
+documentation-only CI run is separate; its exact status is reported in the final
+response rather than predicted in the commit that triggers it.
 
 ## 10. Quantitative Results
 
