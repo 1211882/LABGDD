@@ -1,5 +1,13 @@
 # Milestone 10: Sector Gold publication foundation
 
+Milestone 11 adds `processing.sector_readiness.preflight_real_sector_gold` under
+Proposed ADR 017. It resolves an explicit approved input, reuses the accepted
+calculation boundary and returns a typed deterministic aggregate report. Technical,
+scientific and governance gates are separate; governance is always blocked. It
+creates no candidate, Sector Parquet, approval or registry change. See
+`../decisions/017-real-sector-publication-readiness.md` for the future writer design
+and limits. Invalid authority raises rather than returning a successful report.
+
 Reviewed synthetic foundation governed by Accepted ADR 016. ADRs 014/015 remain accepted
 and unchanged. Real Sector Gold publication and external approval are deferred.
 

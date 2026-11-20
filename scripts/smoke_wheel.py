@@ -43,6 +43,7 @@ def main() -> None:
                 "import labgdd.processing.expected_gold; import labgdd.expected_gold_config; "
                 "import labgdd.processing.gold_batch; "
                 "import labgdd.processing.sector_publication; "
+                "import labgdd.processing.sector_readiness; "
                 "import labgdd.sector_publication_config; "
                 "print('All package imports passed; zero mandatory runtime dependencies')",
             ],
