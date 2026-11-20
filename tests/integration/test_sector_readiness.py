@@ -52,6 +52,8 @@ def test_complete_fixture_replay_strict_and_no_publication(evidence: Path, spark
     assert report.technical_gate == "passed"
     assert report.scientific_gate == "passed"
     assert report.governance_gate == "blocked"
+    previous_partitions = spark.conf.get("spark.sql.shuffle.partitions")
+    spark.conf.set("spark.sql.shuffle.partitions", "3")
     assert report == preflight_real_sector_gold(
         spark,
         replace(
@@ -60,6 +62,7 @@ def test_complete_fixture_replay_strict_and_no_publication(evidence: Path, spark
         ),
         **base._arguments(evidence),
     )
+    spark.conf.set("spark.sql.shuffle.partitions", previous_partitions)
     strict = preflight_real_sector_gold(
         spark,
         replace(
@@ -129,3 +132,10 @@ def test_optional_real_pilot(spark: Any) -> None:
         r["symbol"]: r["observed_slots"] for r in doc["coverage"] if r["acquisition_scope"]
     } == dict(AAPL=390, MSFT=390, NVDA=390, JPM=371, XOM=320)
     assert not any(row["eligible"] for row in doc["window_reason_counts"])
+    assert report.technical_gate == "passed"
+    assert len(doc["coverage"]) == 30 and len(doc["scope"]) == 6
+    assert sum(row["requested_members"] for row in doc["scope"]) == 5
+    assert all(row["requested_members"] < row["expected_members"] for row in doc["scope"])
+    assert sum(row["missing_slots"] for row in doc["coverage"]) == 9839
+    assert not any(row["eligible"] for row in doc["pair_reason_counts"])
+    assert "blocked_missing_observations" in report.blockers

@@ -13,6 +13,7 @@ from labgdd.analytics.sector import ELIGIBILITY_POLICIES
 from labgdd.config import Settings
 from labgdd.processing.approved_sector import calculate_approved_sector_gold
 from labgdd.processing.expected_gold import _source_sha256
+from labgdd.processing.sector_publication import _validate_expected_grid
 
 if TYPE_CHECKING:
     from pyspark.sql import DataFrame, SparkSession
@@ -23,12 +24,26 @@ def _summarize(frame: "DataFrame") -> list[dict[str, Any]]:
     from pyspark.sql import functions as F
     from pyspark.sql.types import DoubleType
 
-    invalid = F.lit(False)
+    invalid = (
+        F.col("eligible").isNull()
+        | (F.col("eligible") & F.col("reason").isNotNull())
+        | (~F.col("eligible") & F.col("reason").isNull())
+    )
     for field in frame.schema:
         if isinstance(field.dataType, DoubleType):
             value = F.col(field.name)
             invalid = invalid | F.isnan(value) | value.isin(float("inf"), float("-inf"))
             invalid = invalid | (~F.col("eligible") & value.isNotNull())
+            if field.name in {
+                "sector_realized_variance",
+                "sector_realized_volatility",
+                "portfolio_realized_variance",
+                "portfolio_realized_volatility",
+                "mean_log_return_realized_volatility",
+                "volatility_dispersion",
+                "value",
+            }:
+                invalid = invalid | (F.col("eligible") & value.isNull())
     rows = [
         row.asDict()
         for row in frame.groupBy("sector", "session_id", "horizon", "eligible", "reason")
@@ -42,6 +57,28 @@ def _summarize(frame: "DataFrame") -> list[dict[str, Any]]:
     if any(invalid_counts):
         raise ValueError("sector readiness: invalid financial values or nullability")
     return sorted(rows, key=lambda row: json.dumps(row, sort_keys=True))
+
+
+def _validate_inventory(population: "DataFrame", windows: "DataFrame", pairs: "DataFrame") -> None:
+    """Check the independently expected window grid and every ordered pair."""
+    from pyspark.sql import functions as F
+
+    _validate_expected_grid(windows, population)
+    identity = "output_identity_sha256"
+    if (
+        windows.filter(F.col(identity).isNull()).limit(1).count()
+        or windows.groupBy(identity).count().filter("count != 1").limit(1).count()
+    ):
+        raise ValueError("sector readiness: duplicate or missing window identity")
+    expected = (
+        windows.select(identity, "expected_symbols")
+        .select(identity, "expected_symbols", F.explode("expected_symbols").alias("left_symbol"))
+        .select(identity, "left_symbol", F.explode("expected_symbols").alias("right_symbol"))
+    )
+    expected = expected.filter("left_symbol < right_symbol")
+    actual = pairs.select(*expected.columns)
+    if expected.exceptAll(actual).limit(1).count() or actual.exceptAll(expected).limit(1).count():
+        raise ValueError("sector readiness: incomplete or duplicate pair inventory")
 
 
 @dataclass(frozen=True, slots=True)
@@ -141,6 +178,7 @@ def preflight_real_sector_gold(
         )
     windows = frames.windows.cache()
     try:
+        _validate_inventory(population, windows, frames.correlations)
         summaries = _summarize(windows)
         pair_summaries = _summarize(frames.correlations)
     finally:
@@ -156,6 +194,8 @@ def preflight_real_sector_gold(
         blockers.append("blocked_unverified_historical_applicability")
     if any(not row["eligible"] for row in summaries) or not summaries:
         blockers.append("blocked_ineligible_sector_windows")
+    if any(not row["eligible"] for row in pair_summaries) or not pair_summaries:
+        blockers.append("blocked_incomplete_pair_eligibility")
     scientific = "passed" if not blockers else "blocked"
     # There is no authorized real publisher/approval policy in this milestone.
     blockers.append("blocked_unsupported_publication_policy")
@@ -183,8 +223,10 @@ def preflight_real_sector_gold(
         if any(r["historically_verified_members"] != r["expected_members"] for r in groups)
         else [],
         "limitations": ["iex_venue_specific_not_consolidated", "provider_finality_unproven"],
-        "evidence_kind": metadata.get("evidence_kind", "real_market_evidence"),
+        "evidence_kind": metadata.get("evidence_kind", "unspecified"),
     }
+    if evidence["evidence_kind"] == "unspecified":
+        evidence["warnings"].append("evidence_kind_not_attested")
     rechecked = resolve_approved_gold(registry, settings.data_root, dataset_version, run_id)
     upstream = resolve_approved_silver(
         silver_registry,
