@@ -92,6 +92,7 @@ exception text and extra fields by design. Extend the event schema deliberately.
 - [Sector Gold calculation foundation](docs/architecture/PHASE2_SECTOR_GOLD.md)
 - [Approved Gold to Sector integration](docs/architecture/PHASE2_APPROVED_SECTOR_INTEGRATION.md)
 - [Synthetic Sector publication foundation](docs/architecture/PHASE2_SECTOR_PUBLICATION.md)
+- [Proposed real publication policies and evidence](docs/architecture/PHASE2_SECTOR_PUBLICATION_POLICY.md)
 - [Proposed expected-series Gold publication decision](docs/decisions/011-expected-series-gold-publication.md)
 - [Phase 0 architecture-review remediation](docs/handoffs/TASK_PHASE0_ARCHITECTURE_REVIEW_HANDOFF.md)
 
