@@ -7,8 +7,8 @@ permission and dataset approval remain separate.
 ## 1. Executive Summary
 
 Phase 2 Milestone 12 implements proposed real Sector publication-policy/evidence
-contracts. Status: Completed for implementation and validation; authorized Git finalization
-is recorded below and in the final response.
+contracts. Status: Completed for implementation, validation and authorized commit/push.
+Implementation commit and observed CI evidence are recorded below.
 Diagnostic research and eligible analytical purposes are explicit and distinct.
 All assessments retain publication_authorized=false and outstanding external approvals.
 The real pilot qualifies only as diagnostic evidence for review, not official sector
@@ -20,9 +20,13 @@ market acquisition, financial formula change or Milestone 13 implementation.
 Canonical path: `C:\Users\Deus\Documents\LABGDD`; branch main; origin:
 `https://github.com/1211882/LABGDD.git`. Starting clean HEAD and fetched origin/main:
 `2a5c2e8dd352899d9b816237a20da574486ec250`. No unrelated changes.
-Current implementation is uncommitted pending required gates. The final response
-records exact commit/push identities and remote verification; a commit cannot embed
-its own SHA. No force-push, rebase, reset, approval tag or history rewrite. Historical
+Implementation commit: `774d4bb40a02270f932607fddc63d9070e9e5023`, message
+`feat(sector-gold): define real publication policy contracts`. Normal push succeeded
+from the starting baseline; `git ls-remote origin refs/heads/main` independently
+confirmed the identical remote commit. Exactly eight intended files were committed;
+working tree was clean immediately afterward. A documentation-only follow-up records
+this evidence; its own final SHA cannot be embedded in itself and is supplied in the
+final response. No force-push, rebase, reset, approval tag or history rewrite. Historical
 LABGDD_NEW remains untouched.
 
 ## 3. Initial State and Dependencies
@@ -148,7 +152,9 @@ Sector lifecycle/readiness, authority and independent scalar/Spark regressions.
 --config config/project.toml` passed clean installation, imports, offline CLIs and
 pip check, with zero mandatory runtime dependencies. Source was normalized to LF
 and index parity checked before full testing. Final staged security/whitespace/diff
-gates are repeated before commit; no source changes followed full validation.
+gates passed before commit: repository and staged scanners each checked 202 files;
+`git diff --cached --check` passed. The exact eight-file staged inventory and protected
+config/data/accepted-ADR diff were reviewed. No source changes followed full validation.
 
 Intermediate fixes: Ruff formatting/import/line-length findings; strict mypy dictionary
 inference, tuple-width and reused-variable issues corrected. Initial real-pilot test
@@ -171,7 +177,11 @@ Baseline CI verified successful on Ubuntu and Windows for runs 44657094927 and
 408 passed/4 skipped/7 warnings (587.31s and 661.77s); Windows 335 passed/77 skipped
 (1226.64s and 1234.81s). Optional real artifacts are absent in clean Ubuntu checkouts;
 Windows also retains existing native Linux-only exclusions. These prove baseline
-commits, not unpushed Milestone 12 changes. New CI must be reported at observed status.
+commits, not Milestone 12 changes. New implementation CI run:
+https://github.com/1211882/LABGDD/actions/runs/44747350622 . At 2026-11-20
+13:47 UTC both checks (ubuntu-24.04) and checks (windows-latest) were in_progress,
+with no conclusion. New CI success is not claimed. The documentation-only follow-up
+may trigger another run; final response records its observed status separately.
 
 ## 10. Quantitative Results
 
@@ -210,7 +220,8 @@ authority checks, append-preserved history and explicit external approval.
 
 ## 13. Problems and Limitations
 
-Full final validation passed; Git finalization remains to be recorded. Coherence validation cannot
+Full final validation and normal implementation push passed. New CI remains pending
+at the recorded observation. Coherence validation cannot
 authenticate a fabricated internally consistent report or external attestation URI;
 trusted producer input and independent reference/role verification are required.
 Provider corrections, consolidated coverage and historical membership remain unproven.
@@ -227,8 +238,8 @@ milestone was implemented. Existing approved artifacts and authority remain inta
 
 ## 15. Recommended Next Step
 
-Complete final validation/Git evidence, then independently review Proposed ADR 018
-and both policy profiles. Review classification, independent evidence standards,
+Independently review Proposed ADR 018 and both policy profiles, using the completed
+validation/Git evidence and checking the final status of the new CI runs. Review classification, independent evidence standards,
 intended-use claims and external ownership/approval requirements before considering
 separately authorized implementation. No automatic Milestone 13 progression.
 
