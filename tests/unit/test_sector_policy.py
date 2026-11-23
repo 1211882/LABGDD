@@ -130,6 +130,13 @@ def report(
         population_policy_version="sector-complete-population-v1",
         calculation_version="sector-calculation-v1",
         scope=groups,
+        session_bounds=[
+            dict(
+                session_id="2026-09-14",
+                session_open="2026-09-14T13:30:00+00:00",
+                session_close="2026-09-14T20:00:00+00:00",
+            )
+        ],
         coverage=coverage,
         window_reason_counts=windows,
         pair_reason_counts=pairs,
@@ -196,6 +203,13 @@ def correction() -> SnapshotCorrectionEvidence:
         "2" * 64,
         "fixture-review",
         "independently_verified",
+        source="alpaca",
+        feed="iex",
+        adjustment="raw",
+        timeframe="1Min",
+        requested_sessions=("2026-09-14",),
+        input_processing_source_sha256="a" * 64,
+        event_interval_start=datetime(2026, 9, 14, 13, 30, tzinfo=UTC),
     )
 
 

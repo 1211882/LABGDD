@@ -199,6 +199,23 @@ def preflight_real_sector_gold(
     scientific = "passed" if not blockers else "blocked"
     # There is no authorized real publisher/approval policy in this milestone.
     blockers.append("blocked_unsupported_publication_policy")
+    session_bounds = sorted(
+        (
+            {
+                "session_id": row.session_id,
+                "session_open": row.session_open,
+                "session_close": row.session_close,
+            }
+            for row in population.select(
+                "session_id",
+                F.date_format("session_open", "yyyy-MM-dd'T'HH:mm:ssXXX").alias("session_open"),
+                F.date_format("session_close", "yyyy-MM-dd'T'HH:mm:ssXXX").alias("session_close"),
+            )
+            .distinct()
+            .collect()
+        ),
+        key=lambda row: row["session_id"],
+    )
     evidence = {
         "input_metadata": metadata,
         "processing_source_sha256": before,
@@ -208,6 +225,7 @@ def preflight_real_sector_gold(
         "calculation_version": "sector-calculation-v1",
         "future_sector_schema_version": "1.0.0",
         "scope": groups,
+        "session_bounds": session_bounds,
         "coverage": coverage,
         "window_reason_counts": summaries,
         "pair_reason_counts": pair_summaries,

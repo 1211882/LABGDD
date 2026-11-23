@@ -1,6 +1,7 @@
-# Milestone 12: Proposed Sector publication-policy contracts
+# Milestone 12: Sector publication-policy contracts
 
-Governed by Proposed ADR 018. Accepted ADRs 014-017 remain unchanged.
+Governed by Accepted ADR 018 (independent review 2026-11-23). Accepted ADRs 014-017
+remain unchanged.
 
 `PublicationPolicy(intended_use)` selects diagnostic_research or
 eligible_sector_analytics. `definition()` makes population, authority, nullability,
@@ -38,3 +39,15 @@ roles and owner designation are proposals, not actual organizational approvals.
 Any future publication needs separate authorization, fresh source resolution,
 independent evidence checks, immutable staging/inspection and explicit external
 registry approval. Keep assessment, candidate completion and approval separate.
+
+Independent review tightened correction attestations: explicit source/feed/raw/1Min,
+sessions and input processing-source digest must match the trusted input; UTC event
+start/end must match bounded readiness `session_bounds`. Those bounds are produced
+from the independently regenerated population using Spark UTC formatting and checked
+against expected minute counts. Capture time is ordered metadata, never finality.
+Missing interval fields have no affirmative defaults. Legacy reports without bounds
+can qualify diagnostically without correction evidence; correction review requires a
+fresh report. Historical/reviewer text must be nonblank, listing states recognized,
+and reason codes consistent with approved precedence. These checks validate claims,
+not their truth. Self-consistent fabricated reports are explicitly covered by a test
+that demonstrates the authentication limit and permanent lack of execution authority.

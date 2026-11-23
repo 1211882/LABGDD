@@ -41,6 +41,13 @@ def test_optional_real_pilot_policy_assessments(spark: Any) -> None:  # noqa: F8
     )
     d = readiness.evidence()
     assert len(d["coverage"]) == 30 and len(d["scope"]) == 6
+    assert d["session_bounds"] == [
+        {
+            "session_id": "2026-09-14",
+            "session_open": "2026-09-14T13:30:00Z",
+            "session_close": "2026-09-14T20:00:00Z",
+        }
+    ]
     assert sum(g["requested_members"] for g in d["scope"]) == 5
     assert (
         d["expected_slots"],

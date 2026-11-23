@@ -1,13 +1,14 @@
 # ADR 018: Real Sector publication policy and evidence contracts
 
-- Status: Proposed
+- Status: Accepted
+- Independent final review: 2026-11-23
 - Date: 2026-11-20
 - Depends on: accepted ADRs 014-017
 
-## Proposal
+## Decision
 
 Add the typed `sector-real-publication-policy-v1` definitions in `sector_policy`.
-There are two explicit proposed purposes: diagnostic research evidence and eligible
+There are two explicit review purposes: diagnostic research evidence and eligible
 sector analytics. Neither is an execution policy or an approval. Unknown versions,
 purposes, relaxed approval-role lists and approved status are rejected. The required
 universe remains study-cohort-v1: all 30 declared symbols and six project sectors.
@@ -101,8 +102,52 @@ Bronze/Silver/Gold governance demonstrates these principles; it is not extended 
 Corrections or supersession require renewed evidence and approval, never overwritten
 frozen artifacts or automatic selection of the newest directory.
 
-Unresolved human decisions: acceptance of these proposed profiles, whether and how
+Unresolved human decisions: operational adoption for a particular real dataset, whether and how
 snapshot-specific IEX analytical claims are permitted, named ownership/reviewer
 responsibilities, independent evidence standards and the future activation mechanism.
 No real writer, candidate, registry, acquisition or publication is authorized.
-Keep ADR 018 Proposed pending independent review; do not begin Milestone 13.
+Acceptance covers assessment contracts only; do not begin Milestone 13.
+
+## Independent architecture review: 2026-11-23
+
+The review distinguishes structural coherence checks, SHA-256 byte integrity and
+trusted operational assumptions. A fabricated internally coherent report can qualify
+as an assertion for review, but is not authenticated or authorized. No URI is fetched
+or treated as proof. The caller must use fresh `preflight_real_sector_gold`; a future
+writer must independently resolve registries, reference bytes and actual approvers.
+This in-process typed boundary is not a sandbox against hostile Python code.
+
+Bounded corrections reject whitespace-only historical/correction provenance,
+unknown listing states, noncanonical historical session labels, unknown reason
+codes, inappropriate metric-specific reasons and contradicted primary precedence.
+Only the exact supported policy class is recognized. Unknown evidence object kinds
+fail explicitly. No scientific formula, row reason or approved publication changes.
+
+Correction attestations require explicit source/feed/adjustment/timeframe, sorted
+unique requested sessions, input processing-source digest and interval start in
+addition to exact dataset/run/manifest, interval end, capture time and review fields.
+All times must be UTC. Readiness adds bounded `session_bounds`, formatted by Spark
+in its verified UTC session rather than converted through the host timezone.
+The evaluator checks scope/provenance equality, session labels/durations and exact
+first-open/last-close interval coverage. Snapshot capture must not precede event end;
+this is still not proof that every later provider correction has arrived.
+
+These are pre-acceptance corrections to previously Proposed evidence v1 contracts;
+no persisted real attestation is migrated or invented. Original readiness reports
+without the additive bounds remain usable for diagnostic review without correction
+evidence. They cannot validate a correction interval: regenerate a fresh trusted
+readiness report instead of inventing missing bounds. Frozen upstream manifests and
+Individual/Expected/Sector financial schemas remain unchanged.
+
+After all required gates passed, architecture acceptance covers only
+these two review-purpose contracts. Policy instances remain unapproved; their
+`policy_status=proposed` definitions/fingerprints are intentionally unchanged.
+Actual ownership, independent reference verification, permitted analytical claims,
+execution and registry activation still require separately authorized decisions.
+
+The final reviewed source passed 512 full Linux tests with zero skips and seven
+pinned-Spark API warnings in 1485.40s, including independent scalar/native parity,
+publication lifecycle/corruption, readiness and all policy adversarial regressions.
+Formatting, lint, strict typing, dependency checks, build, clean-wheel smoke and
+security checks passed. Acceptance grants no real-publication permission, dataset
+approval, Sector registry authority or independently verified historical facts.

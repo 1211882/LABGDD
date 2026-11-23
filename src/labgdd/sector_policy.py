@@ -4,6 +4,7 @@ import hashlib
 import json
 import re
 from dataclasses import asdict, dataclass
+from dataclasses import field as dataclass_field
 from datetime import date, datetime, timedelta
 from typing import Any, Literal
 from uuid import UUID
@@ -20,6 +21,10 @@ CLAIMS = {
     "provider_finality_guaranteed",
     "independently_verified_historical_membership",
 }
+
+
+def _text(value: object) -> bool:
+    return isinstance(value, str) and bool(value.strip())
 
 
 def _sha(value: object) -> bool:
@@ -53,7 +58,7 @@ class PublicationPolicy:
             or self.research_universe_version != "study-cohort-v1"
             or self.approval_status != "unapproved"
             or self.required_approval_roles != ROLES
-            or (self.designated_owner is not None and not self.designated_owner.strip())
+            or (self.designated_owner is not None and not _text(self.designated_owner))
         ):
             raise ValueError("sector policy: unsupported or conflicting policy")
 
@@ -134,18 +139,29 @@ class HistoricalApplicabilityEvidence:
         session = date.fromisoformat(self.session_id)
         if (
             self.contract_version != "sector-historical-applicability-evidence-v1"
-            or not self.symbol
-            or not self.sector
+            or not _text(self.symbol)
+            or not _text(self.sector)
+            or self.session_id != session.isoformat()
+            or type(self.effective_from) is not date
+            or type(self.effective_until) is not date
+            or self.listing_and_trading_status not in {"eligible", "ineligible", "unknown"}
+            or not isinstance(self.uncertainty, tuple)
+            or any(not _text(item) for item in self.uncertainty)
+            or len(self.uncertainty) != len(set(self.uncertainty))
             or not _sha(self.research_sha256)
             or not self.effective_from <= session < self.effective_until
-            or not all((self.corporate_action_basis, self.source_identity, self.source_version))
+            or not all(
+                _text(v)
+                for v in (self.corporate_action_basis, self.source_identity, self.source_version)
+            )
             or self.verification_status not in {"unverified", "independently_verified"}
         ):
             raise ValueError("sector policy: invalid historical evidence")
         if self.verification_status == "independently_verified":
             if (
                 not all(
-                    (
+                    _text(v)
+                    for v in (
                         self.entity_identity,
                         self.classification_source,
                         self.evidence_uri,
@@ -172,6 +188,13 @@ class SnapshotCorrectionEvidence:
     evidence_uri: str
     evidence_sha256: str
     reviewer_reference: str
+    source: str = dataclass_field(kw_only=True)
+    feed: str = dataclass_field(kw_only=True)
+    adjustment: str = dataclass_field(kw_only=True)
+    timeframe: str = dataclass_field(kw_only=True)
+    requested_sessions: tuple[str, ...] = dataclass_field(kw_only=True)
+    input_processing_source_sha256: str = dataclass_field(kw_only=True)
+    event_interval_start: datetime = dataclass_field(kw_only=True)
     verification_status: str = "unverified"
     claim: str = "reviewed_snapshot_correction_protocol"
     contract_version: str = "sector-snapshot-correction-evidence-v1"
@@ -182,14 +205,28 @@ class SnapshotCorrectionEvidence:
             or self.claim != "reviewed_snapshot_correction_protocol"
             or self.verification_status not in {"unverified", "independently_verified"}
             or not isinstance(self.run_id, UUID)
-            or not self.dataset_version
+            or not _text(self.dataset_version)
             or not _sha(self.manifest_sha256)
             or not _sha(self.evidence_sha256)
-            or not all((self.source_version, self.evidence_uri, self.reviewer_reference))
+            or not all(
+                _text(v) for v in (self.source_version, self.evidence_uri, self.reviewer_reference)
+            )
+            or (self.source, self.feed, self.adjustment, self.timeframe)
+            != ("alpaca", "iex", "raw", "1Min")
+            or not _sha(self.input_processing_source_sha256)
+            or not isinstance(self.requested_sessions, tuple)
+            or not self.requested_sessions
             or any(
-                t.utcoffset() != timedelta(0) for t in (self.captured_at, self.event_interval_end)
+                not isinstance(v, str) or date.fromisoformat(v).isoformat() != v
+                for v in self.requested_sessions
+            )
+            or self.requested_sessions != tuple(sorted(set(self.requested_sessions)))
+            or any(
+                not isinstance(t, datetime) or t.utcoffset() != timedelta(0)
+                for t in (self.captured_at, self.event_interval_start, self.event_interval_end)
             )
             or self.captured_at < self.event_interval_end
+            or self.event_interval_start >= self.event_interval_end
         ):
             raise ValueError(
                 "sector policy: invalid correction evidence or unsupported finality claim"
@@ -395,7 +432,20 @@ def _validated_report(report: SectorReadinessReport) -> dict[str, Any]:
                 or r["horizon"] not in (5, 15, 30, 60)
                 or type(r["horizon"]) is not int
                 or (r["eligible"] and r["reason"] is not None)
-                or (not r["eligible"] and not r["reason"])
+                or (
+                    not r["eligible"]
+                    and r["reason"]
+                    not in {
+                        "member_outside_acquisition_scope",
+                        "incomplete_sector_population",
+                        "unverified_historical_applicability",
+                        "missing_expected_member",
+                        "missing_observed_bar",
+                        "ineligible_individual_return",
+                        "incomplete_calculation_window",
+                        *({"constant_return_series"} if pairs else set()),
+                    }
+                )
             ):
                 raise ValueError("sector policy: invalid reason distribution")
             seen.add(key)
@@ -422,21 +472,23 @@ def _validated_report(report: SectorReadinessReport) -> dict[str, Any]:
         if any((r["sector"], r["session_id"]) not in group_keys for r in rows):
             raise ValueError("sector policy: unknown result population")
     for g in groups:
-        if (
-            g["requested_members"] < g["expected_members"]
-            or g["applicable_members"] < g["expected_members"]
-            or (
-                d["eligibility_policy"] == "verified_historical_applicability"
-                and g["historically_verified_members"] < g["expected_members"]
-            )
+        primary = (
+            "member_outside_acquisition_scope"
+            if g["requested_members"] < g["expected_members"]
+            else "incomplete_sector_population"
+            if g["applicable_members"] < g["expected_members"]
+            else "unverified_historical_applicability"
+            if d["eligibility_policy"] == "verified_historical_applicability"
+            and g["historically_verified_members"] < g["expected_members"]
+            else None
+        )
+        if primary is not None and any(
+            r["eligible"] or r["reason"] != primary
+            for field in ("window_reason_counts", "pair_reason_counts")
+            for r in d[field]
+            if (r["sector"], r["session_id"]) == (g["sector"], g["session_id"])
         ):
-            if any(
-                r["eligible"]
-                for field in ("window_reason_counts", "pair_reason_counts")
-                for r in d[field]
-                if (r["sector"], r["session_id"]) == (g["sector"], g["session_id"])
-            ):
-                raise ValueError("sector policy: eligibility contradicts expected membership")
+            raise ValueError("sector policy: eligibility or reason contradicts expected membership")
     blockers = []
     if any(not r["acquisition_scope"] for r in coverage):
         blockers.append("blocked_incomplete_acquisition_scope")
@@ -446,7 +498,7 @@ def _validated_report(report: SectorReadinessReport) -> dict[str, Any]:
         g["historically_verified_members"] != g["expected_members"] for g in groups
     ):
         blockers.append("blocked_unverified_historical_applicability")
-    if any(not r["eligible"] for r in d["window_reason_counts"]):
+    if not d["window_reason_counts"] or any(not r["eligible"] for r in d["window_reason_counts"]):
         blockers.append("blocked_ineligible_sector_windows")
     if not d["pair_reason_counts"] or any(not r["eligible"] for r in d["pair_reason_counts"]):
         blockers.append("blocked_incomplete_pair_eligibility")
@@ -465,6 +517,46 @@ def _validated_report(report: SectorReadinessReport) -> dict[str, Any]:
     return d
 
 
+def _validate_correction_binding(
+    evidence: SnapshotCorrectionEvidence, report: SectorReadinessReport, d: dict[str, Any]
+) -> None:
+    m = d["input_metadata"]
+    if (
+        (evidence.dataset_version, str(evidence.run_id), evidence.manifest_sha256)
+        != (report.dataset_version, report.run_id, report.manifest_sha256)
+        or (evidence.source, evidence.feed, evidence.adjustment, evidence.timeframe)
+        != tuple(m[k] for k in ("source", "feed", "adjustment", "timeframe"))
+        or evidence.input_processing_source_sha256 != m["processing_source_sha256"]
+        or list(evidence.requested_sessions) != m["requested_sessions"]
+    ):
+        raise ValueError("sector policy: correction evidence authority or scope mismatch")
+    try:
+        bounds = d["session_bounds"]
+        if not isinstance(bounds, list) or len(bounds) != len(evidence.requested_sessions):
+            raise ValueError("sector policy: correction session bounds required")
+        starts, ends = [], []
+        for row, label in zip(bounds, evidence.requested_sessions, strict=True):
+            start = datetime.fromisoformat(row["session_open"])
+            end = datetime.fromisoformat(row["session_close"])
+            slots = {r["expected_slots"] for r in d["coverage"] if r["session_id"] == label}
+            if (
+                row["session_id"] != label
+                or start.utcoffset() != timedelta(0)
+                or end.utcoffset() != timedelta(0)
+                or start.date().isoformat() != label
+                or end.date().isoformat() != label
+                or start >= end
+                or slots != {(end - start).total_seconds() / 60}
+            ):
+                raise ValueError("sector policy: contradictory correction session bounds")
+            starts.append(start)
+            ends.append(end)
+        if evidence.event_interval_start != min(starts) or evidence.event_interval_end != max(ends):
+            raise ValueError("sector policy: correction event interval mismatch")
+    except (KeyError, TypeError, AttributeError) as exc:
+        raise ValueError("sector policy: correction session bounds required") from exc
+
+
 def evaluate_publication_policy(
     report: SectorReadinessReport,
     policy: PublicationPolicy,
@@ -476,7 +568,7 @@ def evaluate_publication_policy(
     requested_claims: tuple[str, ...] = (),
 ) -> PolicyAssessment:
     """Review eligibility only. External attestations are claims, not authenticated approvals."""
-    if not isinstance(policy, PublicationPolicy) or policy_sha256 != policy.fingerprint:
+    if type(policy) is not PublicationPolicy or policy_sha256 != policy.fingerprint:
         raise ValueError("sector policy: fingerprint mismatch")
     if (
         not isinstance(report, SectorReadinessReport)
@@ -501,6 +593,8 @@ def evaluate_publication_policy(
         raise ValueError("sector policy: incomplete readiness evidence") from exc
     m = d["input_metadata"]
     expected_evidence_keys = {(r["symbol"], r["sector"], r["session_id"]) for r in d["coverage"]}
+    if any(not isinstance(e, HistoricalApplicabilityEvidence) for e in historical_evidence):
+        raise ValueError("sector policy: unknown historical evidence kind")
     supplied = [(e.symbol, e.sector, e.session_id) for e in historical_evidence]
     if (
         len(supplied) != len(set(supplied))
@@ -508,12 +602,10 @@ def evaluate_publication_policy(
         or any(e.research_sha256 != m["research_reference_sha256"] for e in historical_evidence)
     ):
         raise ValueError("sector policy: conflicting or unrelated historical evidence")
-    if correction_evidence is not None and (
-        correction_evidence.dataset_version,
-        str(correction_evidence.run_id),
-        correction_evidence.manifest_sha256,
-    ) != (report.dataset_version, report.run_id, report.manifest_sha256):
-        raise ValueError("sector policy: correction evidence authority mismatch")
+    if correction_evidence is not None:
+        if not isinstance(correction_evidence, SnapshotCorrectionEvidence):
+            raise ValueError("sector policy: unknown correction evidence kind")
+        _validate_correction_binding(correction_evidence, report, d)
     blockers = []
     if m.get("research_universe_version") != policy.research_universe_version:
         blockers.append("research_universe_mismatch")
